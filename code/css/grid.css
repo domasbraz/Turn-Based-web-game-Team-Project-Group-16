@@ -1,0 +1,42 @@
+*
+{
+    margin: 0;
+    overflow: hidden;
+}
+
+.container
+{
+    display: grid;
+    width: 100%;
+    height: 100%;
+    border: 1px solid black;
+    margin: auto;
+    position: absolute;
+    /* top: 2.5%;
+    left: 2.5%; */
+    grid-template-columns: repeat(100, 1fr);
+    grid-template-rows: repeat(100, 1fr);
+}
+
+.item
+{
+    border: 1px solid rgba(0, 0, 0, 0.222);
+    color: rgba(0, 0, 0, 0.27);
+}
+
+.item1
+{
+    z-index: 2;
+    grid-area: 2 / 20 / span 18 / span 20;
+    /* ackground-image: url("aspire.jpg"); */
+}
+
+.item2
+{
+    grid-area: 1 / 1 / span 10 / span 10;
+}
+
+.gridbg
+{
+    z-index: -1;
+}

@@ -1,0 +1,98 @@
+.topGUIPlayer
+{
+    border: 1px solid black;
+    grid-area: 1 / 1 / span 60 / span 45;
+}
+
+.topGUIEnemy
+{
+    border: 1px solid black;
+    grid-area: 1 / 56 / span 60 / span 45;
+}
+
+.topGUI
+{
+    text-align: center;
+}
+
+.units
+{
+    display: inline-block;
+    border: 1px solid black;
+    width: 22%;
+    height: 80%;
+    margin: 1%;
+}
+
+.infoBar
+{
+    border: 1px solid black;
+    display: inline-block;
+    width: 22%;
+    height: 12%;
+    margin: 1%;
+    margin-top: 0;
+    overflow: visible;
+    text-align: left;
+}
+
+.hpBar
+{
+    border: 1px solid red;
+    display: inline-block;
+    width: 99%;
+    height: 45%;
+}
+
+.statusBar
+{
+    border: 1px solid blue;
+    display: inline-block;
+    width: 15%;
+    padding-top: 15%;
+    margin-left: 1.25%;
+}
+
+.bottomGUI
+{
+    grid-area: 61 / 1 / span 50 / span 100;
+    border: 1px solid black;
+    /* background-color: grey; */
+
+}
+
+.hand
+{
+    grid-area: 71 / 21 / span 40 / span 60;
+    border: 1px solid black;
+    text-align: center;
+}
+
+.card
+{
+    border: 1px solid black;
+    width: 13%;
+    height: 70%;
+    /* margin: auto; */
+    display: inline-block;
+    margin-right: 1%;
+    margin-left: 1%;
+    margin-top: 5%;
+}
+
+.cardPlayed
+{
+    border: 1px solid black;
+    grid-area: 64 / 4 / span 35 / span 10;
+}
+
+.cardEnemy
+{
+    border: 1px solid black;
+    grid-area: 64 / 86 / span 35 / span 10;
+}
+
+.testBtn
+{
+    grid-area: 5 / 49 / span 5 / span 5 ;
+}

@@ -1,13 +1,5 @@
-function switchGuiBot()
-{
-
-    var botGUI1 = document.querySelectorAll(".b1GUI");
-
-    botGUI1.forEach(function(element) 
-    {
-        element.style.display = "none";
-    });
-}
+var p1StatusNum, p2StatusNum, p3StatusNum, p4StatusNum, e1StatusNum, e2StatusNum, e3StatusNum, e4StatusNum;
+p1StatusNum = p2StatusNum = p3StatusNum = p4StatusNum = e1StatusNum = e2StatusNum = e3StatusNum = e4StatusNum = 0;
 
 var units = 4;
 
@@ -34,4 +26,34 @@ for (let x = 1; x <= units; x++)
     +
     "<div style='grid-area: 88 / " + (67 - ((x - 1) * 21)) + " / span 4 / span 20; box-shadow: inset black 0px 0px 6px 0px; border: none;'></div>"
     ;
+}
+
+
+function addStatusFx(unit)
+{
+    let numFx = window[unit + "StatusNum"];
+
+    if (numFx < 4)
+    {
+        numFx++;
+
+        window[unit + "StatusNum"]++;
+
+        let doc = document.getElementsByTagName("div")[0];
+
+        let slot = unit.replaceAll(/[^0-9]/g,"");
+
+        doc.innerHTML += "<div class='" + unit + "Status" + numFx + "' style='border: 1px solid blue; grid-area: 94 / " + ((67 - ((slot - 1) * 21)) + (5 * (numFx - 1))) + " / span 8 / span 4;'></div>";
+    }
+}
+
+function switchGuiBot()
+{
+
+    var botGUI1 = document.querySelectorAll(".b1GUI");
+
+    botGUI1.forEach(function(element) 
+    {
+        element.style.display = "none";
+    });
 }

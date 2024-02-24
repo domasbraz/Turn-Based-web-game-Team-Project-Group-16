@@ -14,8 +14,8 @@
     position: absolute;
     /* top: 2.5%;
     left: 2.5%; */
-    grid-template-columns: repeat(100, 1fr);
-    grid-template-rows: repeat(100, 1fr);
+    grid-template-columns: repeat(200, 1fr);
+    grid-template-rows: repeat(200, 1fr);
 }
 
 .item

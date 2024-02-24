@@ -1,13 +1,16 @@
-.topGUIPlayer
+div
 {
     border: 1px solid black;
-    grid-area: 1 / 1 / span 60 / span 45;
+}
+
+.topGUIPlayer
+{
+    grid-area: 1 / 1 / span 110 / span 87;
 }
 
 .topGUIEnemy
 {
-    border: 1px solid black;
-    grid-area: 1 / 56 / span 60 / span 45;
+    grid-area: 1 / 54 / span 60 / span 47;
 }
 
 .topGUI
@@ -15,18 +18,36 @@
     text-align: center;
 }
 
-.units
+/* .units
 {
     display: inline-block;
-    border: 1px solid black;
     width: 22%;
     height: 80%;
     margin: 1%;
+} */
+
+/* .pSlot1
+{
+    grid-area: 10 / 67 / span 70 / span 20;
+}
+
+.pSlot2
+{
+    grid-area: 10 / 46 / span 70 / span 20;
+}
+
+.pSlot3
+{
+    grid-area: 10 / 25 / span 70 / span 20;
+}
+
+.pSlot4
+{
+    grid-area: 10 / 4 / span 70 / span 20;
 }
 
 .infoBar
 {
-    border: 1px solid black;
     display: inline-block;
     width: 22%;
     height: 12%;
@@ -36,12 +57,40 @@
     text-align: left;
 }
 
-.hpBar
+.hpBarP1
 {
     border: 1px solid red;
-    display: inline-block;
-    width: 99%;
-    height: 45%;
+    grid-area: 82 / 67 / span 4 / span 20;
+}
+
+.energyBarP1
+{
+    border: 1px solid rgb(255, 194, 27);
+    grid-area: 88 / 67 / span 4 / span 20;
+}
+
+.status1P1
+{
+    border: 1px solid blue;
+    grid-area: 94 / 67 / span 8 / span 4;
+}
+
+.status2P1
+{
+    border: 1px solid blue;
+    grid-area: 94 / 72 / span 8 / span 4;
+}
+
+.status3P1
+{
+    border: 1px solid blue;
+    grid-area: 94 / 77 / span 8 / span 4;
+}
+
+.status4P1
+{
+    border: 1px solid blue;
+    grid-area: 94 / 82 / span 8 / span 4;
 }
 
 .statusBar
@@ -51,26 +100,22 @@
     width: 15%;
     padding-top: 15%;
     margin-left: 1.25%;
-}
+} */
 
 .bottomGUI
 {
-    grid-area: 61 / 1 / span 50 / span 100;
-    border: 1px solid black;
+    grid-area: 111 / 1 / span 90 / span 200;
     /* background-color: grey; */
-
 }
 
 .hand
 {
-    grid-area: 71 / 21 / span 40 / span 60;
-    border: 1px solid black;
+    grid-area: 121 / 41 / span 80 / span 120;
     text-align: center;
 }
 
 .card
 {
-    border: 1px solid black;
     width: 13%;
     height: 70%;
     /* margin: auto; */
@@ -82,17 +127,15 @@
 
 .cardPlayed
 {
-    border: 1px solid black;
-    grid-area: 64 / 4 / span 35 / span 10;
+    grid-area: 114 / 4 / span 70 / span 20;
 }
 
 .cardEnemy
 {
-    border: 1px solid black;
-    grid-area: 64 / 86 / span 35 / span 10;
+    grid-area: 114 / 176 / span 70 / span 20;
 }
 
 .testBtn
 {
-    grid-area: 5 / 49 / span 5 / span 5 ;
+    grid-area: 5 / 89 / span 10 / span 8 ;
 }

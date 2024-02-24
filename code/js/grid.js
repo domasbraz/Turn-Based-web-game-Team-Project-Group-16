@@ -22,13 +22,13 @@ switch (type)
         break;
 
     case 1:
-        for (var x = 1; x < 11; x++)
+        for (var x = 1; x < 21; x++)
             {
                 if (x == 1)
                 {
                     cont.innerHTML += "<div class='item gridbg' style='grid-area: " + x + " / " + x + "/ span 10 / span 10 ;'>" + "</div>";
                 
-                    for (var y = 1; y < 10; y++)
+                    for (var y = 1; y < 20; y++)
                     {
                         
                         cont.innerHTML += "<div class='item gridbg' style='grid-area: " + x + " / " + ((y * 10) + 1) + "/ span 10 / span 10 ;'>" + "</div>";
@@ -41,7 +41,7 @@ switch (type)
 
                     cont.innerHTML += "<div class='item gridbg' style='grid-area: " + (((x - 1) * 10) + 1) + " / " + 1 + "/ span 10 / span 10 ;'>" + "</div>";
 
-                    for (var y = 1; y < 10; y++)
+                    for (var y = 1; y < 20; y++)
                     {
                         cont.innerHTML += "<div class='item gridbg' style='grid-area: " + (((x - 1) * 10) + 1) + " / " + ((y * 10)+1) + "/ span 10 / span 10 ;'>" + "</div>";
                     }
@@ -50,13 +50,13 @@ switch (type)
         break;
 
     case 2:
-        for (var x = 1; x < 11; x++)
+        for (var x = 1; x < 21; x++)
             {
                 if (x == 1)
                 {
                     cont.innerHTML += "<div class='item gridbg' style='grid-area: " + x + " / " + x + "/ span 10 / span 10 ;'>" + "1 * 1</div>";
                 
-                    for (var y = 1; y < 10; y++)
+                    for (var y = 1; y < 20; y++)
                     {
                         
                         cont.innerHTML += "<div class='item gridbg' style='grid-area: " + x + " / " + ((y * 10) + 1) + "/ span 10 / span 10 ;'>" + x + " * " + (y + 1) + "</div>";
@@ -69,7 +69,7 @@ switch (type)
 
                     cont.innerHTML += "<div class='item gridbg' style='grid-area: " + (((x - 1) * 10) + 1) + " / " + 1 + "/ span 10 / span 10 ;'>" + x + " * 1</div>";
 
-                    for (var y = 1; y < 10; y++)
+                    for (var y = 1; y < 20; y++)
                     {
                         cont.innerHTML += "<div class='item gridbg' style='grid-area: " + (((x - 1) * 10) + 1) + " / " + ((y * 10)+1) + "/ span 10 / span 10 ;'>" + x + " * " + (y + 1) + "</div>";
                     }
@@ -79,13 +79,13 @@ switch (type)
 
     case 3:
         
-        for (var x = 1; x < 11; x++)
+        for (var x = 1; x < 21; x++)
         {
             if (x == 1)
             {
                 cont.innerHTML += "<div class='item gridbg' style='grid-area: " + x + " / " + x + "/ span 10 / span 10 ;'>" + "1</div>";
             
-                for (var y = 1; y < 10; y++)
+                for (var y = 1; y < 20; y++)
                 {
                     
                     cont.innerHTML += "<div class='item gridbg' style='grid-area: " + x + " / " + ((y * 10) + 1) + "/ span 10 / span 10 ;'>" + (y + 1) + "</div>";
@@ -98,7 +98,7 @@ switch (type)
 
                 cont.innerHTML += "<div class='item gridbg' style='grid-area: " + (((x - 1) * 10) + 1) + " / " + 1 + "/ span 10 / span 10 ;'>" + x +"</div>";
 
-                for (var y = 1; y < 10; y++)
+                for (var y = 1; y < 20; y++)
                 {
                     cont.innerHTML += "<div class='item gridbg' style='grid-area: " + (((x - 1) * 10) + 1) + " / " + ((y * 10)+1) + "/ span 10 / span 10 ;'>" + "</div>";
                 }

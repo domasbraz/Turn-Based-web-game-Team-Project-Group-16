@@ -135,7 +135,7 @@ div
     grid-area: 114 / 176 / span 70 / span 20;
 }
 
-.b2GUI
+.b2GUI, .b3GUI
 {
     display: none;
 }
@@ -145,6 +145,7 @@ div
     grid-area: 121 / 11 / span 70 / span 80;
     padding-top: 13%;
     padding-left: 5%;
+    padding-right: 5%;
 }
 
 .testBtn

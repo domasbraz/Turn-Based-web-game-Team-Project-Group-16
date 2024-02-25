@@ -8,7 +8,7 @@ for (let x = 1; x <= pUnits; x++)
 {
     document.getElementsByTagName("div")[0].innerHTML += 
     //unit placement
-    "<div class='pUnit" + x + "' style='grid-area: 10 / " + (67 - ((x - 1) * 21)) + " / span 70 / span 20;'></div>"
+    "<div class='pUnits pUnit" + x + "' style='grid-area: 10 / " + (67 - ((x - 1) * 21)) + " / span 70 / span 20;' onclick='selectUnit(this)' selected='false'></div>"
     +
     //max hp
     "<div class='pMaxHp" + x + "' style='border: 3px solid red; grid-area: 82 / " + (67 - ((x - 1) * 21)) + " / span 4 / span 20; background-color: white;'>"
@@ -130,5 +130,50 @@ function switchGuiBot()
 for (let x = 0; x < 4; x++)
 {
     document.getElementsByTagName("div")[0].innerHTML += 
-    "<div class='b2GUI skill" + x + "' style='grid-area: 125 / " + (21 + (x * 13)) + " / span 15 / span 8;'></div>";
+    "<div class='b3GUI skill" + x + "' style='grid-area: 125 / " + (21 + (x * 13)) + " / span 15 / span 8;'></div>";
+}
+
+var unitSelected = false;
+
+function unitInfo()
+{
+    if (!unitSelected)
+    {
+        let textBox = document.getElementsByClassName("statBoxText")[0];
+        textBox.textContent = "Select a Unit";
+        textBox.style.textAlign = "center";
+        textBox.style.fontSize = "20px";
+        textBox.style.fontWeight = "bold";
+    }
+}
+
+unitInfo();
+
+function selectUnit(unit)
+{
+    if (!unitSelected)
+    {
+        unit.style.border = "2px solid green";
+        unitSelected = true;
+        unit.setAttribute("selected", "true");
+    }
+    else
+    {
+        let selectedUnit = document.querySelectorAll(".pUnits");
+
+        selectedUnit.forEach(function(element)
+        {
+            let isSelected = element.getAttribute("selected");
+
+            if (isSelected == "true")
+            {
+                element.setAttribute("selected", "false");
+                element.style.border = "1px solid black";
+            }
+        }
+        );
+        unitSelected = false;
+        selectUnit(unit);
+    }
+    
 }

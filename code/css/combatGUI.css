@@ -5,12 +5,12 @@ div
 
 .topGUIPlayer
 {
-    grid-area: 1 / 1 / span 110 / span 87;
+    grid-area: 1 / 1 / span 110 / span 90;
 }
 
 .topGUIEnemy
 {
-    grid-area: 1 / 54 / span 60 / span 47;
+    grid-area: 1 / 111 / span 110 / span 90;
 }
 
 .topGUI
@@ -135,7 +135,24 @@ div
     grid-area: 114 / 176 / span 70 / span 20;
 }
 
+.b2GUI
+{
+    display: none;
+}
+
+.statBox
+{
+    grid-area: 121 / 11 / span 70 / span 80;
+    padding-top: 13%;
+    padding-left: 5%;
+}
+
 .testBtn
 {
-    grid-area: 5 / 89 / span 10 / span 8 ;
+    grid-area: 5 / 96 / span 10 / span 10 ;
+}
+
+.testBtn2
+{
+    grid-area: 16 / 96 / span 10 / span 10;
 }

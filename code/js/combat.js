@@ -229,4 +229,5 @@ function assignStats(unit, hp, atk, def, energy)
 
 }
 
+//test case
 assignStats("pUnit1", "100", "10", "5", "100");

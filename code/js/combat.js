@@ -151,29 +151,82 @@ unitInfo();
 
 function selectUnit(unit)
 {
-    if (!unitSelected)
-    {
-        unit.style.border = "2px solid green";
-        unitSelected = true;
-        unit.setAttribute("selected", "true");
-    }
-    else
-    {
-        let selectedUnit = document.querySelectorAll(".pUnits");
+    let duelPhaseOver = document.getElementsByClassName("b1GUI")[0].style.display == "none";
 
-        selectedUnit.forEach(function(element)
+    if(duelPhaseOver)
+    {
+        if (!unitSelected)
         {
-            let isSelected = element.getAttribute("selected");
-
-            if (isSelected == "true")
-            {
-                element.setAttribute("selected", "false");
-                element.style.border = "1px solid black";
-            }
+            unit.style.border = "2px solid green";
+            unitSelected = true;
+            unit.setAttribute("selected", "true");
+            showSkills(unit);
         }
-        );
-        unitSelected = false;
-        selectUnit(unit);
+        else
+        {
+            deSelectUnit();   
+            selectUnit(unit);
+        }
     }
-    
 }
+
+function deSelectUnit()
+{
+    let selectedUnit = document.querySelectorAll(".pUnits");
+
+    selectedUnit.forEach(function(element)
+    {
+        let isSelected = element.getAttribute("selected");
+
+        if (isSelected == "true")
+        {
+            element.setAttribute("selected", "false");
+            element.style.border = "1px solid black";
+        }
+    }
+    );
+    unitSelected = false;
+    hideSkills();
+}
+
+function showSkills(unit)
+{
+    document.querySelectorAll(".b3GUI").forEach(function(element)
+    {
+        element.style.display = "block";
+    });
+
+    let atk = unit.getAttribute("atk");
+    let hp = unit.getAttribute("hp");
+    let def = unit.getAttribute("def");
+    let energy = unit.getAttribute("energy");
+
+    let textBox = document.getElementsByClassName("statBoxText")[0];
+    textBox.innerHTML = "<br>Health: " + hp + "<br>Attack: " + atk + "<br>Defense: " + def + "<br>Energy: " + energy;
+    textBox.style.textAlign = "left";
+}
+
+function hideSkills()
+{
+    document.querySelectorAll(".b3GUI").forEach(function(element)
+    {
+        element.style.display = "none";
+    });
+
+    unitInfo();
+}
+
+
+function assignStats(unit, hp, atk, def, energy)
+{
+
+    unit = document.getElementsByClassName(unit)[0];
+
+    unit.setAttribute("hp", hp);
+    unit.setAttribute("atk", atk);
+    unit.setAttribute("def", def);
+    unit.setAttribute("energy", energy);
+
+}
+
+assignStats("pUnit1", "100", "10", "5", "100");

@@ -148,12 +148,22 @@ div
     padding-right: 5%;
 }
 
-.testBtn
+.skillInfo
+{
+    grid-area: 121 / 111 / span 70 / span 80;
+}
+
+.testSwitchGui
 {
     grid-area: 5 / 96 / span 10 / span 10 ;
 }
 
-.testBtn2
+.testStatusFx
 {
     grid-area: 16 / 96 / span 10 / span 10;
+}
+
+.testDeSelect
+{
+    grid-area: 27 / 96 / span 10 / span 10;
 }

@@ -130,7 +130,7 @@ function switchGuiBot()
 for (let x = 0; x < 4; x++)
 {
     document.getElementsByTagName("div")[0].innerHTML += 
-    "<div class='b3GUI skill" + x + "' style='grid-area: 125 / " + (21 + (x * 13)) + " / span 15 / span 8;'></div>";
+    "<div class='b3GUI skill" + (x + 1) + "' style='grid-area: 125 / " + (21 + (x * 13)) + " / span 15 / span 8;'></div>";
 }
 
 var unitSelected = false;
@@ -231,3 +231,12 @@ function assignStats(unit, hp, atk, def, energy)
 
 //test case
 assignStats("pUnit1", "100", "10", "5", "100");
+
+
+function knightSkill1()
+{
+    document.getElementsByClassName("skillInfo")[0].innerHTML +=
+    "<h1>Basic Attack</h1><br><p>Attacks an enemy unit dealing 100% damage</p>";
+}
+
+document.getElementsByClassName("skill1")[0].setAttribute("onclick", "knightSkill1()");

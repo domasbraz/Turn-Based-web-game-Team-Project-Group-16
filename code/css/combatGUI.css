@@ -151,6 +151,13 @@ div
 .skillInfo
 {
     grid-area: 121 / 111 / span 70 / span 80;
+    padding: 1%;
+    text-align: center;
+}
+
+.skillInfo > h1
+{
+    text-decoration: underline;
 }
 
 .testSwitchGui

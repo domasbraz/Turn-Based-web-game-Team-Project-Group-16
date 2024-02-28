@@ -240,3 +240,75 @@ function knightSkill1()
 }
 
 document.getElementsByClassName("skill1")[0].setAttribute("onclick", "knightSkill1()");
+
+
+function dealCards()
+{
+    //making the cards array
+    const cards = [1,2,3,4,5,6,7,8,9,10,11,12,13];
+    //making a copy of the array so splice doesnt permanently alter the intial array
+    const cardsCopy= Array.from(cards);
+    
+    function dealCards(cardsCopy)
+    {
+    
+        const randomNumber = Math.floor(Math.random() * cardsCopy.length);
+
+        const CardsSelected = cardsCopy[randomNumber];
+        //making it so theres in no duplicates when the cards are handed out
+        cardsCopy.splice(randomNumber, 1);
+
+        return CardsSelected;
+    }
+    
+       
+        
+    const card1 = dealCards(cardsCopy);
+    const card2 = dealCards(cardsCopy);
+    const card3 = dealCards(cardsCopy);
+    const card4 = dealCards(cardsCopy);
+    const card5 = dealCards(cardsCopy);
+    const card6 = dealCards(cardsCopy);
+    const card7 = dealCards(cardsCopy);
+    const card8 = dealCards(cardsCopy);
+    const card9 = dealCards(cardsCopy);
+    const card10 = dealCards(cardsCopy);
+    
+    var playerCards = [card1, card3, card5, card7, card9];
+    var aiCards =  [card2, card4, card6, card8, card10];
+    
+    //sorting cards from lowest to highest 
+    playerCards.sort(function(a,b){return a - b});
+    aiCards.sort(function(a,b){return a - b});
+    
+    console.log("card selected for player is " +playerCards);
+    console.log("card selected for ai is " +aiCards);
+    
+    //so playercards and aicards can be used in different functions
+    return {playerCards , aiCards};
+
+}
+
+function displayCards()
+{
+    let playerHand = dealCards().playerCards;
+
+    let cards = document.getElementsByClassName("card");
+
+    for (let x = 0; x < 5; x++)
+    {
+        cards[x].innerHTML = "<img width='100%' height='100%' src='../../img/png images/cards/" + playerHand[x] + "_sword_card.png'>";
+    }
+}
+
+displayCards();
+
+function aiSelectsTheirCard(aiCards)
+{
+    
+    const aiCardRandomNumber = (Math.floor(Math.random() * aiCards.length));
+     aiCardPlayed = aiCards[aiCardRandomNumber];
+    aiCards.splice(aiCardRandomNumber, 1);
+
+    return aiCardPlayed;
+}

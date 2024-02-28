@@ -1,6 +1,6 @@
 //var knightMaxEnergy = 100;
 var knightEnergy = 100;
-var knightAttack = 100;
+
 var knightBasicAttackSkillMultiplyer = 100;
 var knightHP=100;
 
@@ -12,15 +12,11 @@ var knightCounter;
 var knightDefence = 100;
 var knightEmpowerStack = 0;
 
-//var party;
-//var ally;
+
 let turns;
+let knightAttack = 100;
 let selectedAllyAttack = 0;
 
-function resetStats(){
-    var knightAttack = 100;
-    let selectedAllyAttack = 0;
-}
 
 
 function increasePartyArmour(party){
@@ -28,58 +24,75 @@ function increasePartyArmour(party){
         party[i].armour = (party[i].armour * 1.1);
     }
 }
+function increasePartyArmour2(party){
+    for(let i = 0;i < party.length;i++){
+        party[i].armour = (party[i].armour * 1.2);
+    }
+}
+
+
 
 function knightEmpower(){
-    for(let knightEmpowerStack = 0;knightEmpowerStack<=2;knightEmpowerStack++){
+    if(knightEmpowerStack == 1){
         knightMaxEnergy = (knightMaxEnergy * 1.1);
         increasePartyArmour(party);
     }
-}
-
-/*all of this to test knight empower 
-// Function to create a sample character
-function createCharacter(name, armour) {
-    return { name, armour };
-}
-
-// Sample party with characters
-
-var party = [
-    createCharacter("Character1", 50),
-    createCharacter("Character2", 30),
-    createCharacter("Character3", 40),
-    createCharacter("Character4", 60)
-];
-
-
-// Set initial values
-let knightMaxEnergy = 100;
-
-// Function to display party information
-function displayPartyInfo() {
-    console.log("Party Information:");
-    for (let i = 0; i < party.length; i++) {
-        console.log(`${party[i].name} - Armour: ${party[i].armour}`);
+    if(knightEmpowerStack == 2){
+        knightMaxEnergy = (100 * 1.2);
+        increasePartyArmour2(party);
     }
-    console.log(`Knight Max Energy: ${knightMaxEnergy}`);
-    console.log("--------------------------");
+
+
+
 }
 
-// Function to test knightEmpower
-function testKnightEmpower() {
-    console.log("Before Empower:");
-    displayPartyInfo();
+// // uncomment to test knightEmpower
+// // Function to create a sample character
+// function createCharacter(name, armour) {
+//     return { name, armour };
+// }
 
-    // Call knightEmpower
-    knightEmpower();
+// // Sample party with characters
 
-    console.log("After Empower:");
-    displayPartyInfo();
-}
+// var party = [
+//     createCharacter("Character1", 50),
+//     createCharacter("Character2", 30),
+//     createCharacter("Character3", 40),
+//     createCharacter("Character4", 60)
+// ];
 
-// Call the testing function
-testKnightEmpower();
-*/
+
+// // Set initial values
+// let knightMaxEnergy = 100;
+
+// // Function to display party information
+// function displayPartyInfo() {
+//     console.log("Party Information:");
+//     for (let i = 0; i < party.length; i++) {
+//         console.log(`${party[i].name} - Armour: ${party[i].armour}`);
+//     }
+//     console.log(`Knight Max Energy: ${knightMaxEnergy}`);
+//     console.log("--------------------------");
+// }
+
+// // Function to test knightEmpower
+// function testKnightEmpower() {
+//     console.log("Before Empower:");
+//     displayPartyInfo();
+
+//     knightEmpowerStack = prompt("1, 2");
+//     // Call knightEmpower
+//     knightEmpower();
+//    // knightEmpower();
+    
+
+//     console.log("After Empower:");
+//     displayPartyInfo();
+// }
+
+// // Call the testing function
+// testKnightEmpower();
+
 function knightGuardian(){
 
 let damageDoneToSelectedAlly;
@@ -89,17 +102,27 @@ knightEnergy = knightEnergy - 10;
 
 }
 
+
+
+
 let turnsForEncourage = 2;
 
 function knightEncourage(){
+
+    function  resetStats(){
+         knightAttack = 100;
+         selectedAllyAttack = 0;
+    }
+    
     if(turnsForEncourage > 0){
+        resetStats();
         knightAttack = (knightAttack * 0.5);
         selectedAllyAttack = selectedAllyAttack + knightAttack;
         turnsForEncourage--;
         }
 
     
-    }
+}
 
 
 // // uncomment to test knightEncourage function
@@ -109,8 +132,9 @@ function knightEncourage(){
 //     console.log("turns left : ", turnsForEncourage);
 
 //     // Call the knightEncourage function
-  
+//   while(turnsForEncourage!==0){
 //             knightEncourage();
+//   }
 
     
 

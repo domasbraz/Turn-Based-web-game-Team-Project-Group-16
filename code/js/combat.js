@@ -135,6 +135,7 @@ for (let x = 0; x < 4; x++)
 
 var unitSelected = false;
 
+//default unit info (unselected unit tooltip)
 function unitInfo()
 {
     if (!unitSelected)
@@ -149,16 +150,21 @@ function unitInfo()
 
 unitInfo();
 
+//selects the unit that called the funtion
 function selectUnit(unit)
 {
+    //checks if cards gui is hidden, gui is hidden once a duel is over
     let duelPhaseOver = document.getElementsByClassName("b1GUI")[0].style.display == "none";
 
     if(duelPhaseOver)
     {
+        //checks if any units are already selected
         if (!unitSelected)
         {
+            //styling changes on unit to clearly see which unit is selected
             unit.style.border = "2px solid green";
             unitSelected = true;
+            //set custom "selected" attribute to element for easy identification
             unit.setAttribute("selected", "true");
             showSkills(unit);
         }
@@ -170,6 +176,7 @@ function selectUnit(unit)
     }
 }
 
+//deselects any selected units
 function deSelectUnit()
 {
     let selectedUnit = document.querySelectorAll(".pUnits");
@@ -178,6 +185,7 @@ function deSelectUnit()
     {
         let isSelected = element.getAttribute("selected");
 
+        //checks if "selected" attribute is set to true
         if (isSelected == "true")
         {
             element.setAttribute("selected", "false");
@@ -189,19 +197,23 @@ function deSelectUnit()
     hideSkills();
 }
 
+//displays unit's skills
 function showSkills(unit)
 {
+    //set skills to be visible
     document.querySelectorAll(".b3GUI").forEach(function(element)
     {
         element.style.display = "block";
     });
 
+    //get stat attributes from unit
     let atk = unit.getAttribute("atk");
     let hp = unit.getAttribute("hp");
     let def = unit.getAttribute("def");
     let energy = unit.getAttribute("energy");
 
     let textBox = document.getElementsByClassName("statBoxText")[0];
+    //display unit stats
     textBox.innerHTML = "<br>Health: " + hp + "<br>Attack: " + atk + "<br>Defense: " + def + "<br>Energy: " + energy;
     textBox.style.textAlign = "left";
 }
@@ -216,7 +228,7 @@ function hideSkills()
     unitInfo();
 }
 
-
+//applies stat attributes to a given unit
 function assignStats(unit, hp, atk, def, energy)
 {
 
@@ -232,16 +244,16 @@ function assignStats(unit, hp, atk, def, energy)
 //test case
 assignStats("pUnit1", "100", "10", "5", "100");
 
-
+//test case for skill description
 function knightSkill1()
 {
     document.getElementsByClassName("skillInfo")[0].innerHTML +=
     "<h1>Basic Attack</h1><br><p>Attacks an enemy unit dealing 100% damage</p>";
 }
-
+//test case for function above
 document.getElementsByClassName("skill1")[0].setAttribute("onclick", "knightSkill1()");
 
-
+//function made by Aaron Smyth
 function dealCards()
 {
     //making the cards array
@@ -293,10 +305,12 @@ function dealCards()
 
 }
 
+//sets cards in play
 var cards = dealCards();
 var playerPlayed;
 var aiPlayed;
 
+//displays the player cards in their hand
 function displayCards()
 {
     let hand = document.getElementsByClassName("hand")[0];
@@ -315,14 +329,19 @@ function displayCards()
 
 displayCards();
 
+
+//function made by Aaron Smyth for ai selecting a card
+//Domas Brazdeikis: made slight adjustments to fit gui
 function aiCard(aiCards)
 {
+    //delayed execution to more easily display what is happening
     setTimeout(function()
     {
         const aiCardRandomNumber = (Math.floor(Math.random() * aiCards.length));
         aiPlayed = aiCards[aiCardRandomNumber];
         aiCards.splice(aiCardRandomNumber, 1);
 
+        //display the card that ai has chosen
         let cardPlayed = document.getElementsByClassName("cardEnemy")[0];
         cardPlayed.innerHTML = "<img height='100%' width='100%' src='../../img/png images/cards/" + aiPlayed + "_sword_card.png'>";
         cardPlayed.style.display = "block";
@@ -336,37 +355,42 @@ function aiCard(aiCards)
 }
 
 
-
+//playing cards from hand
 function playCard(card)
 {
+    //gets the child of the element that called the funtion, the child element should always be an <img> element with a source
+    //we use the image source to identify the value of the card
+    //image for the cards is set on line: 324
     let chosenCard = card.children[0];
 
     image = chosenCard.getAttribute("src");
 
     let cardPlayed = document.getElementsByClassName("cardPlayed")[0];
     
+    //takes the card that was selected and displays it as the played card
     cardPlayed.innerHTML = "<img height='100%' width='100%' src='" + image + "'>";
 
+    //makes the card in play vissible
     cardPlayed.style.display = "block";
 
+    //removes the element, aka removes card from hand
     let hand = document.getElementsByClassName("hand")[0]
     hand.removeChild(card);
+    //hides hand to prevent any other cards from being played during dueling process
     hand.style.display = "none";
 
+    //set card value, only works if there are no other numeric values in the file or directory names
     playerPlayed = parseInt(image.replaceAll(/[^0-9]/g,""));
 
     startDuel();
 
 }
 
-function duel()
-{
-    showResult(playerPlayed >= aiPlayed);
-}
 
+//determines who won the duel
 function showResult(won)
 {
-
+    //add 1 second before declaring result so it doesn't appear so suddenlly
     setTimeout(function()
     {
         let result = document.getElementsByClassName("duelMsg")[0];
@@ -374,12 +398,13 @@ function showResult(won)
 
         result.style.display = "block";
 
+        //displays whether player has won or lost duel
         if (won)
         {
             resultText.textContent = "Duel Won!";
             resultText.style.color = "rgb(0, 255, 0)";
             wonLast = "player";
-            playerTurns--;
+            playerTurns--;//TODO: change implementation
         }
         else
         {
@@ -389,6 +414,7 @@ function showResult(won)
             aiTurns--;
         }
 
+        //hide message declaring winner after 3 seconds
         setTimeout(function()
         {
             result.style.display = "none";
@@ -408,25 +434,33 @@ var gameActive = true;
 
 var wonLast;
 
+//dueling process
 function startDuel()
 {
+    //this is used for ending the game in the event that all units are defeated from either side
     if (gameActive)
     {
 
+        //multiple condition set to determine who gets to act first
         if ((round % 2 == 0 && wonLast != "player" && isNaN(aiPlayed)) || (wonLast == "ai" && isNaN(aiPlayed)))
         {
             aiCard(cards.aiCards);
             
+            //there is a rule that states that a trump card cannot be defended, in other words, whoever places a trump card first guarantees victory for that duel
+            //trump card is set to value of 13 by default
+            //value incremented to prevent oponent from blocking with their trump card
             if (aiPlayed == 13)
             {
                 aiPlayed++;
             }
         }
+        //read lines: 449-451
         else if (playerPlayed == 13)
         {
             playerPlayed++;
         }
 
+        //checks if it is safe to reveal player hand, this is prevent a bug from happening if players play a card before ai gets to place theirs down
         if ((isNaN(playerPlayed) && (round % 2 == 1 && wonLast != "ai")) || (isNaN(playerPlayed) && !isNaN(aiPlayed)))
         {
             setTimeout(function ()
@@ -437,10 +471,14 @@ function startDuel()
             );
         }
 
+        //checks if both player and ai have played their card
         if (!isNaN(playerPlayed) && !isNaN(aiPlayed))
         {
-            duel();
+            //winning conition: whoever has the higher card
+            //TODO: adjustment to remove player bias
+            showResult(playerPlayed >= aiPlayed);
         }
+        //tells ai to play their card if they havent already and the player has
         else if (!isNaN(playerPlayed))
         {
             aiCard(cards.aiCards);
@@ -451,28 +489,30 @@ function startDuel()
 var playerTurns = 4;
 var aiTurns = 4;
 
+//performes the next duel
 function nextDuel()
 {
+    //hides the previous cards in play
     document.getElementsByClassName("cardPlayed")[0].style.display = document.getElementsByClassName("cardEnemy")[0].style.display = "none";
 
+    //TODO: might be unecessary to use a seperate function
     resetPlayed();
 
+    //checks if either side is out of turns
+    //TODO: change implementation
     if (playerTurns == 0 || aiTurns == 0)
     {
-        console.log("round end");
         nextRound();
     }
     else
     {
-        console.log("turn end");
-        /* document.getElementsByClassName("hand")[0].style.display = "block"; */
         startDuel();
     }
 }
 
+//commences next round, hands reset
 function nextRound()
 {
-    console.log("next round");
     round++;
     resetHand();
     cards = dealCards();
@@ -482,12 +522,15 @@ function nextRound()
     startDuel();
 }
 
+//removes any card elements still present in player's hand
 function resetHand()
 {
     let hand = document.querySelectorAll(".card");
 
     hand.forEach(function (card)
     {
+        //takes the element's parent to then remove its child which is the same as th element selecting itself
+        //this is really stupid but as far as I know removeChild is the only way to remove elements from the document
         card.parentNode.removeChild(card);
     });
 }

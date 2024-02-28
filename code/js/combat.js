@@ -14,7 +14,7 @@ for (let x = 1; x <= pUnits; x++)
     "<div class='pMaxHp" + x + "' style='border: 3px solid red; grid-area: 82 / " + (67 - ((x - 1) * 21)) + " / span 4 / span 20; background-color: white;'>"
     +
     //current hp
-    "<div class='pHp" + x + "' style='background-color: red; width: 80%; height: 100%; border: none;'></div>"
+    "<div class='pHp" + x + "' style='background-color: red; width: 100%; height: 100%; border: none;'></div>"
     +
     "</div>"
     +
@@ -25,7 +25,7 @@ for (let x = 1; x <= pUnits; x++)
     "<div class='pMaxEnergy" + x + "' style='grid-area: 88 / " + (67 - ((x - 1) * 21)) + " / span 4 / span 20; border: 3px solid rgb(255, 194, 27); background-color: white;'>"
     +
     //current energy
-    "<div class='pEnergy" + x + "' style='width: 80%; height: 100%; background-color: rgb(255, 191, 0); border: none;'></div>"
+    "<div class='pEnergy" + x + "' style='width: 100%; height: 100%; background-color: rgb(255, 191, 0); border: none;'></div>"
     +
     "</div>"
     +
@@ -46,7 +46,7 @@ for (let x = 1; x <= eUnits; x++)
     "<div class='eMaxHp" + x + "' style='border: 3px solid red; grid-area: 82 / " + (115 + ((x - 1) * 21)) + " / span 4 / span 20; background-color: white;'>"
     +
     //current hp
-    "<div class='eHp" + x + "' style='background-color: red; width: 80%; height: 100%; border: none;'></div>"
+    "<div class='eHp" + x + "' style='background-color: red; width: 100%; height: 100%; border: none;'></div>"
     +
     "</div>"
     +
@@ -57,7 +57,7 @@ for (let x = 1; x <= eUnits; x++)
     "<div class='eMaxEnergy" + x + "' style='grid-area: 88 / " + (115 + ((x - 1) * 21)) + " / span 4 / span 20; border: 3px solid rgb(255, 194, 27); background-color: white;'>"
     +
     //current energy
-    "<div class='eEnergy" + x + "' style='width: 80%; height: 100%; background-color: rgb(255, 191, 0); border: none;'></div>"
+    "<div class='eEnergy" + x + "' style='width: 100%; height: 100%; background-color: rgb(255, 191, 0); border: none;'></div>"
     +
     "</div>"
     +
@@ -245,7 +245,7 @@ document.getElementsByClassName("skill1")[0].setAttribute("onclick", "knightSkil
 function dealCards()
 {
     //making the cards array
-    const cards = [1,2,3,4,5,6,7,8,9,10,11,12,13];
+    const cards = [1,2,3,4,5,6,7,8,9,10,11,12,13,1,2,3,4,5,6,7,8,9,10,11,12,13];
     //making a copy of the array so splice doesnt permanently alter the intial array
     const cardsCopy= Array.from(cards);
     
@@ -273,9 +273,13 @@ function dealCards()
     const card8 = dealCards(cardsCopy);
     const card9 = dealCards(cardsCopy);
     const card10 = dealCards(cardsCopy);
+    const card11 = dealCards(cardsCopy);
+    const card12 = dealCards(cardsCopy);
+    const card13 = dealCards(cardsCopy);
+    const card14 = dealCards(cardsCopy);
     
-    var playerCards = [card1, card3, card5, card7, card9];
-    var aiCards =  [card2, card4, card6, card8, card10];
+    var playerCards = [card1, card3, card5, card7, card9, card11, card13];
+    var aiCards =  [card2, card4, card6, card8, card10, card12, card14];
     
     //sorting cards from lowest to highest 
     playerCards.sort(function(a,b){return a - b});
@@ -289,26 +293,206 @@ function dealCards()
 
 }
 
+var cards = dealCards();
+var playerPlayed;
+var aiPlayed;
+
 function displayCards()
 {
-    let playerHand = dealCards().playerCards;
+    let hand = document.getElementsByClassName("hand")[0];
 
-    let cards = document.getElementsByClassName("card");
+    let playerHand = cards.playerCards;
 
-    for (let x = 0; x < 5; x++)
+    for (let x = 0; x < playerHand.length; x++)
     {
-        cards[x].innerHTML = "<img width='100%' height='100%' src='../../img/png images/cards/" + playerHand[x] + "_sword_card.png'>";
+        hand.innerHTML += "<div class='card' onclick='playCard(this)'></div>";
+        let pCards = document.getElementsByClassName("card");
+        pCards[x].innerHTML = "<img width='100%' height='100%' src='../../img/png images/cards/" + playerHand[x] + "_sword_card.png'>";
     }
+
+    
 }
 
 displayCards();
 
-function aiSelectsTheirCard(aiCards)
+function aiCard(aiCards)
 {
-    
-    const aiCardRandomNumber = (Math.floor(Math.random() * aiCards.length));
-     aiCardPlayed = aiCards[aiCardRandomNumber];
-    aiCards.splice(aiCardRandomNumber, 1);
+    setTimeout(function()
+    {
+        const aiCardRandomNumber = (Math.floor(Math.random() * aiCards.length));
+        aiPlayed = aiCards[aiCardRandomNumber];
+        aiCards.splice(aiCardRandomNumber, 1);
 
-    return aiCardPlayed;
+        let cardPlayed = document.getElementsByClassName("cardEnemy")[0];
+        cardPlayed.innerHTML = "<img height='100%' width='100%' src='../../img/png images/cards/" + aiPlayed + "_sword_card.png'>";
+        cardPlayed.style.display = "block";
+
+        startDuel();
+        
+    },
+    1000
+    );
+    
+}
+
+
+
+function playCard(card)
+{
+    let chosenCard = card.children[0];
+
+    image = chosenCard.getAttribute("src");
+
+    let cardPlayed = document.getElementsByClassName("cardPlayed")[0];
+    
+    cardPlayed.innerHTML = "<img height='100%' width='100%' src='" + image + "'>";
+
+    cardPlayed.style.display = "block";
+
+    let hand = document.getElementsByClassName("hand")[0]
+    hand.removeChild(card);
+    hand.style.display = "none";
+
+    playerPlayed = parseInt(image.replaceAll(/[^0-9]/g,""));
+
+    startDuel();
+
+}
+
+function duel()
+{
+    showResult(playerPlayed >= aiPlayed);
+}
+
+function showResult(won)
+{
+
+    setTimeout(function()
+    {
+        let result = document.getElementsByClassName("duelMsg")[0];
+        let resultText = result.children[0];
+
+        result.style.display = "block";
+
+        if (won)
+        {
+            resultText.textContent = "Duel Won!";
+            resultText.style.color = "rgb(0, 255, 0)";
+            wonLast = "player";
+            playerTurns--;
+        }
+        else
+        {
+            resultText.textContent = "Duel Lost!";
+            resultText.style.color = "rgb(255, 0, 0)";
+            wonLast = "ai";
+            aiTurns--;
+        }
+
+        setTimeout(function()
+        {
+            result.style.display = "none";
+            nextDuel();
+        },
+        3000
+        );
+    },
+    1000
+    );
+    
+}
+
+var round = 1;
+
+var gameActive = true;
+
+var wonLast;
+
+function startDuel()
+{
+    if (gameActive)
+    {
+
+        if ((round % 2 == 0 && wonLast != "player" && isNaN(aiPlayed)) || (wonLast == "ai" && isNaN(aiPlayed)))
+        {
+            aiCard(cards.aiCards);
+            
+            if (aiPlayed == 13)
+            {
+                aiPlayed++;
+            }
+        }
+        else if (playerPlayed == 13)
+        {
+            playerPlayed++;
+        }
+
+        if ((isNaN(playerPlayed) && (round % 2 == 1 && wonLast != "ai")) || (isNaN(playerPlayed) && !isNaN(aiPlayed)))
+        {
+            setTimeout(function ()
+            {
+                document.getElementsByClassName("hand")[0].style.display = "block";
+            },
+            500
+            );
+        }
+
+        if (!isNaN(playerPlayed) && !isNaN(aiPlayed))
+        {
+            duel();
+        }
+        else if (!isNaN(playerPlayed))
+        {
+            aiCard(cards.aiCards);
+        }
+    }
+}
+
+var playerTurns = 4;
+var aiTurns = 4;
+
+function nextDuel()
+{
+    document.getElementsByClassName("cardPlayed")[0].style.display = document.getElementsByClassName("cardEnemy")[0].style.display = "none";
+
+    resetPlayed();
+
+    if (playerTurns == 0 || aiTurns == 0)
+    {
+        console.log("round end");
+        nextRound();
+    }
+    else
+    {
+        console.log("turn end");
+        /* document.getElementsByClassName("hand")[0].style.display = "block"; */
+        startDuel();
+    }
+}
+
+function nextRound()
+{
+    console.log("next round");
+    round++;
+    resetHand();
+    cards = dealCards();
+    displayCards();
+    playerTurns = aiTurns = 4;
+    wonLast = null;
+    startDuel();
+}
+
+function resetHand()
+{
+    let hand = document.querySelectorAll(".card");
+
+    hand.forEach(function (card)
+    {
+        card.parentNode.removeChild(card);
+    });
+}
+
+function resetPlayed()
+{
+    playerPlayed = aiPlayed = NaN;
 }

@@ -40,7 +40,7 @@ var eUnits = 4;
 for (let x = 1; x <= eUnits; x++)
 {
     document.getElementsByTagName("div")[0].innerHTML += 
-    "<div class='eUnit" + x + "' style='grid-area: 10 / " + (115 + ((x - 1) * 21)) + " / span 70 / span 20;'></div>"
+    "<div class='eUnits eUnit" + x + "' style='grid-area: 10 / " + (115 + ((x - 1) * 21)) + " / span 70 / span 20;'></div>"
     +
     //max hp
     "<div class='eMaxHp" + x + "' style='border: 3px solid red; grid-area: 82 / " + (115 + ((x - 1) * 21)) + " / span 4 / span 20; background-color: white;'>"
@@ -130,7 +130,7 @@ function switchGuiBot()
 for (let x = 0; x < 4; x++)
 {
     document.getElementsByTagName("div")[0].innerHTML += 
-    "<div class='b3GUI skill" + (x + 1) + "' style='grid-area: 125 / " + (21 + (x * 13)) + " / span 15 / span 8;'></div>";
+    "<div selected='false' class='b3GUI skills skill" + (x + 1) + "' style='grid-area: 125 / " + (21 + (x * 13)) + " / span 15 / span 8;'></div>";
 }
 
 var unitSelected = false;
@@ -443,29 +443,44 @@ function resetPlayed()
 function setUnit(unitSlot, type, stats, skills)
 {
     let unit = document.getElementsByClassName(unitSlot)[0];
-    unit.innerHTML = "<img draggable='false' width='100%' height='100%' src='../../img/png images/characters/" + type + "/" + type + ".png'>";
+
+    if (unitSlot.charAt(0) == "p")
+    {
+        unit.innerHTML = "<img draggable='false' width='100%' height='100%' src='../../img/png images/characters/" + type + "/" + type + ".png'>";
+        unit.setAttribute("skills", skills[0] + " " + skills[1] + " " + skills[2] + " " + skills[3]);
+    }
+    else
+    {
+        unit.innerHTML = "<img draggable='false' width='100%' height='100%' src='../../img/png images/characters/enemies/" + type + ".png'>";
+    }
 
     unit.setAttribute("hp", stats[0]);
     unit.setAttribute("atk", stats[1]);
     unit.setAttribute("def", stats[2]);
     unit.setAttribute("energy", stats[3]);
-    unit.setAttribute("skills", skills[0] + " " + skills[1] + " " + skills[2] + " " + skills[3]);
+    
     unit.setAttribute("type", type);
-
-    console.log(unit.getAttribute("skills"));
-
+    
 }
 
 //test case
-function setUnitTestCase()
+function setUnitKnight(position)
 {
     let stats = [100, 10, 5, 100];
     let skills = [1, 2, 3, 4];
 
-    setUnit("pUnit1", "knight", stats, skills);
+    setUnit("pUnit" + position, "knight", stats, skills);
 }
 
-setUnitTestCase();
+function setUnitEnemy1(position)
+{
+    let stats = [100, 10, 5, 100];
+
+    setUnit("eUnit" + position, "enemy1", stats);
+}
+
+setUnitKnight("1");
+setUnitEnemy1("1");
 
 
 //selects the unit that called the funtion
@@ -476,8 +491,13 @@ function selectUnit(unit)
 
     if(duelPhaseOver)
     {
+        //checks if user is trying to select a unit that is already selected
+        if (unit.getAttribute("selected") == "true")
+        {
+            //do nothing
+        }
         //checks if any units are already selected
-        if (!unitSelected)
+        else if (!unitSelected)
         {
             //styling changes on unit to clearly see which unit is selected
             unit.style.border = "2px solid green";
@@ -511,6 +531,8 @@ function deSelectUnit()
         }
     }
     );
+    document.getElementsByClassName("skillInfo")[0].innerHTML = "";
+    deSelectSkills();
     unitSelected = false;
     hideSkills();
 }
@@ -526,6 +548,7 @@ function showSkills(unit)
         let skillIcon = document.getElementsByClassName("skill" + (x + 1))[0];
         skillIcon.innerHTML = "<img draggable='false' width='100%' height='100%' src='../../img/png images/characters/" + type + "/" + type + "S" + skills[x] + ".png'>";
         skillIcon.style.display = "block";
+        skillIcon.setAttribute("onclick", "selectSkill(this); " + type + "S" + skills[x] + "()");
     }
 
     //get stat attributes from unit
@@ -550,17 +573,77 @@ function hideSkills()
     unitInfo();
 }
 
+var skillSelected = false;
+
+function selectSkill(slot)
+{
+    if (!skillSelected)
+    {
+        slot.style.border = "2px solid blue";
+        skillSelected = true;
+        slot.setAttribute("selected", "true");
+    }
+    else
+    {
+        deSelectSkills();
+        selectSkill(slot);
+    }
+}
+
+function deSelectSkills()
+{
+    let skillIcons = document.querySelectorAll(".skills");
+
+    skillIcons.forEach(function (skill)
+    {
+        if (skill.getAttribute("selected") == "true")
+        {
+            skill.style.border = "1px solid black";
+            skill.setAttribute("selected", "false");
+        }
+    });
+
+    skillSelected = false;
+}
+
 
 //test case for skill description
-function knightSkill1()
+function knightS1()
 {
     //description
-    document.getElementsByClassName("skillInfo")[0].innerHTML +=
+    document.getElementsByClassName("skillInfo")[0].innerHTML =
     "<h1>Basic Attack</h1><br><p>Attacks an enemy unit dealing 100% damage</p>";
 
-    
-}
-//test case for function above
-document.getElementsByClassName("skill1")[0].setAttribute("onclick", "knightSkill1()");
 
-console.log(document.getElementsByClassName("hand")[0].getAttribute("class").split(" ").length);
+}
+
+
+function enableTargeting(isEnemy)
+{
+    if (isEnemy)
+    {
+        document.querySelectorAll(".eUnits").forEach(function (e)
+        {
+            e.setAttribute("onmouseover", "applyEnemyTarget(this)");
+            e.setAttribute("onmouseout", "removeEnemyTarget(this)");
+        })
+    }
+}
+
+var targeting = false;
+
+function applyEnemyTarget(target)
+{
+    target.style.border = "2px solid red";
+    targeting = true;
+    target.setAttribute("target", "true");
+}
+
+function removeEnemyTarget(target)
+{
+    target.style.border = "1px solid black";
+    targeting = false;
+    target.setAttribute("target", "false");
+}
+
+enableTargeting(true);

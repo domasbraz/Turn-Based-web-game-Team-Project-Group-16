@@ -415,9 +415,28 @@ function nextRound()
     resetHand();
     cards = dealCards();
     displayCards();
-    playerTurns = aiTurns = 4;
+    playerTurns = aiTurns = 4;//TODO: implement proper turn calculation
     wonLast = null;
+    regenEnergy();
     startDuel();
+}
+
+function regenEnergy()
+{
+    let units = document.querySelectorAll(".pUnits");
+
+    units.forEach(function (unit)
+    {
+        let energy = unit.getAttribute("energy");
+
+        let regen = unit.getAttribute("energyRegen");
+
+        energy += regen;
+
+        unit.setAttribute("energy", energy);
+
+        updateUnitEnergy(unit);
+    })
 }
 
 //removes any card elements still present in player's hand
@@ -460,6 +479,7 @@ function setUnit(unitSlot, type, stats, skills)
     unit.setAttribute("energy", stats[3]);
     unit.setAttribute("maxHp", stats[0]);
     unit.setAttribute("maxEnergy", stats[3]);
+    unit.setAttribute("energyRegen", 10);
     
     unit.setAttribute("type", type);
     unit.setAttribute("id", type + unitSlot.charAt(5));
@@ -483,8 +503,11 @@ function setUnitEnemy1(position)
     setUnit("eUnit" + position, "enemy1", stats);
 }
 
-setUnitKnight("1");
-setUnitEnemy1("1");
+for (let x = 1; x < 5; x++)
+{
+    setUnitKnight(x);
+    setUnitEnemy1(x);
+}
 
 
 //selects the unit that called the funtion
@@ -763,6 +786,7 @@ function updateUnitHp(unit)
     if (newHp >= maxHp)
     {
         newHp = maxHp;
+        unit.setAttribute("hp", newHp);
     }
     else
     {
@@ -791,6 +815,7 @@ function updateUnitEnergy(unit)
     if (newEnergy >= maxEnergy)
     {
         newEnergy = maxEnergy;
+        unit.setAttribute("energy", newEnergy);
     }
     else
     {

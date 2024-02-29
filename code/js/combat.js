@@ -150,108 +150,6 @@ function unitInfo()
 
 unitInfo();
 
-//selects the unit that called the funtion
-function selectUnit(unit)
-{
-    //checks if cards gui is hidden, gui is hidden once a duel is over
-    let duelPhaseOver = document.getElementsByClassName("b1GUI")[0].style.display == "none";
-
-    if(duelPhaseOver)
-    {
-        //checks if any units are already selected
-        if (!unitSelected)
-        {
-            //styling changes on unit to clearly see which unit is selected
-            unit.style.border = "2px solid green";
-            unitSelected = true;
-            //set custom "selected" attribute to element for easy identification
-            unit.setAttribute("selected", "true");
-            showSkills(unit);
-        }
-        else
-        {
-            deSelectUnit();   
-            selectUnit(unit);
-        }
-    }
-}
-
-//deselects any selected units
-function deSelectUnit()
-{
-    let selectedUnit = document.querySelectorAll(".pUnits");
-
-    selectedUnit.forEach(function(element)
-    {
-        let isSelected = element.getAttribute("selected");
-
-        //checks if "selected" attribute is set to true
-        if (isSelected == "true")
-        {
-            element.setAttribute("selected", "false");
-            element.style.border = "1px solid black";
-        }
-    }
-    );
-    unitSelected = false;
-    hideSkills();
-}
-
-//displays unit's skills
-function showSkills(unit)
-{
-    //set skills to be visible
-    document.querySelectorAll(".b3GUI").forEach(function(element)
-    {
-        element.style.display = "block";
-    });
-
-    //get stat attributes from unit
-    let atk = unit.getAttribute("atk");
-    let hp = unit.getAttribute("hp");
-    let def = unit.getAttribute("def");
-    let energy = unit.getAttribute("energy");
-
-    let textBox = document.getElementsByClassName("statBoxText")[0];
-    //display unit stats
-    textBox.innerHTML = "<br>Health: " + hp + "<br>Attack: " + atk + "<br>Defense: " + def + "<br>Energy: " + energy;
-    textBox.style.textAlign = "left";
-}
-
-function hideSkills()
-{
-    document.querySelectorAll(".b3GUI").forEach(function(element)
-    {
-        element.style.display = "none";
-    });
-
-    unitInfo();
-}
-
-//applies stat attributes to a given unit
-function assignStats(unit, hp, atk, def, energy)
-{
-
-    unit = document.getElementsByClassName(unit)[0];
-
-    unit.setAttribute("hp", hp);
-    unit.setAttribute("atk", atk);
-    unit.setAttribute("def", def);
-    unit.setAttribute("energy", energy);
-
-}
-
-//test case
-assignStats("pUnit1", "100", "10", "5", "100");
-
-//test case for skill description
-function knightSkill1()
-{
-    document.getElementsByClassName("skillInfo")[0].innerHTML +=
-    "<h1>Basic Attack</h1><br><p>Attacks an enemy unit dealing 100% damage</p>";
-}
-//test case for function above
-document.getElementsByClassName("skill1")[0].setAttribute("onclick", "knightSkill1()");
 
 //function made by Aaron Smyth
 function dealCards()
@@ -321,7 +219,7 @@ function displayCards()
     {
         hand.innerHTML += "<div class='card' onclick='playCard(this)'></div>";
         let pCards = document.getElementsByClassName("card");
-        pCards[x].innerHTML = "<img width='100%' height='100%' src='../../img/png images/cards/" + playerHand[x] + "_sword_card.png'>";
+        pCards[x].innerHTML = "<img draggable='false' width='100%' height='100%' src='../../img/png images/cards/" + playerHand[x] + "_sword_card.png'>";
     }
 
     
@@ -343,7 +241,7 @@ function aiCard(aiCards)
 
         //display the card that ai has chosen
         let cardPlayed = document.getElementsByClassName("cardEnemy")[0];
-        cardPlayed.innerHTML = "<img height='100%' width='100%' src='../../img/png images/cards/" + aiPlayed + "_sword_card.png'>";
+        cardPlayed.innerHTML = "<img draggable='false' height='100%' width='100%' src='../../img/png images/cards/" + aiPlayed + "_sword_card.png'>";
         cardPlayed.style.display = "block";
 
         startDuel();
@@ -368,7 +266,7 @@ function playCard(card)
     let cardPlayed = document.getElementsByClassName("cardPlayed")[0];
     
     //takes the card that was selected and displays it as the played card
-    cardPlayed.innerHTML = "<img height='100%' width='100%' src='" + image + "'>";
+    cardPlayed.innerHTML = "<img draggable='false' height='100%' width='100%' src='" + image + "'>";
 
     //makes the card in play vissible
     cardPlayed.style.display = "block";
@@ -539,3 +437,140 @@ function resetPlayed()
 {
     playerPlayed = aiPlayed = NaN;
 }
+
+
+
+function setUnit(unitSlot, type, stats, skills)
+{
+    let unit = document.getElementsByClassName(unitSlot)[0];
+    unit.innerHTML = "<img draggable='false' width='100%' height='100%' src='../../img/png images/characters/" + type + "/" + type + ".png'>";
+
+    unit.setAttribute("hp", stats[0]);
+    unit.setAttribute("atk", stats[1]);
+    unit.setAttribute("def", stats[2]);
+    unit.setAttribute("energy", stats[3]);
+    unit.setAttribute("skills", skills[0] + " " + skills[1] + " " + skills[2] + " " + skills[3]);
+    unit.setAttribute("type", type);
+
+    console.log(unit.getAttribute("skills"));
+
+}
+
+//test case
+function setUnitTestCase()
+{
+    let stats = [100, 10, 5, 100];
+    let skills = [1, 2, 3, 4];
+
+    setUnit("pUnit1", "knight", stats, skills);
+}
+
+setUnitTestCase();
+
+
+//selects the unit that called the funtion
+function selectUnit(unit)
+{
+    //checks if cards gui is hidden, gui is hidden once a duel is over
+    let duelPhaseOver = document.getElementsByClassName("b1GUI")[0].style.display == "none";
+
+    if(duelPhaseOver)
+    {
+        //checks if any units are already selected
+        if (!unitSelected)
+        {
+            //styling changes on unit to clearly see which unit is selected
+            unit.style.border = "2px solid green";
+            unitSelected = true;
+            //set custom "selected" attribute to element for easy identification
+            unit.setAttribute("selected", "true");
+            showSkills(unit);
+        }
+        else
+        {
+            deSelectUnit();   
+            selectUnit(unit);
+        }
+    }
+}
+
+//deselects any selected units
+function deSelectUnit()
+{
+    let selectedUnit = document.querySelectorAll(".pUnits");
+
+    selectedUnit.forEach(function(element)
+    {
+        let isSelected = element.getAttribute("selected");
+
+        //checks if "selected" attribute is set to true
+        if (isSelected == "true")
+        {
+            element.setAttribute("selected", "false");
+            element.style.border = "1px solid black";
+        }
+    }
+    );
+    unitSelected = false;
+    hideSkills();
+}
+
+//displays unit's skills
+function showSkills(unit)
+{
+    let skills = unit.getAttribute("skills").split(" ");
+    let type = unit.getAttribute("type");
+
+    for (let x = 0; x < skills.length; x++)
+    {
+        let skillIcon = document.getElementsByClassName("skill" + (x + 1))[0];
+        skillIcon.innerHTML = "<img draggable='false' width='100%' height='100%' src='../../img/png images/characters/" + type + "/" + type + "S" + skills[x] + ".png'>";
+        skillIcon.style.display = "block";
+    }
+
+    //get stat attributes from unit
+    let atk = unit.getAttribute("atk");
+    let hp = unit.getAttribute("hp");
+    let def = unit.getAttribute("def");
+    let energy = unit.getAttribute("energy");
+
+    let textBox = document.getElementsByClassName("statBoxText")[0];
+    //display unit stats
+    textBox.innerHTML = "<br>Health: " + hp + "<br>Attack: " + atk + "<br>Defense: " + def + "<br>Energy: " + energy;
+    textBox.style.textAlign = "left";
+}
+
+function hideSkills()
+{
+    document.querySelectorAll(".b3GUI").forEach(function(element)
+    {
+        element.style.display = "none";
+    });
+
+    unitInfo();
+}
+
+//applies stat attributes to a given unit
+function assignStats(unit, hp, atk, def, energy)
+{
+
+    unit = document.getElementsByClassName(unit)[0];
+
+    unit.setAttribute("hp", hp);
+    unit.setAttribute("atk", atk);
+    unit.setAttribute("def", def);
+    unit.setAttribute("energy", energy);
+
+}
+
+
+//test case for skill description
+function knightSkill1()
+{
+    document.getElementsByClassName("skillInfo")[0].innerHTML +=
+    "<h1>Basic Attack</h1><br><p>Attacks an enemy unit dealing 100% damage</p>";
+}
+//test case for function above
+document.getElementsByClassName("skill1")[0].setAttribute("onclick", "knightSkill1()");
+
+console.log(document.getElementsByClassName("hand")[0].getAttribute("class").split(" ").length);

@@ -11,7 +11,7 @@ types 1-3 should only be used for testing purposes
 IMPORTANT: the grid is divided into 10 x 10 blocks for performance reasons ("2 * 3" labeled refers to 20 * 30 and should be declared as such)
 Alternatively to help with accurate possitioning, enable grid in inspection tool within the browser
 */
-var type = 2;
+var type = 0;
 
 var num = 1;
 

@@ -550,25 +550,15 @@ function hideSkills()
     unitInfo();
 }
 
-//applies stat attributes to a given unit
-function assignStats(unit, hp, atk, def, energy)
-{
-
-    unit = document.getElementsByClassName(unit)[0];
-
-    unit.setAttribute("hp", hp);
-    unit.setAttribute("atk", atk);
-    unit.setAttribute("def", def);
-    unit.setAttribute("energy", energy);
-
-}
-
 
 //test case for skill description
 function knightSkill1()
 {
+    //description
     document.getElementsByClassName("skillInfo")[0].innerHTML +=
     "<h1>Basic Attack</h1><br><p>Attacks an enemy unit dealing 100% damage</p>";
+
+    
 }
 //test case for function above
 document.getElementsByClassName("skill1")[0].setAttribute("onclick", "knightSkill1()");

@@ -458,6 +458,7 @@ function setUnit(unitSlot, type, stats, skills)
     unit.setAttribute("atk", stats[1]);
     unit.setAttribute("def", stats[2]);
     unit.setAttribute("energy", stats[3]);
+    unit.setAttribute("maxHp", stats[0]);
     
     unit.setAttribute("type", type);
     unit.setAttribute("id", type + unitSlot.charAt(5));
@@ -535,6 +536,7 @@ function deSelectUnit()
     );
     document.getElementsByClassName("skillInfo")[0].innerHTML = "";
     deSelectSkills();
+    disableTargeting(true);
     unitSelected = false;
     hideSkills();
 }
@@ -638,7 +640,7 @@ function enableTargeting(isEnemy, skill, unitUsed)
     }
 }
 
-//TODO: apply this functionality when skill cancelled
+
 function disableTargeting(isEnemy)
 {
     if (isEnemy)
@@ -724,6 +726,26 @@ function finalAttackCalc(target, skillDmg)
 
     target.setAttribute("hp", hp - skillDmg);
     disableTargeting(true);
+    deSelectUnit();
+    updateUnitHp(target);
 }
 
-enableTargeting(true);
+function updateUnitHp(unit)
+{
+    let unitId = unit.getAttribute("class").split(" ")[1];
+
+    let unitType = unitId.charAt(0);
+
+    let unitSlot = unitId.charAt(5);
+
+    let currentHp = document.getElementsByClassName(unitType + "Hp" + unitSlot)[0];
+
+    let newHp = unit.getAttribute("hp");
+
+    let maxHp = unit.getAttribute("maxHp");
+
+    newHp = Math.floor((newHp / maxHp) * 100);
+
+    currentHp.style.width = newHp + "%";
+    
+}

@@ -460,6 +460,8 @@ function setUnit(unitSlot, type, stats, skills)
     unit.setAttribute("energy", stats[3]);
     
     unit.setAttribute("type", type);
+    unit.setAttribute("id", type + unitSlot.charAt(5));
+    
     
 }
 
@@ -542,13 +544,15 @@ function showSkills(unit)
 {
     let skills = unit.getAttribute("skills").split(" ");
     let type = unit.getAttribute("type");
+    let origin = unit.getAttribute("id");
 
     for (let x = 0; x < skills.length; x++)
     {
         let skillIcon = document.getElementsByClassName("skill" + (x + 1))[0];
         skillIcon.innerHTML = "<img draggable='false' width='100%' height='100%' src='../../img/png images/characters/" + type + "/" + type + "S" + skills[x] + ".png'>";
         skillIcon.style.display = "block";
-        skillIcon.setAttribute("onclick", "selectSkill(this); " + type + "S" + skills[x] + "()");
+        skillIcon.setAttribute("onclick", "selectSkill(this); " + type + "S" + skills[x] + "(" + origin + ");");
+        skillIcon.setAttribute("origin", origin); //might not be needed
     }
 
     //get stat attributes from unit
@@ -608,17 +612,20 @@ function deSelectSkills()
 
 
 //test case for skill description
-function knightS1()
+function knightS1(origin)
 {
+    //for some unknown reason JS decides not to pass to correct value though the parameter so I must reset the correct value
+    origin = origin.id;
     //description
     document.getElementsByClassName("skillInfo")[0].innerHTML =
-    "<h1>Basic Attack</h1><br><p>Attacks an enemy unit dealing 100% damage</p>";
+    "<h1>Basic Attack</h1><br><p>Attacks an enemy unit dealing 100% of your attack as damage<br><br>Cost: 15 energy</p>";
 
+    enableTargeting(true, "knightS1Damage", origin);
 
 }
 
 
-function enableTargeting(isEnemy)
+function enableTargeting(isEnemy, skill, unitUsed)
 {
     if (isEnemy)
     {
@@ -626,7 +633,35 @@ function enableTargeting(isEnemy)
         {
             e.setAttribute("onmouseover", "applyEnemyTarget(this)");
             e.setAttribute("onmouseout", "removeEnemyTarget(this)");
+            e.setAttribute("onclick", skill + "(this, " + unitUsed + ")")
         })
+    }
+}
+
+//TODO: apply this functionality when skill cancelled
+function disableTargeting(isEnemy)
+{
+    if (isEnemy)
+    {
+        document.querySelectorAll(".eUnits").forEach(function (e)
+        {
+            /* e.removeEventListener("mouseover");
+            e.removeEventListener("mouseout");
+            e.removeEventListener("click"); */
+
+            e.setAttribute("onmouseover", "");
+            e.setAttribute("onmouseout", "");
+            e.setAttribute("onclick", "");
+        })
+    }
+
+    if (targeting)
+    {
+        document.querySelectorAll("[target='true']").forEach(function (target)
+        {
+            removeEnemyTarget(target);
+        });
+        //loop not entirely neccessary, just a failsafe
     }
 }
 
@@ -644,6 +679,7 @@ function applyEnemyTarget(target)
     let unitInfo = document.getElementsByClassName("enemyInfo")[0];
 
     unitInfo.innerHTML = "<p>Health: " + hp + "<br>Defense: " + def + "<br>Attack: " + atk + "</p>";
+    unitInfo.style.backgroundColor = "grey";
 }
 
 function removeEnemyTarget(target)
@@ -651,6 +687,43 @@ function removeEnemyTarget(target)
     target.style.border = "1px solid black";
     targeting = false;
     target.setAttribute("target", "false");
+
+    let unitInfo = document.getElementsByClassName("enemyInfo")[0];
+
+    unitInfo.innerHTML = "";
+    unitInfo.style.backgroundColor = "";
+}
+
+function knightS1Damage(target, origin)
+{
+    origin = origin.id;
+    let atk = document.getElementById(origin).getAttribute("atk");
+    let energy = document.getElementById(origin).getAttribute("energy");
+
+    let dmgMultiplyer = 1;
+
+    let dmg = Math.floor(atk * dmgMultiplyer);
+    energy -= 15;
+
+    document.getElementById(origin).setAttribute("energy", energy);
+
+    finalAttackCalc(target, dmg);
+}
+
+function finalAttackCalc(target, skillDmg)
+{
+    let hp = target.getAttribute("hp");
+    let def = target.getAttribute("def");
+
+    if ((def / skillDmg) > 0.7)
+    {
+        def *= 0.7;
+    }
+
+    finalDmg = skillDmg - def;
+
+    target.setAttribute("hp", hp - skillDmg);
+    disableTargeting(true);
 }
 
 enableTargeting(true);

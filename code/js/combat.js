@@ -459,6 +459,7 @@ function setUnit(unitSlot, type, stats, skills)
     unit.setAttribute("def", stats[2]);
     unit.setAttribute("energy", stats[3]);
     unit.setAttribute("maxHp", stats[0]);
+    unit.setAttribute("maxEnergy", stats[3]);
     
     unit.setAttribute("type", type);
     unit.setAttribute("id", type + unitSlot.charAt(5));
@@ -616,6 +617,7 @@ function deSelectSkills()
 //test case for skill description
 function knightS1(origin)
 {
+
     //for some unknown reason JS decides not to pass to correct value though the parameter so I must reset the correct value
     origin = origin.id;
     //description
@@ -698,18 +700,32 @@ function removeEnemyTarget(target)
 
 function knightS1Damage(target, origin)
 {
-    origin = origin.id;
-    let atk = document.getElementById(origin).getAttribute("atk");
-    let energy = document.getElementById(origin).getAttribute("energy");
 
-    let dmgMultiplyer = 1;
+    let energy = document.getElementById(origin.id).getAttribute("energy");
 
-    let dmg = Math.floor(atk * dmgMultiplyer);
-    energy -= 15;
+    let energyCost = 15;
 
-    document.getElementById(origin).setAttribute("energy", energy);
+    if (energy >= energyCost)
+    { 
+        let atk = document.getElementById(origin.id).getAttribute("atk");
+        
 
-    finalAttackCalc(target, dmg);
+        let dmgMultiplyer = 1;
+
+        let dmg = Math.floor(atk * dmgMultiplyer);
+        energy -= energyCost;
+
+        document.getElementById(origin.id).setAttribute("energy", energy);
+
+        finalAttackCalc(target, dmg);
+
+        updateUnitEnergy(origin);
+    }
+    else
+    {
+        //TODO: inform user of insuficient energy
+    }
+
 }
 
 function finalAttackCalc(target, skillDmg)
@@ -738,14 +754,51 @@ function updateUnitHp(unit)
 
     let unitSlot = unitId.charAt(5);
 
+    //for whatever reason these values were converted to String, which gives inaccurate result in if statement
+    let newHp = parseInt(unit.getAttribute("hp"));
+
+    let maxHp = parseInt(unit.getAttribute("maxHp"));
+
+
+    if (newHp >= maxHp)
+    {
+        newHp = maxHp;
+    }
+    else
+    {
+        newHp = Math.floor((newHp / maxHp) * 100);
+    }
+
     let currentHp = document.getElementsByClassName(unitType + "Hp" + unitSlot)[0];
-
-    let newHp = unit.getAttribute("hp");
-
-    let maxHp = unit.getAttribute("maxHp");
-
-    newHp = Math.floor((newHp / maxHp) * 100);
-
+    
     currentHp.style.width = newHp + "%";
     
+}
+
+function updateUnitEnergy(unit)
+{
+
+    let unitId = unit.getAttribute("class").split(" ")[1];
+
+    let unitType = unitId.charAt(0);
+
+    let unitSlot = unitId.charAt(5);
+
+    let newEnergy = parseInt(unit.getAttribute("energy"));
+
+    let maxEnergy = parseInt(unit.getAttribute("maxEnergy"));
+
+    if (newEnergy >= maxEnergy)
+    {
+        newEnergy = maxEnergy;
+    }
+    else
+    {
+        newEnergy = Math.floor((newEnergy / maxEnergy) * 100);
+    }
+
+    let currentEnergy = document.getElementsByClassName(unitType + "Energy" + unitSlot)[0];
+    
+    currentEnergy.style.width = newEnergy + "%";
+
 }

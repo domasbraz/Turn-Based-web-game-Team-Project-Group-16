@@ -83,6 +83,13 @@ div
     text-decoration: underline;
 }
 
+.enemyInfo > p
+{
+    margin: 10%;
+    font-weight: bold;
+    font-size: 20px;
+}
+
 .duelMsg
 {
     position: fixed;

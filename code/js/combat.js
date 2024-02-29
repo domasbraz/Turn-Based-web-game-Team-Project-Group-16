@@ -637,6 +637,13 @@ function applyEnemyTarget(target)
     target.style.border = "2px solid red";
     targeting = true;
     target.setAttribute("target", "true");
+
+    let atk = target.getAttribute("atk");
+    let def = target.getAttribute("def");
+    let hp = target.getAttribute("hp");
+    let unitInfo = document.getElementsByClassName("enemyInfo")[0];
+
+    unitInfo.innerHTML = "<p>Health: " + hp + "<br>Defense: " + def + "<br>Attack: " + atk + "</p>";
 }
 
 function removeEnemyTarget(target)

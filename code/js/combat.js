@@ -138,12 +138,6 @@ function switchGuiBot()
     deSelectUnit();
 }
 
-
-//adds skill icons
-for (let x = 0; x < 4; x++)
-{
-    }
-
 var unitSelected = false;
 
 //default unit info (unselected unit tooltip)
@@ -395,8 +389,9 @@ function startDuel()
     }
 }
 
-var playerTurns = 4;
-var aiTurns = 4;
+//values set to 1 for failsafe purposes
+var playerTurns = 1;
+var aiTurns = 1;
 
 //performes the next duel
 function nextDuel()
@@ -468,8 +463,6 @@ function resetPlayed()
     playerPlayed = aiPlayed = NaN;
 }
 
-
-
 function setUnit(unitSlot, type, stats, skills)
 {
     createUnit(unitSlot);
@@ -499,30 +492,6 @@ function setUnit(unitSlot, type, stats, skills)
     
     
 }
-
-//test case
-function setUnitKnight(position)
-{
-    let stats = [100, 100, 5, 100];
-    let skills = [1, 2, 3, 4];
-
-    setUnit("pUnit" + position, "knight", stats, skills);
-}
-
-function setUnitEnemy1(position)
-{
-    let stats = [100, 10, 5, 100];
-
-    setUnit("eUnit" + position, "enemy1", stats);
-}
-
-//test case for placing units
-for (let x = 1; x < 5; x++)
-{
-    setUnitKnight(x);
-    setUnitEnemy1(x);
-}
-
 
 //selects the unit that called the funtion
 function selectUnit(unit)
@@ -586,17 +555,32 @@ function makeSkills(unit)
     let type = unit.getAttribute("type");
     let origin = unit.getAttribute("id");
 
-    for (let x = 0; x < skills.length; x++)
+    for (let x = 0; x <= skills.length; x++)
     {
 
-        document.getElementsByTagName("div")[0].innerHTML += 
-        "<div selected='false' class='skills skill" + (x + 1) + "' style='grid-area: 125 / " + (21 + (x * 13)) + " / span 15 / span 8;'></div>";
+        if (x < skills.length)
+        {
+            document.getElementsByTagName("div")[0].innerHTML += 
+            "<div selected='false' class='skills skill" + (x + 1) + "' style='grid-area: 125 / " + (21 + (x * 13)) + " / span 15 / span 8;'></div>";
+    
+            let skillIcon = document.getElementsByClassName("skill" + (x + 1))[0];
+            skillIcon.innerHTML = "<img draggable='false' width='100%' height='100%' src='../../img/png images/characters/" + type + "/" + type + "S" + skills[x] + ".png'>";
+            skillIcon.setAttribute("onclick", "selectSkill(this); " + type + "S" + skills[x] + "(" + origin + ");");
+            skillIcon.setAttribute("origin", origin); //might not be needed
+        }
+        //skip turn skill
+        else
+        {
+            document.getElementsByTagName("div")[0].innerHTML += 
+            "<div selected='false' class='skills skill" + (x + 1) + "' style='grid-area: 125 / " + (21 + (x * 13)) + " / span 15 / span 8;'></div>";
 
-        let skillIcon = document.getElementsByClassName("skill" + (x + 1))[0];
-        skillIcon.innerHTML = "<img draggable='false' width='100%' height='100%' src='../../img/png images/characters/" + type + "/" + type + "S" + skills[x] + ".png'>";
-        skillIcon.setAttribute("onclick", "selectSkill(this); " + type + "S" + skills[x] + "(" + origin + ");");
-        skillIcon.setAttribute("origin", origin); //might not be needed
+            let skillIcon = document.getElementsByClassName("skill" + (x + 1))[0];
+            skillIcon.innerHTML = "<img draggable='false' width='100%' height='100%' src='../../img/png images/skip button.png'>";
+            skillIcon.setAttribute("onclick", "selectSkill(this); skipTurn(this);");
+            skillIcon.setAttribute("origin", origin); //might not be needed
+        }
     }
+
 
     //get stat attributes from unit
     let atk = unit.getAttribute("atk");
@@ -651,21 +635,6 @@ function deSelectSkills()
     });
 
     skillSelected = false;
-}
-
-
-//test case for skill description
-function knightS1(origin)
-{
-
-    //for some unknown reason JS decides not to pass to correct value though the parameter so I must reset the correct value
-    origin = origin.id;
-    //description
-    document.getElementsByClassName("skillInfo")[0].innerHTML =
-    "<h1>Basic Attack</h1><br><p>Attacks an enemy unit dealing 100% of your attack as damage<br><br>Cost: 15 energy</p>";
-
-    enableTargeting(true, "knightS1Damage", origin);
-
 }
 
 
@@ -736,36 +705,6 @@ function removeEnemyTarget(target)
 
     unitInfo.innerHTML = "";
     unitInfo.style.backgroundColor = "";
-}
-
-function knightS1Damage(target, origin)
-{
-
-    let energy = document.getElementById(origin.id).getAttribute("energy");
-
-    let energyCost = 15;
-
-    if (energy >= energyCost)
-    { 
-        let atk = document.getElementById(origin.id).getAttribute("atk");
-        
-
-        let dmgMultiplyer = 1;
-
-        let dmg = Math.floor(atk * dmgMultiplyer);
-        energy -= energyCost;
-
-        document.getElementById(origin.id).setAttribute("energy", energy);
-
-        finalAttackCalc(target, dmg);
-
-        updateUnitEnergy(origin);
-    }
-    else
-    {
-        //TODO: inform user of insuficient energy
-    }
-
 }
 
 function finalAttackCalc(target, skillDmg)
@@ -907,4 +846,53 @@ function removeUnit(unit)
         remainingUnitEnergyStyle.style.gridArea = posEnergyStyle[0] + " / " + positionUnit[1] + " / " + posEnergyStyle[2] + " / " + posEnergyStyle[3];
     });
 
+}
+
+function setTurns()
+{
+    let pUnits = document.querySelectorAll(".pUnits");
+
+    pUnits.forEach(function (unit)
+    {
+        unit.setAttribute("hasTurn", "true");
+    })
+
+    let eUnits = document.querySelectorAll(".eUnits");
+
+    eUnits.forEach(function (unit)
+    {
+        unit.setAttribute("hasTurn", "true");
+    })
+
+    remainingTurns();
+}
+
+function remainingTurns()
+{
+    let pTurns;
+    let eTurns;
+    pTurns = eTurns = 0;
+
+    let pUnits = document.querySelectorAll(".pUnits");
+
+    pUnits.forEach(function (unit)
+    {
+        if (unit.getAttribute("hasTurn") == "true")
+        {
+            pTurns++;
+        }
+    })
+
+    let eUnits = document.querySelectorAll(".eUnits");
+
+    eUnits.forEach(function (unit)
+    {
+        if (unit.getAttribute("hasTurn") == "true")
+        {
+            eTurns++;
+        }
+    })
+
+    playerTurns = pTurns;
+    aiTurns = eTurns;
 }

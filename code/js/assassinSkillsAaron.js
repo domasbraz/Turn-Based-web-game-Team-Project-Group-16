@@ -4,6 +4,14 @@ var assassinAttack = 100;
 var damageRecieved = 30;
 var assassinArmourPiercing = 0;
 
+let enemyCurrentHealth = 100;
+
+let maxBleedStack = 50;
+let bleedStack = 0;
+
+let turn;
+
+let sharpEdgesTurns = 3;
 
 /*
 function CharacterData(Cname ,attack, energy, hp, armour){
@@ -104,32 +112,122 @@ function smokeBomb(){
 // }
 // testSmokeBomb();
 
-// var turnCounter = 0;
-// var roundCounter = 0;
+var turnCounter = 0;
+var roundCounter = 0;
 
-// function roundCounters() {
-//     for (let turn = 1; turn <= 15; turn++) {
-//         // Increase the turn counter
-//         turnCounter++;
+function roundCounters() {
+    for (turn = 1; turn <= 15; turn++) {
+        // Increase the turn counter
+        turnCounter++;
 
-//         if(roundCounter <2){ 
-//             testSmokeBomb();
-//         }
+        if(roundCounter <2){ 
+            testSharpEdges();
 
-//         // Check if 5 turns have passed to increment the round counter
-//         if (turnCounter % 5 === 0) {
-//             roundCounter++;
-//             console.log(`End of Round ${roundCounter}`);
-//         }
+        }
 
-//         // Check if 3 rounds have passed to end the simulation
-//         if (roundCounter >= 3) {
-//             console.log("Battle simulation completed.");
-//             break;
-//         }
-//     }
+        // Check if 5 turns have passed to increment the round counter
+        if (turnCounter % 5 === 0) {
+            roundCounter++;
+            console.log(`End of Round ${roundCounter}`);
+        }
+
+        // Check if 3 rounds have passed to end the simulation
+        if (roundCounter >= 2) {
+            console.log("Battle simulation completed.");
+            break;
+        }
+    }
+}
+// Call the battle simulation function
+//roundCounters();
+
+function slice(){
+
+    bleed();
+    assassinEnergy = assassinEnergy - 20;
+
+}
+
+function bleed(){
+
+    if(bleedStack > maxBleedStack){
+        bleedStack = maxBleedStack
+    }
+    bleedDamage = (enemyCurrentHealth * 0.02);
+    enemyCurrentHealth -= bleedDamage ;
+    bleedStack++;
+    bleedStack=bleedStack%2;
+    
+}
+
+
+
+// function testSlice() {
+//     console.log("Initial Assassin Energy:", assassinEnergy);
+//     console.log("Initial Enemy Current Health:", enemyCurrentHealth);
+//     console.log("bleed stack : "+bleedStack);
+
+//     slice();
+
+//     console.log("After Slice:");
+//     console.log("Assassin Energy:", assassinEnergy);
+//     console.log("Enemy Current Health:", enemyCurrentHealth);
+//     console.log("bleed stack : "+bleedStack);
+
+
+//     // Call it again to see the stacking effect
+//     slice();
+
+//     console.log("After Second Slice:");
+//     console.log("Assassin Energy:", assassinEnergy);
+//     console.log("Enemy Current Health:", enemyCurrentHealth);
+//     console.log("bleed stack : "+bleedStack);
+
 // }
-// // Call the battle simulation function
-// roundCounters();
+
+// // Call the test function
+// testSlice();
 
 
+function sharpEdges(){
+
+    randomNo();
+   
+  //  let sharpEdgesTurnsReached = false;
+    assassinEnergy -= 30;
+
+   for(sharpEdgesTurns=3;sharpEdgesTurns=0;sharpEdgesTurns--)
+    console.log("randomNumber : "+randomNumber);
+        
+        if(randomNumber<=1){
+            bleed();   
+        }
+
+    }
+
+
+// function testSharpEdges() {
+//     console.log("Initial Assassin Energy:", assassinEnergy);
+//     console.log("Initial Enemy Current Health:", enemyCurrentHealth);
+//     console.log("bleed stack : "+bleedStack);
+
+//     sharpEdges();
+
+//     console.log("After SharpEdges:");
+//     console.log("Assassin Energy:", assassinEnergy);
+//     console.log("Enemy Current Health:", enemyCurrentHealth);
+//     console.log("bleed stack : "+bleedStack);
+
+
+//     // Call it again to see the stacking effect
+//     sharpEdges();
+
+//     console.log("After Second SharpEdges:");
+//     console.log("Assassin Energy:", assassinEnergy);
+//     console.log("Enemy Current Health:", enemyCurrentHealth);
+//     console.log("bleed stack : "+bleedStack);
+
+// }
+
+// // Call the test function
+// testSharpEdges();

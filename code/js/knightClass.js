@@ -1,9 +1,10 @@
-function setUnitKnight(position)
+function createUnitKnight(position)
 {
+    //hp, atk, def, energy
     let stats = [100, 100, 5, 100];
-    let skills = [1, 2, 3, 4];
+    let skills = [1, 2];
 
-    setUnit("pUnit" + position, "knight", stats, skills);
+    createUnit("pUnit" + position, "knight", stats, skills);
 }
 
 function knightS1(origin)

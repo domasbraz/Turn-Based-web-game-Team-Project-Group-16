@@ -3,7 +3,7 @@ var p1StatusNum, p2StatusNum, p3StatusNum, p4StatusNum, e1StatusNum, e2StatusNum
 p1StatusNum = p2StatusNum = p3StatusNum = p4StatusNum = e1StatusNum = e2StatusNum = e3StatusNum = e4StatusNum = 0;
 
 
-function createUnit(unitSlot)
+function displayUnit(unitSlot)
 {
     //check if there is a unit in the slot already
     if (document.getElementsByClassName(unitSlot).length > 0)
@@ -104,6 +104,7 @@ function addStatusFx(unit)
 //TODO: renamining
 function switchGuiBot()
 {
+    randomEnemy1();
 
     var botGUI1 = document.querySelectorAll(".b1GUI");
     var botGUI2 = document.querySelectorAll(".b2GUI");
@@ -463,21 +464,28 @@ function resetPlayed()
     playerPlayed = aiPlayed = NaN;
 }
 
-function setUnit(unitSlot, type, stats, skills)
+function createUnit(unitSlot, type, stats, skills)
 {
-    createUnit(unitSlot);
+    displayUnit(unitSlot);
 
     let unit = document.getElementsByClassName(unitSlot)[0];
 
     if (unitSlot.charAt(0) == "p")
     {
         unit.innerHTML = "<img draggable='false' width='100%' height='100%' src='../../img/png images/characters/" + type + "/" + type + ".png'>";
-        unit.setAttribute("skills", skills[0] + " " + skills[1] + " " + skills[2] + " " + skills[3]);
     }
     else
     {
         unit.innerHTML = "<img draggable='false' width='100%' height='100%' src='../../img/png images/characters/enemies/" + type + ".png'>";
     }
+
+    let hasSkills = "";
+    skills.forEach(function (skill)
+    {
+        hasSkills += skill + " ";
+    });
+
+    unit.setAttribute("skills", hasSkills);
 
     unit.setAttribute("hp", stats[0]);
     unit.setAttribute("atk", stats[1]);
@@ -514,7 +522,7 @@ function selectUnit(unit)
             unitSelected = true;
             //set custom "selected" attribute to element for easy identification
             unit.setAttribute("selected", "true");
-            makeSkills(unit);
+            showSkills(unit);
         }
         else
         {
@@ -545,20 +553,20 @@ function deSelectUnit()
     deSelectSkills();
     disableTargeting(true);
     unitSelected = false;
-    removeSkills();
+    hideSkills();
 }
 
 //displays unit's skills
-function makeSkills(unit)
+function showSkills(unit)
 {
     let skills = unit.getAttribute("skills").split(" ");
     let type = unit.getAttribute("type");
     let origin = unit.getAttribute("id");
 
-    for (let x = 0; x <= skills.length; x++)
+    for (let x = 0; x <= skills.length - 1; x++)
     {
 
-        if (x < skills.length)
+        if (x < skills.length - 1)
         {
             document.getElementsByTagName("div")[0].innerHTML += 
             "<div selected='false' class='skills skill" + (x + 1) + "' style='grid-area: 125 / " + (21 + (x * 13)) + " / span 15 / span 8;'></div>";
@@ -594,7 +602,7 @@ function makeSkills(unit)
     textBox.style.textAlign = "left";
 }
 
-function removeSkills()
+function hideSkills()
 {
     document.querySelectorAll(".skills").forEach(function (skill)
     {
@@ -816,34 +824,42 @@ function removeUnit(unit)
 
     let remainingUnits = document.querySelectorAll("." + unitType + "Units");
 
-    remainingUnits.forEach(function (remainingUnit)
+    remainingUnits.forEach(function (remainingUnit, index)
     {
-        let positionUnit = remainingUnit.style.gridArea.split(" / ");
-        let remainingUnitSlot = remainingUnit.getAttribute("class").split(" ")[1].charAt(5);
-        let remainingUnitHp = document.getElementsByClassName(unitType + "MaxHp" + remainingUnitSlot)[0];
-        let remainingUnitHpStyle = document.getElementsByClassName(unitType + "HpStyle" + remainingUnitSlot)[0];
-        let remainingUnitEnergy = document.getElementsByClassName(unitType + "MaxEnergy" + remainingUnitSlot)[0];
-        let remainingUnitEnergyStyle = document.getElementsByClassName(unitType + "EnergyStyle" + remainingUnitSlot)[0];
+        let inFirstPosition = remainingUnit.getAttribute("class").split(" ")[1].charAt(5) == "1";
 
-        if (unitType == "p")
+        let spaceTaken = document.getElementsByClassName(unitType + "Unit" + index).length > 0;
+
+        if (!inFirstPosition && !spaceTaken)
         {
-            positionUnit[1] = parseInt(positionUnit[1]) + 20;
+            let positionUnit = remainingUnit.style.gridArea.split(" / ");
+            let remainingUnitSlot = remainingUnit.getAttribute("class").split(" ")[1].charAt(5);
+            let remainingUnitHp = document.getElementsByClassName(unitType + "MaxHp" + remainingUnitSlot)[0];
+            let remainingUnitHpStyle = document.getElementsByClassName(unitType + "HpStyle" + remainingUnitSlot)[0];
+            let remainingUnitEnergy = document.getElementsByClassName(unitType + "MaxEnergy" + remainingUnitSlot)[0];
+            let remainingUnitEnergyStyle = document.getElementsByClassName(unitType + "EnergyStyle" + remainingUnitSlot)[0];
+    
+            if (unitType == "p")
+            {
+                positionUnit[1] = parseInt(positionUnit[1]) + 20;
+            }
+            else
+            {
+                positionUnit[1] = parseInt(positionUnit[1]) - 20;
+            }
+    
+            let posHp = remainingUnitHp.style.gridArea.split(" / ");
+            let posHpStyle = remainingUnitHpStyle.style.gridArea.split(" / ");
+            let posEnergy = remainingUnitEnergy.style.gridArea.split(" / ");
+            let posEnergyStyle = remainingUnitEnergyStyle.style.gridArea.split(" / ");
+    
+            remainingUnit.style.gridArea = positionUnit[0] + " / " + positionUnit[1] + " / " + positionUnit[2] + " / " + positionUnit[3];
+            remainingUnitHp.style.gridArea = posHp[0] + " / " + positionUnit[1] + " / " + posHp[2] + " / " + posHp[3];
+            remainingUnitHpStyle.style.gridArea = posHpStyle[0] + " / " + positionUnit[1] + " / " + posHpStyle[2] + " / " + posHpStyle[3];
+            remainingUnitEnergy.style.gridArea = posEnergy[0] + " / " + positionUnit[1] + " / " + posEnergy[2] + " / " + posEnergy[3];
+            remainingUnitEnergyStyle.style.gridArea = posEnergyStyle[0] + " / " + positionUnit[1] + " / " + posEnergyStyle[2] + " / " + posEnergyStyle[3];
+        
         }
-        else
-        {
-            positionUnit[1] = parseInt(positionUnit[1]) - 20;
-        }
-
-        let posHp = remainingUnitHp.style.gridArea.split(" / ");
-        let posHpStyle = remainingUnitHpStyle.style.gridArea.split(" / ");
-        let posEnergy = remainingUnitEnergy.style.gridArea.split(" / ");
-        let posEnergyStyle = remainingUnitEnergyStyle.style.gridArea.split(" / ");
-
-        remainingUnit.style.gridArea = positionUnit[0] + " / " + positionUnit[1] + " / " + positionUnit[2] + " / " + positionUnit[3];
-        remainingUnitHp.style.gridArea = posHp[0] + " / " + positionUnit[1] + " / " + posHp[2] + " / " + posHp[3];
-        remainingUnitHpStyle.style.gridArea = posHpStyle[0] + " / " + positionUnit[1] + " / " + posHpStyle[2] + " / " + posHpStyle[3];
-        remainingUnitEnergy.style.gridArea = posEnergy[0] + " / " + positionUnit[1] + " / " + posEnergy[2] + " / " + posEnergy[3];
-        remainingUnitEnergyStyle.style.gridArea = posEnergyStyle[0] + " / " + positionUnit[1] + " / " + posEnergyStyle[2] + " / " + posEnergyStyle[3];
     });
 
 }

@@ -27,7 +27,7 @@ function displayUnit(unitSlot)
         "</div>"
         +
         //hp styling
-        "<div class='pInfo" + unitSlot + " pHpStyle" + unitSlot + "' style='grid-area: 82 / " + (67 - ((unitSlot - 1) * 21)) + " / span 4 / span 20; box-shadow: inset black 0px 0px 6px 0px; border: none;'></div>"
+        "<div class='pHpStyle" + unitSlot + " pInfo" + unitSlot + "' style='grid-area: 82 / " + (67 - ((unitSlot - 1) * 21)) + " / span 4 / span 20; box-shadow: inset black 0px 0px 6px 0px; border: none;'></div>"
         +
         //max energy
         "<div class='pMaxEnergy" + unitSlot + " pInfo" + unitSlot + "' style='grid-area: 88 / " + (67 - ((unitSlot - 1) * 21)) + " / span 4 / span 20; border: 3px solid rgb(255, 194, 27); background-color: white;'>"
@@ -38,7 +38,7 @@ function displayUnit(unitSlot)
         "</div>"
         +
         //energy styling
-        "<div class='pInfo" + unitSlot + " pEnergyStyle" + unitSlot + "' style='grid-area: 88 / " + (67 - ((unitSlot - 1) * 21)) + " / span 4 / span 20; box-shadow: inset black 0px 0px 6px 0px; border: none;'></div>"
+        "<div class='pEnergyStyle" + unitSlot + " pInfo" + unitSlot + "' style='grid-area: 88 / " + (67 - ((unitSlot - 1) * 21)) + " / span 4 / span 20; box-shadow: inset black 0px 0px 6px 0px; border: none;'></div>"
         ;
     }
     else
@@ -56,7 +56,7 @@ function displayUnit(unitSlot)
         "</div>"
         +
         //hp styling
-        "<div class='eInfo" + unitSlot + " eHpStyle" + unitSlot + "' style='grid-area: 82 / " + (115 + ((unitSlot - 1) * 21)) + " / span 4 / span 20; box-shadow: inset black 0px 0px 6px 0px; border: none;'></div>"
+        "<div class='eHpStyle" + unitSlot + " eInfo" + unitSlot + "' style='grid-area: 82 / " + (115 + ((unitSlot - 1) * 21)) + " / span 4 / span 20; box-shadow: inset black 0px 0px 6px 0px; border: none;'></div>"
         +
         //max energy
         "<div class='eMaxEnergy" + unitSlot + " eInfo" + unitSlot + "' style='grid-area: 88 / " + (115 + ((unitSlot - 1) * 21)) + " / span 4 / span 20; border: 3px solid rgb(255, 194, 27); background-color: white;'>"
@@ -67,7 +67,7 @@ function displayUnit(unitSlot)
         "</div>"
         +
         //energy styling
-        "<div class='eInfo" + unitSlot + " eEnergyStyle" + unitSlot + "' style='grid-area: 88 / " + (115 + ((unitSlot - 1) * 21)) + " / span 4 / span 20; box-shadow: inset black 0px 0px 6px 0px; border: none;'></div>"
+        "<div class='eEnergyStyle" + unitSlot + " eInfo" + unitSlot + "' style='grid-area: 88 / " + (115 + ((unitSlot - 1) * 21)) + " / span 4 / span 20; box-shadow: inset black 0px 0px 6px 0px; border: none;'></div>"
         ;
     }
     
@@ -102,15 +102,14 @@ function addStatusFx(unit)
 
 //switches between card gui
 //TODO: renamining
-function switchGuiBot()
+function switchGuiBot(type)
 {
-    randomEnemy1();
 
     var botGUI1 = document.querySelectorAll(".b1GUI");
     var botGUI2 = document.querySelectorAll(".b2GUI");
 
     //shows combat
-    if (botGUI1[0].style.display != "none")
+    if (type == "combat")
     {
         botGUI1.forEach(function(element) 
         {
@@ -123,7 +122,7 @@ function switchGuiBot()
         });
     }
     //shows cards
-    else
+    else if (type = "cards")
     {
         botGUI2.forEach(function(element)
         {
@@ -134,6 +133,34 @@ function switchGuiBot()
         {
             element.style.display = "block";
         });
+    }
+    else
+    {
+        //not working 😊
+        if (botGUI1[0].style.display != "none")
+        {
+            botGUI1.forEach(function(element) 
+            {
+                element.style.display = "none";
+            });
+
+            botGUI2.forEach(function(element)
+            {
+                element.style.display = "block";
+            });
+        }
+        else
+        {
+            botGUI2.forEach(function(element)
+            {
+                element.style.display = "none";
+            });
+
+            botGUI1.forEach(function(element) 
+            {
+                element.style.display = "block";
+            });
+        }
     }
 
     deSelectUnit();
@@ -308,21 +335,26 @@ function showResult(won)
             resultText.textContent = "Duel Won!";
             resultText.style.color = "rgb(0, 255, 0)";
             wonLast = "player";
-            playerTurns--;//TODO: change implementation
         }
         else
         {
             resultText.textContent = "Duel Lost!";
             resultText.style.color = "rgb(255, 0, 0)";
             wonLast = "ai";
-            aiTurns--;
         }
 
         //hide message declaring winner after 3 seconds
         setTimeout(function()
         {
             result.style.display = "none";
-            nextDuel();
+            if (won)
+            {
+                switchGuiBot("combat");
+            }
+            else
+            {
+                aiPlayUnit();
+            }
         },
         3000
         );
@@ -342,6 +374,7 @@ var wonLast;
 function startDuel()
 {
     //this is used for ending the game in the event that all units are defeated from either side
+    //TODO: implementation
     if (gameActive)
     {
 
@@ -397,6 +430,7 @@ var aiTurns = 1;
 //performes the next duel
 function nextDuel()
 {
+    switchGuiBot("cards");
     //hides the previous cards in play
     document.getElementsByClassName("cardPlayed")[0].style.display = document.getElementsByClassName("cardEnemy")[0].style.display = "none";
 
@@ -507,7 +541,7 @@ function selectUnit(unit)
     //checks if cards gui is hidden, gui is hidden once a duel is over
     let duelPhaseOver = document.getElementsByClassName("b1GUI")[0].style.display == "none";
 
-    if(duelPhaseOver)
+    if(duelPhaseOver && unit.getAttribute("hasTurn") == "true")
     {
         //checks if user is trying to select a unit that is already selected
         if (unit.getAttribute("selected") == "true")
@@ -731,6 +765,8 @@ function finalAttackCalc(target, skillDmg)
     disableTargeting(true);
     deSelectUnit();
     updateUnitHp(target);
+
+    nextDuel();
 }
 
 function updateUnitHp(unit)
@@ -803,6 +839,7 @@ function updateUnitEnergy(unit)
 
 }
 
+//TODO: fix energy and hp bar bug
 function removeUnit(unit)
 {
     
@@ -858,7 +895,26 @@ function removeUnit(unit)
             remainingUnitHpStyle.style.gridArea = posHpStyle[0] + " / " + positionUnit[1] + " / " + posHpStyle[2] + " / " + posHpStyle[3];
             remainingUnitEnergy.style.gridArea = posEnergy[0] + " / " + positionUnit[1] + " / " + posEnergy[2] + " / " + posEnergy[3];
             remainingUnitEnergyStyle.style.gridArea = posEnergyStyle[0] + " / " + positionUnit[1] + " / " + posEnergyStyle[2] + " / " + posEnergyStyle[3];
-        
+
+            let unitClass = remainingUnit.getAttribute("class").split(" ");
+            unitClass[1] = unitType + "Unit" + index;
+            remainingUnit.setAttribute("class", unitClass.join(" "));
+
+            let hpClass = remainingUnitHp.getAttribute("class").split(" ");
+            hpClass[0] = unitType + "MaxHp" + index;
+            remainingUnitHp.setAttribute("class", hpClass.join(" "));
+
+            let hpStyleClass = remainingUnitHpStyle.getAttribute("class").split(" ");
+            hpStyleClass[0] = unitType + "HpStyle" + index;
+            remainingUnitHpStyle.setAttribute("class", hpStyleClass.join(" "));
+
+            let energyClass = remainingUnitEnergy.getAttribute("class").split(" ");
+            energyClass[0] = unitType + "MaxEnergy" + index;
+            remainingUnitEnergy.setAttribute("class", energyClass.join(" "));
+
+            let energyStyleClass = remainingUnitEnergyStyle.getAttribute("class").split(" ");
+            energyStyleClass[0] = unitType + "EnergyStyle" + index;
+            remainingUnitEnergyStyle.setAttribute("class", energyStyleClass.join(" "));
         }
     });
 
@@ -911,4 +967,10 @@ function remainingTurns()
 
     playerTurns = pTurns;
     aiTurns = eTurns;
+}
+
+function usedTurn(unit)
+{
+    unit.setAttribute("hasTurn", "false");
+    remainingTurns();
 }

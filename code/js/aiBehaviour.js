@@ -1,3 +1,8 @@
+function aiPlayUnit()
+{
+    randomEnemy1();
+}
+
 function randomEnemy1()
 {
     let eUnits = document.getElementsByClassName("eUnits").length;

@@ -17,5 +17,7 @@ function enemy1S1(target, origin)
 
     finalAttackCalc(target, dmg);
 
+    usedTurn(origin);
+
 }
 

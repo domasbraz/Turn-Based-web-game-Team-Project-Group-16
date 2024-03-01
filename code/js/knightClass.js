@@ -39,6 +39,8 @@ function knightS1Damage(target, origin)
         finalAttackCalc(target, dmg);
 
         updateUnitEnergy(origin);
+
+        usedTurn(origin);
     }
     else
     {

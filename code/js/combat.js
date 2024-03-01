@@ -1,70 +1,78 @@
+//TODO: change implementation of statusfx
 var p1StatusNum, p2StatusNum, p3StatusNum, p4StatusNum, e1StatusNum, e2StatusNum, e3StatusNum, e4StatusNum;
 p1StatusNum = p2StatusNum = p3StatusNum = p4StatusNum = e1StatusNum = e2StatusNum = e3StatusNum = e4StatusNum = 0;
 
-var pUnits = 4;
 
-//adds player units
-for (let x = 1; x <= pUnits; x++)
+function createUnit(unitSlot)
 {
-    document.getElementsByTagName("div")[0].innerHTML += 
-    //unit placement
-    "<div class='pUnits pUnit" + x + "' style='grid-area: 10 / " + (67 - ((x - 1) * 21)) + " / span 70 / span 20;' onclick='selectUnit(this)' selected='false'></div>"
-    +
-    //max hp
-    "<div class='pMaxHp" + x + "' style='border: 3px solid red; grid-area: 82 / " + (67 - ((x - 1) * 21)) + " / span 4 / span 20; background-color: white;'>"
-    +
-    //current hp
-    "<div class='pHp" + x + "' style='background-color: red; width: 100%; height: 100%; border: none;'></div>"
-    +
-    "</div>"
-    +
-    //hp styling
-    "<div style='grid-area: 82 / " + (67 - ((x - 1) * 21)) + " / span 4 / span 20; box-shadow: inset black 0px 0px 6px 0px; border: none;'></div>"
-    +
-    //max energy
-    "<div class='pMaxEnergy" + x + "' style='grid-area: 88 / " + (67 - ((x - 1) * 21)) + " / span 4 / span 20; border: 3px solid rgb(255, 194, 27); background-color: white;'>"
-    +
-    //current energy
-    "<div class='pEnergy" + x + "' style='width: 100%; height: 100%; background-color: rgb(255, 191, 0); border: none;'></div>"
-    +
-    "</div>"
-    +
-    //energy styling
-    "<div style='grid-area: 88 / " + (67 - ((x - 1) * 21)) + " / span 4 / span 20; box-shadow: inset black 0px 0px 6px 0px; border: none;'></div>"
-    ;
+    //check if there is a unit in the slot already
+    if (document.getElementsByClassName(unitSlot).length > 0)
+    {
+        removeUnit(document.getElementsByClassName(unitSlot)[0]);
+    }
+
+    if (unitSlot.charAt(0) == "p")
+    {
+        unitSlot = unitSlot.charAt(5);
+        document.getElementsByTagName("div")[0].innerHTML += 
+        //unit placement
+        "<div class='pUnits pUnit" + unitSlot + "' style='grid-area: 10 / " + (67 - ((unitSlot - 1) * 21)) + " / span 70 / span 20;' onclick='selectUnit(this)' selected='false'></div>"
+        +
+        //max hp
+        "<div class='pMaxHp" + unitSlot + " pInfo" + unitSlot + "' style='border: 3px solid red; grid-area: 82 / " + (67 - ((unitSlot - 1) * 21)) + " / span 4 / span 20; background-color: white;'>"
+        +
+        //current hp
+        "<div class='pHp" + unitSlot + " pInfo" + unitSlot + "' style='background-color: red; width: 100%; height: 100%; border: none;'></div>"
+        +
+        "</div>"
+        +
+        //hp styling
+        "<div class='pInfo" + unitSlot + " pHpStyle" + unitSlot + "' style='grid-area: 82 / " + (67 - ((unitSlot - 1) * 21)) + " / span 4 / span 20; box-shadow: inset black 0px 0px 6px 0px; border: none;'></div>"
+        +
+        //max energy
+        "<div class='pMaxEnergy" + unitSlot + " pInfo" + unitSlot + "' style='grid-area: 88 / " + (67 - ((unitSlot - 1) * 21)) + " / span 4 / span 20; border: 3px solid rgb(255, 194, 27); background-color: white;'>"
+        +
+        //current energy
+        "<div class='pEnergy" + unitSlot + " pInfo" + unitSlot + "' style='width: 100%; height: 100%; background-color: rgb(255, 191, 0); border: none;'></div>"
+        +
+        "</div>"
+        +
+        //energy styling
+        "<div class='pInfo" + unitSlot + " pEnergyStyle" + unitSlot + "' style='grid-area: 88 / " + (67 - ((unitSlot - 1) * 21)) + " / span 4 / span 20; box-shadow: inset black 0px 0px 6px 0px; border: none;'></div>"
+        ;
+    }
+    else
+    {
+        unitSlot = unitSlot.charAt(5);
+        document.getElementsByTagName("div")[0].innerHTML += 
+        "<div class='eUnits eUnit" + unitSlot + "' style='grid-area: 10 / " + (115 + ((unitSlot - 1) * 21)) + " / span 70 / span 20;'></div>"
+        +
+        //max hp
+        "<div class='eMaxHp" + unitSlot + " eInfo" + unitSlot + "' style='border: 3px solid red; grid-area: 82 / " + (115 + ((unitSlot - 1) * 21)) + " / span 4 / span 20; background-color: white;'>"
+        +
+        //current hp
+        "<div class='eHp" + unitSlot + " eInfo" + unitSlot + "' style='background-color: red; width: 100%; height: 100%; border: none;'></div>"
+        +
+        "</div>"
+        +
+        //hp styling
+        "<div class='eInfo" + unitSlot + " eHpStyle" + unitSlot + "' style='grid-area: 82 / " + (115 + ((unitSlot - 1) * 21)) + " / span 4 / span 20; box-shadow: inset black 0px 0px 6px 0px; border: none;'></div>"
+        +
+        //max energy
+        "<div class='eMaxEnergy" + unitSlot + " eInfo" + unitSlot + "' style='grid-area: 88 / " + (115 + ((unitSlot - 1) * 21)) + " / span 4 / span 20; border: 3px solid rgb(255, 194, 27); background-color: white;'>"
+        +
+        //current energy
+        "<div class='eEnergy" + unitSlot + " eInfo" + unitSlot + "' style='width: 100%; height: 100%; background-color: rgb(255, 191, 0); border: none;'></div>"
+        +
+        "</div>"
+        +
+        //energy styling
+        "<div class='eInfo" + unitSlot + " eEnergyStyle" + unitSlot + "' style='grid-area: 88 / " + (115 + ((unitSlot - 1) * 21)) + " / span 4 / span 20; box-shadow: inset black 0px 0px 6px 0px; border: none;'></div>"
+        ;
+    }
+    
 }
 
-var eUnits = 4;
-
-//adds enemy units
-for (let x = 1; x <= eUnits; x++)
-{
-    document.getElementsByTagName("div")[0].innerHTML += 
-    "<div class='eUnits eUnit" + x + "' style='grid-area: 10 / " + (115 + ((x - 1) * 21)) + " / span 70 / span 20;'></div>"
-    +
-    //max hp
-    "<div class='eMaxHp" + x + "' style='border: 3px solid red; grid-area: 82 / " + (115 + ((x - 1) * 21)) + " / span 4 / span 20; background-color: white;'>"
-    +
-    //current hp
-    "<div class='eHp" + x + "' style='background-color: red; width: 100%; height: 100%; border: none;'></div>"
-    +
-    "</div>"
-    +
-    //hp styling
-    "<div style='grid-area: 82 / " + (115 + ((x - 1) * 21)) + " / span 4 / span 20; box-shadow: inset black 0px 0px 6px 0px; border: none;'></div>"
-    +
-    //max energy
-    "<div class='eMaxEnergy" + x + "' style='grid-area: 88 / " + (115 + ((x - 1) * 21)) + " / span 4 / span 20; border: 3px solid rgb(255, 194, 27); background-color: white;'>"
-    +
-    //current energy
-    "<div class='eEnergy" + x + "' style='width: 100%; height: 100%; background-color: rgb(255, 191, 0); border: none;'></div>"
-    +
-    "</div>"
-    +
-    //energy styling
-    "<div style='grid-area: 88 / " + (115 + ((x - 1) * 21)) + " / span 4 / span 20; box-shadow: inset black 0px 0px 6px 0px; border: none;'></div>"
-    ;
-}
 
 //add status effect to given unit
 function addStatusFx(unit)
@@ -93,12 +101,14 @@ function addStatusFx(unit)
 }
 
 //switches between card gui
+//TODO: renamining
 function switchGuiBot()
 {
 
     var botGUI1 = document.querySelectorAll(".b1GUI");
     var botGUI2 = document.querySelectorAll(".b2GUI");
 
+    //shows combat
     if (botGUI1[0].style.display != "none")
     {
         botGUI1.forEach(function(element) 
@@ -111,6 +121,7 @@ function switchGuiBot()
             element.style.display = "block";
         });
     }
+    //shows cards
     else
     {
         botGUI2.forEach(function(element)
@@ -123,15 +134,15 @@ function switchGuiBot()
             element.style.display = "block";
         });
     }
+
+    deSelectUnit();
 }
 
 
 //adds skill icons
 for (let x = 0; x < 4; x++)
 {
-    document.getElementsByTagName("div")[0].innerHTML += 
-    "<div selected='false' class='b3GUI skills skill" + (x + 1) + "' style='grid-area: 125 / " + (21 + (x * 13)) + " / span 15 / span 8;'></div>";
-}
+    }
 
 var unitSelected = false;
 
@@ -461,6 +472,8 @@ function resetPlayed()
 
 function setUnit(unitSlot, type, stats, skills)
 {
+    createUnit(unitSlot);
+
     let unit = document.getElementsByClassName(unitSlot)[0];
 
     if (unitSlot.charAt(0) == "p")
@@ -490,7 +503,7 @@ function setUnit(unitSlot, type, stats, skills)
 //test case
 function setUnitKnight(position)
 {
-    let stats = [100, 10, 5, 100];
+    let stats = [100, 100, 5, 100];
     let skills = [1, 2, 3, 4];
 
     setUnit("pUnit" + position, "knight", stats, skills);
@@ -503,6 +516,7 @@ function setUnitEnemy1(position)
     setUnit("eUnit" + position, "enemy1", stats);
 }
 
+//test case for placing units
 for (let x = 1; x < 5; x++)
 {
     setUnitKnight(x);
@@ -531,7 +545,7 @@ function selectUnit(unit)
             unitSelected = true;
             //set custom "selected" attribute to element for easy identification
             unit.setAttribute("selected", "true");
-            showSkills(unit);
+            makeSkills(unit);
         }
         else
         {
@@ -562,11 +576,11 @@ function deSelectUnit()
     deSelectSkills();
     disableTargeting(true);
     unitSelected = false;
-    hideSkills();
+    removeSkills();
 }
 
 //displays unit's skills
-function showSkills(unit)
+function makeSkills(unit)
 {
     let skills = unit.getAttribute("skills").split(" ");
     let type = unit.getAttribute("type");
@@ -574,9 +588,12 @@ function showSkills(unit)
 
     for (let x = 0; x < skills.length; x++)
     {
+
+        document.getElementsByTagName("div")[0].innerHTML += 
+        "<div selected='false' class='skills skill" + (x + 1) + "' style='grid-area: 125 / " + (21 + (x * 13)) + " / span 15 / span 8;'></div>";
+
         let skillIcon = document.getElementsByClassName("skill" + (x + 1))[0];
         skillIcon.innerHTML = "<img draggable='false' width='100%' height='100%' src='../../img/png images/characters/" + type + "/" + type + "S" + skills[x] + ".png'>";
-        skillIcon.style.display = "block";
         skillIcon.setAttribute("onclick", "selectSkill(this); " + type + "S" + skills[x] + "(" + origin + ");");
         skillIcon.setAttribute("origin", origin); //might not be needed
     }
@@ -593,11 +610,11 @@ function showSkills(unit)
     textBox.style.textAlign = "left";
 }
 
-function hideSkills()
+function removeSkills()
 {
-    document.querySelectorAll(".b3GUI").forEach(function(element)
+    document.querySelectorAll(".skills").forEach(function (skill)
     {
-        element.style.display = "none";
+        skill.parentNode.removeChild(skill);
     });
 
     unitInfo();
@@ -783,19 +800,26 @@ function updateUnitHp(unit)
     let maxHp = parseInt(unit.getAttribute("maxHp"));
 
 
-    if (newHp >= maxHp)
+    if (newHp <= 0)
     {
-        newHp = maxHp;
-        unit.setAttribute("hp", newHp);
+        removeUnit(unit);
     }
     else
     {
-        newHp = Math.floor((newHp / maxHp) * 100);
-    }
+        if (newHp >= maxHp)
+        {
+            newHp = maxHp;
+            unit.setAttribute("hp", newHp);
+        }
+        else
+        {
+            newHp = Math.floor((newHp / maxHp) * 100);
+        }
 
-    let currentHp = document.getElementsByClassName(unitType + "Hp" + unitSlot)[0];
-    
-    currentHp.style.width = newHp + "%";
+        let currentHp = document.getElementsByClassName(unitType + "Hp" + unitSlot)[0];
+        
+        currentHp.style.width = newHp + "%";
+    }
     
 }
 
@@ -817,6 +841,10 @@ function updateUnitEnergy(unit)
         newEnergy = maxEnergy;
         unit.setAttribute("energy", newEnergy);
     }
+    else if (newEnergy < 0)
+    {
+        newEnergy = 0;
+    }
     else
     {
         newEnergy = Math.floor((newEnergy / maxEnergy) * 100);
@@ -825,5 +853,58 @@ function updateUnitEnergy(unit)
     let currentEnergy = document.getElementsByClassName(unitType + "Energy" + unitSlot)[0];
     
     currentEnergy.style.width = newEnergy + "%";
+
+}
+
+function removeUnit(unit)
+{
+    
+    let unitId = unit.getAttribute("class").split(" ")[1];
+
+    let unitType = unitId.charAt(0);
+
+    let unitSlot = unitId.charAt(5);
+
+    let unitInfo = document.querySelectorAll("." + unitType + "Info" + unitSlot);
+
+    unitInfo.forEach(function (info)
+    {
+        info.parentNode.removeChild(info);
+    })
+ 
+    unit.parentNode.removeChild(unit);
+
+
+    let remainingUnits = document.querySelectorAll("." + unitType + "Units");
+
+    remainingUnits.forEach(function (remainingUnit)
+    {
+        let positionUnit = remainingUnit.style.gridArea.split(" / ");
+        let remainingUnitSlot = remainingUnit.getAttribute("class").split(" ")[1].charAt(5);
+        let remainingUnitHp = document.getElementsByClassName(unitType + "MaxHp" + remainingUnitSlot)[0];
+        let remainingUnitHpStyle = document.getElementsByClassName(unitType + "HpStyle" + remainingUnitSlot)[0];
+        let remainingUnitEnergy = document.getElementsByClassName(unitType + "MaxEnergy" + remainingUnitSlot)[0];
+        let remainingUnitEnergyStyle = document.getElementsByClassName(unitType + "EnergyStyle" + remainingUnitSlot)[0];
+
+        if (unitType == "p")
+        {
+            positionUnit[1] = parseInt(positionUnit[1]) + 20;
+        }
+        else
+        {
+            positionUnit[1] = parseInt(positionUnit[1]) - 20;
+        }
+
+        let posHp = remainingUnitHp.style.gridArea.split(" / ");
+        let posHpStyle = remainingUnitHpStyle.style.gridArea.split(" / ");
+        let posEnergy = remainingUnitEnergy.style.gridArea.split(" / ");
+        let posEnergyStyle = remainingUnitEnergyStyle.style.gridArea.split(" / ");
+
+        remainingUnit.style.gridArea = positionUnit[0] + " / " + positionUnit[1] + " / " + positionUnit[2] + " / " + positionUnit[3];
+        remainingUnitHp.style.gridArea = posHp[0] + " / " + positionUnit[1] + " / " + posHp[2] + " / " + posHp[3];
+        remainingUnitHpStyle.style.gridArea = posHpStyle[0] + " / " + positionUnit[1] + " / " + posHpStyle[2] + " / " + posHpStyle[3];
+        remainingUnitEnergy.style.gridArea = posEnergy[0] + " / " + positionUnit[1] + " / " + posEnergy[2] + " / " + posEnergy[3];
+        remainingUnitEnergyStyle.style.gridArea = posEnergyStyle[0] + " / " + positionUnit[1] + " / " + posEnergyStyle[2] + " / " + posEnergyStyle[3];
+    });
 
 }

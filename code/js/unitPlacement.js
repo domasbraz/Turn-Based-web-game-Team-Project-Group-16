@@ -1,8 +1,20 @@
-//test case
-for (let x = 1; x < 5; x++)
+createKnights(1);
+createEnemy1s(2);
+
+function createKnights(amount)
 {
-    createUnitKnight(x);
-    createUnitEnemy1(x);
+    for (let x = 1; x <= amount; x++)
+    {
+        createUnitKnight(x);
+    }
+}
+
+function createEnemy1s(amount)
+{
+    for (let x = 1; x <= amount; x++)
+    {
+        createUnitEnemy1(x);
+    }
 }
 
 setTurns();

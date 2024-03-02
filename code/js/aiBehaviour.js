@@ -14,6 +14,7 @@ function randomEnemy1()
     basicAttack(origin);
 }
 
+//TODO: implement proper skills
 function basicAttack(origin)
 {
     let playerUnits = document.getElementsByClassName("pUnits").length;

@@ -1,8 +1,8 @@
 function createUnitKnight(position)
 {
     //hp, atk, def, energy
-    let stats = [100, 100, 5, 100];
-    let skills = [1, 2];
+    let stats = [100, 50, 5, 100];
+    let skills = [1, 4];
 
     createUnit("pUnit" + position, "knight", stats, skills);
 }
@@ -29,18 +29,58 @@ function knightS1Damage(target, origin)
         let atk = document.getElementById(origin.id).getAttribute("atk");
         
 
-        let dmgMultiplyer = 1;
+        let dmgMultiplyer = 100;
 
-        let dmg = Math.floor(atk * dmgMultiplyer);
+        let dmg = Math.floor((atk * dmgMultiplyer) / 100);
         energy -= energyCost;
 
         document.getElementById(origin.id).setAttribute("energy", energy);
 
+        updateUnitEnergy(origin);
+
+        usedTurn(origin);
+
         finalAttackCalc(target, dmg);
+
+        
+    }
+    else
+    {
+        //TODO: inform user of insuficient energy
+    }
+}
+
+function knightS4(origin)
+{
+    origin = origin.id;
+    enableTargeting(true, "knightS4Damage", origin);
+}
+
+
+//TODO: implement armour pierce
+function knightS4Damage(target, origin)
+{
+    let energy = document.getElementById(origin.id).getAttribute("energy");
+
+    let energyCost = 50;
+
+    if (energy >= energyCost)
+    { 
+        let atk = document.getElementById(origin.id).getAttribute("atk");
+        
+        let dmgMultiplyer = Math.floor(Math.random() * 101) + 101;;
+
+        let dmg = Math.floor((atk * dmgMultiplyer) / 100);
+        energy -= energyCost;
+
+        document.getElementById(origin.id).setAttribute("energy", energy);
 
         updateUnitEnergy(origin);
 
         usedTurn(origin);
+
+        finalAttackCalc(target, dmg);
+
     }
     else
     {

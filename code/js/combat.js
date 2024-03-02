@@ -324,7 +324,7 @@ function showResult(won)
     //add 1 second before declaring result so it doesn't appear so suddenlly
     setTimeout(function()
     {
-        let result = document.getElementsByClassName("duelMsg")[0];
+        let result = document.getElementsByClassName("gameMsg")[0];
         let resultText = result.children[0];
 
         result.style.display = "block";
@@ -364,18 +364,22 @@ function showResult(won)
     
 }
 
+
+
 var round = 1;
 
 var gameActive = true;
 
 var wonLast;
 
+var winner;
+
 //dueling process
 function startDuel()
 {
     //this is used for ending the game in the event that all units are defeated from either side
     //TODO: implementation
-    if (gameActive)
+    if (winner !== undefined || winner !== null)
     {
 
         //multiple condition set to determine who gets to act first
@@ -421,6 +425,30 @@ function startDuel()
             aiCard(cards.aiCards);
         }
     }
+    else
+    {
+        endCombat();
+    }
+}
+
+function endCombat()
+{
+    let result = document.getElementsByClassName("gameMsg")[0];
+    let resultText = result.children[0];
+
+    result.style.display = "block";
+
+    if (winner == "player")
+    {
+        resultText.textContent = "Victory!";
+        resultText.style.color = "rgb(0, 255, 0)";
+    }
+    else
+    {
+        resultText.textContent = "Defeat!";
+        resultText.style.color = "rgb(255, 0, 0)";
+    }
+        
 }
 
 //values set to 1 for failsafe purposes
@@ -437,16 +465,41 @@ function nextDuel()
     //TODO: might be unecessary to use a seperate function
     resetPlayed();
 
-    //checks if either side is out of turns
-    //TODO: change implementation
-    if (playerTurns == 0 || aiTurns == 0)
+    let aiHasUnits = document.getElementsByClassName("eUnits").length > 0;
+    let playerHasUnits = document.getElementsByClassName("pUnits").length > 0;
+
+    if (aiHasUnits && playerHasUnits)
     {
-        nextRound();
+        //checks if either side is out of turns
+        if (playerTurns == 0 && aiTurns == 0)
+        {
+            nextRound();
+        }
+        else if (aiTurns == 0 && playerTurns > 0)
+        {
+            switchGuiBot("combat");
+        }
+        else if (playerTurns == 0 && aiTurns > 0)
+        {
+            aiPlayUnit();
+        }
+        else
+        {
+            startDuel();
+        }
+    }
+    else if (playerHasUnits)
+    {
+        winner = "player";
+        endCombat();
     }
     else
     {
-        startDuel();
+        winner = "ai";
+        endCombat();
     }
+
+    
 }
 
 //commences next round, hands reset
@@ -456,7 +509,7 @@ function nextRound()
     resetHand();
     cards = dealCards();
     displayCards();
-    playerTurns = aiTurns = 4;//TODO: implement proper turn calculation
+    setTurns();
     wonLast = null;
     regenEnergy();
     startDuel();
@@ -618,7 +671,7 @@ function showSkills(unit)
 
             let skillIcon = document.getElementsByClassName("skill" + (x + 1))[0];
             skillIcon.innerHTML = "<img draggable='false' width='100%' height='100%' src='../../img/png images/skip button.png'>";
-            skillIcon.setAttribute("onclick", "selectSkill(this); skipTurn(this);");
+            skillIcon.setAttribute("onclick", "selectSkill(this); skipTurn(" + unit.id + ");");
             skillIcon.setAttribute("origin", origin); //might not be needed
         }
     }
@@ -759,14 +812,40 @@ function finalAttackCalc(target, skillDmg)
         def *= 0.7;
     }
 
-    finalDmg = skillDmg - def;
+    let finalDmg = skillDmg - def;
 
-    target.setAttribute("hp", hp - skillDmg);
+    target.setAttribute("hp", hp - finalDmg);
     disableTargeting(true);
     deSelectUnit();
     updateUnitHp(target);
+    showDmgDealt(finalDmg);
+    
+}
 
-    nextDuel();
+function showDmgDealt(dmg)
+{
+    let result = document.getElementsByClassName("gameMsg")[0];
+    let resultText = result.children[0];
+
+    result.style.display = "block";
+
+    resultText.textContent = dmg + " Damage dealt"
+    resultText.style.color = "rgb(255, 0, 0)";
+
+    //hide message declaring winner after 3 seconds
+    setTimeout(function()
+    {
+        result.style.display = "none";
+        setTimeout(function()
+        {
+            nextDuel();
+        },
+        500 //because of how fast the ai acts, this timeout is needed to distinguish between seperate attacks
+        );
+        
+    },
+    3000
+    );
 }
 
 function updateUnitHp(unit)
@@ -850,8 +929,6 @@ function removeUnit(unit)
 
     let unitInfo = document.querySelectorAll("." + unitType + "Info" + unitSlot);
 
-    console.log(unitInfo);
-
     unitInfo.forEach(function (info)
     {
         info.parentNode.removeChild(info);
@@ -862,11 +939,8 @@ function removeUnit(unit)
 
     let remainingUnits = document.querySelectorAll("." + unitType + "Units");
 
-    console.log(remainingUnits);
-
     remainingUnits.forEach(function (remainingUnit, index)
     {
-        console.log(remainingUnit);
         let inFirstPosition = remainingUnit.getAttribute("class").split(" ")[1].charAt(5) == "1";
 
         let spaceTaken = document.getElementsByClassName(unitType + "Unit" + (index + 1)).length > 0;
@@ -900,30 +974,19 @@ function removeUnit(unit)
             remainingUnitEnergy.style.gridArea = posEnergy[0] + " / " + positionUnit[1] + " / " + posEnergy[2] + " / " + posEnergy[3];
             remainingUnitEnergyStyle.style.gridArea = posEnergyStyle[0] + " / " + positionUnit[1] + " / " + posEnergyStyle[2] + " / " + posEnergyStyle[3];
 
-            /* let unitClass = remainingUnit.getAttribute("class").split(" ");
-            unitClass[1] = unitType + "Unit" + (index + 1); */
             remainingUnit.setAttribute("class", unitType + "Units" + " " + unitType + "Unit" + (index + 1));
 
-            /* let hpClass = remainingUnitHp.getAttribute("class").split(" ");
-            hpClass[0] = unitType + "MaxHp" + (index + 1); */
             remainingUnitHp.setAttribute("class", unitType + "MaxHp" + (index + 1) + " " + unitType + "Info" + (index + 1));
-            console.log(remainingUnitHp.getAttribute("class"));
 
-            /* let hpStyleClass = remainingUnitHpStyle.getAttribute("class").split(" ");
-            hpStyleClass[0] = unitType + "HpStyle" + (index + 1); */
             remainingUnitHpStyle.setAttribute("class", unitType + "HpStyle" + (index + 1) + " " + unitType + "Info" + (index + 1));
-            console.log(remainingUnitHpStyle.getAttribute("class"));
 
-            /* let energyClass = remainingUnitEnergy.getAttribute("class").split(" ");
-            energyClass[0] = unitType + "MaxEnergy" + (index + 1); */
             remainingUnitEnergy.setAttribute("class", unitType + "MaxEnergy" + (index + 1) + " " + unitType + "Info" + (index + 1));
-            console.log(remainingUnitEnergy.getAttribute("class"));
 
-            /* let energyStyleClass = remainingUnitEnergyStyle.getAttribute("class").split(" ");
-            energyStyleClass[0] = unitType + "EnergyStyle" + (index + 1); */
             remainingUnitEnergyStyle.setAttribute("class", unitType + "EnergyStyle" + (index + 1) + " " + unitType + "Info" + (index + 1));
-            console.log(remainingUnitEnergyStyle.getAttribute("class"));
 
+
+            let remainingUnitId = remainingUnit.getAttribute("id").slice(0, -1);
+            remainingUnit.setAttribute("id", remainingUnitId + (index + 1));
 
         }
     });
@@ -983,4 +1046,27 @@ function usedTurn(unit)
 {
     unit.setAttribute("hasTurn", "false");
     remainingTurns();
+}
+
+function skipTurn(unit)
+{
+    usedTurn(unit);
+    deSelectUnit();
+
+    let result = document.getElementsByClassName("gameMsg")[0];
+    let resultText = result.children[0];
+
+    result.style.display = "block";
+
+    resultText.textContent = "Skipped Turn!"
+    resultText.style.color = "rgb(255, 255, 255)";
+
+    //hide message after 3 seconds
+    setTimeout(function()
+    {
+        result.style.display = "none";
+        nextDuel();
+    },
+    3000
+    );
 }

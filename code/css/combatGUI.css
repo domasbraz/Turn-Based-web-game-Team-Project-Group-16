@@ -90,7 +90,7 @@ div
     font-size: 20px;
 }
 
-.duelMsg
+.gameMsg
 {
     position: fixed;
     width: 100%;
@@ -99,7 +99,7 @@ div
     display: none;
 }
 
-.duelMsg > div
+.gameMsg > div
 {
     width: 20%;
     height: 30%;

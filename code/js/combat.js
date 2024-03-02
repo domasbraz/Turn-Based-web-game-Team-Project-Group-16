@@ -22,7 +22,7 @@ function displayUnit(unitSlot)
         "<div class='pMaxHp" + unitSlot + " pInfo" + unitSlot + "' style='border: 3px solid red; grid-area: 82 / " + (67 - ((unitSlot - 1) * 21)) + " / span 4 / span 20; background-color: white;'>"
         +
         //current hp
-        "<div class='pHp" + unitSlot + " pInfo" + unitSlot + "' style='background-color: red; width: 100%; height: 100%; border: none;'></div>"
+        "<div class='pHp" + unitSlot + "' style='background-color: red; width: 100%; height: 100%; border: none;'></div>"
         +
         "</div>"
         +
@@ -33,7 +33,7 @@ function displayUnit(unitSlot)
         "<div class='pMaxEnergy" + unitSlot + " pInfo" + unitSlot + "' style='grid-area: 88 / " + (67 - ((unitSlot - 1) * 21)) + " / span 4 / span 20; border: 3px solid rgb(255, 194, 27); background-color: white;'>"
         +
         //current energy
-        "<div class='pEnergy" + unitSlot + " pInfo" + unitSlot + "' style='width: 100%; height: 100%; background-color: rgb(255, 191, 0); border: none;'></div>"
+        "<div class='pEnergy" + unitSlot + "' style='width: 100%; height: 100%; background-color: rgb(255, 191, 0); border: none;'></div>"
         +
         "</div>"
         +
@@ -51,7 +51,7 @@ function displayUnit(unitSlot)
         "<div class='eMaxHp" + unitSlot + " eInfo" + unitSlot + "' style='border: 3px solid red; grid-area: 82 / " + (115 + ((unitSlot - 1) * 21)) + " / span 4 / span 20; background-color: white;'>"
         +
         //current hp
-        "<div class='eHp" + unitSlot + " eInfo" + unitSlot + "' style='background-color: red; width: 100%; height: 100%; border: none;'></div>"
+        "<div class='eHp" + unitSlot + "' style='background-color: red; width: 100%; height: 100%; border: none;'></div>"
         +
         "</div>"
         +
@@ -62,7 +62,7 @@ function displayUnit(unitSlot)
         "<div class='eMaxEnergy" + unitSlot + " eInfo" + unitSlot + "' style='grid-area: 88 / " + (115 + ((unitSlot - 1) * 21)) + " / span 4 / span 20; border: 3px solid rgb(255, 194, 27); background-color: white;'>"
         +
         //current energy
-        "<div class='eEnergy" + unitSlot + " eInfo" + unitSlot + "' style='width: 100%; height: 100%; background-color: rgb(255, 191, 0); border: none;'></div>"
+        "<div class='eEnergy" + unitSlot + "' style='width: 100%; height: 100%; background-color: rgb(255, 191, 0); border: none;'></div>"
         +
         "</div>"
         +
@@ -839,7 +839,6 @@ function updateUnitEnergy(unit)
 
 }
 
-//TODO: fix energy and hp bar bug
 function removeUnit(unit)
 {
     
@@ -851,6 +850,8 @@ function removeUnit(unit)
 
     let unitInfo = document.querySelectorAll("." + unitType + "Info" + unitSlot);
 
+    console.log(unitInfo);
+
     unitInfo.forEach(function (info)
     {
         info.parentNode.removeChild(info);
@@ -861,11 +862,14 @@ function removeUnit(unit)
 
     let remainingUnits = document.querySelectorAll("." + unitType + "Units");
 
+    console.log(remainingUnits);
+
     remainingUnits.forEach(function (remainingUnit, index)
     {
+        console.log(remainingUnit);
         let inFirstPosition = remainingUnit.getAttribute("class").split(" ")[1].charAt(5) == "1";
 
-        let spaceTaken = document.getElementsByClassName(unitType + "Unit" + index).length > 0;
+        let spaceTaken = document.getElementsByClassName(unitType + "Unit" + (index + 1)).length > 0;
 
         if (!inFirstPosition && !spaceTaken)
         {
@@ -896,25 +900,31 @@ function removeUnit(unit)
             remainingUnitEnergy.style.gridArea = posEnergy[0] + " / " + positionUnit[1] + " / " + posEnergy[2] + " / " + posEnergy[3];
             remainingUnitEnergyStyle.style.gridArea = posEnergyStyle[0] + " / " + positionUnit[1] + " / " + posEnergyStyle[2] + " / " + posEnergyStyle[3];
 
-            let unitClass = remainingUnit.getAttribute("class").split(" ");
-            unitClass[1] = unitType + "Unit" + index;
-            remainingUnit.setAttribute("class", unitClass.join(" "));
+            /* let unitClass = remainingUnit.getAttribute("class").split(" ");
+            unitClass[1] = unitType + "Unit" + (index + 1); */
+            remainingUnit.setAttribute("class", unitType + "Units" + " " + unitType + "Unit" + (index + 1));
 
-            let hpClass = remainingUnitHp.getAttribute("class").split(" ");
-            hpClass[0] = unitType + "MaxHp" + index;
-            remainingUnitHp.setAttribute("class", hpClass.join(" "));
+            /* let hpClass = remainingUnitHp.getAttribute("class").split(" ");
+            hpClass[0] = unitType + "MaxHp" + (index + 1); */
+            remainingUnitHp.setAttribute("class", unitType + "MaxHp" + (index + 1) + " " + unitType + "Info" + (index + 1));
+            console.log(remainingUnitHp.getAttribute("class"));
 
-            let hpStyleClass = remainingUnitHpStyle.getAttribute("class").split(" ");
-            hpStyleClass[0] = unitType + "HpStyle" + index;
-            remainingUnitHpStyle.setAttribute("class", hpStyleClass.join(" "));
+            /* let hpStyleClass = remainingUnitHpStyle.getAttribute("class").split(" ");
+            hpStyleClass[0] = unitType + "HpStyle" + (index + 1); */
+            remainingUnitHpStyle.setAttribute("class", unitType + "HpStyle" + (index + 1) + " " + unitType + "Info" + (index + 1));
+            console.log(remainingUnitHpStyle.getAttribute("class"));
 
-            let energyClass = remainingUnitEnergy.getAttribute("class").split(" ");
-            energyClass[0] = unitType + "MaxEnergy" + index;
-            remainingUnitEnergy.setAttribute("class", energyClass.join(" "));
+            /* let energyClass = remainingUnitEnergy.getAttribute("class").split(" ");
+            energyClass[0] = unitType + "MaxEnergy" + (index + 1); */
+            remainingUnitEnergy.setAttribute("class", unitType + "MaxEnergy" + (index + 1) + " " + unitType + "Info" + (index + 1));
+            console.log(remainingUnitEnergy.getAttribute("class"));
 
-            let energyStyleClass = remainingUnitEnergyStyle.getAttribute("class").split(" ");
-            energyStyleClass[0] = unitType + "EnergyStyle" + index;
-            remainingUnitEnergyStyle.setAttribute("class", energyStyleClass.join(" "));
+            /* let energyStyleClass = remainingUnitEnergyStyle.getAttribute("class").split(" ");
+            energyStyleClass[0] = unitType + "EnergyStyle" + (index + 1); */
+            remainingUnitEnergyStyle.setAttribute("class", unitType + "EnergyStyle" + (index + 1) + " " + unitType + "Info" + (index + 1));
+            console.log(remainingUnitEnergyStyle.getAttribute("class"));
+
+
         }
     });
 

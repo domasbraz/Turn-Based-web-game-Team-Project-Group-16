@@ -459,6 +459,7 @@ var aiTurns = 1;
 function nextDuel()
 {
     switchGuiBot("cards");
+    document.getElementsByClassName("hand")[0].style.display = "none";
     //hides the previous cards in play
     document.getElementsByClassName("cardPlayed")[0].style.display = document.getElementsByClassName("cardEnemy")[0].style.display = "none";
 

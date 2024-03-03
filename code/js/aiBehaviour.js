@@ -11,7 +11,15 @@ function randomEnemy1()
 
     let origin = document.getElementById("enemy1" + slot);
 
-    basicAttack(origin);
+    if (origin.getAttribute("hasTurn") == "true")
+    {
+        basicAttack(origin);
+    }
+    else
+    {
+        randomEnemy1();
+    }
+    
 }
 
 //TODO: implement proper skills

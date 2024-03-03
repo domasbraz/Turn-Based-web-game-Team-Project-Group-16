@@ -953,6 +953,8 @@ function removeUnit(unit)
             let remainingUnitHpStyle = document.getElementsByClassName(unitType + "HpStyle" + remainingUnitSlot)[0];
             let remainingUnitEnergy = document.getElementsByClassName(unitType + "MaxEnergy" + remainingUnitSlot)[0];
             let remainingUnitEnergyStyle = document.getElementsByClassName(unitType + "EnergyStyle" + remainingUnitSlot)[0];
+            let remainingUnitHpcurrent = document.getElementsByClassName(unitType + "Hp" + remainingUnitSlot)[0];
+            let remainingUnitEnergycurrent = document.getElementsByClassName(unitType + "Energy" + remainingUnitSlot)[0];
     
             if (unitType == "p")
             {
@@ -983,6 +985,10 @@ function removeUnit(unit)
             remainingUnitEnergy.setAttribute("class", unitType + "MaxEnergy" + (index + 1) + " " + unitType + "Info" + (index + 1));
 
             remainingUnitEnergyStyle.setAttribute("class", unitType + "EnergyStyle" + (index + 1) + " " + unitType + "Info" + (index + 1));
+
+            remainingUnitEnergycurrent.setAttribute("class", unitType + "Energy" + (index + 1));
+
+            remainingUnitHpcurrent.setAttribute("class", unitType + "Hp" + (index + 1));
 
 
             let remainingUnitId = remainingUnit.getAttribute("id").slice(0, -1);

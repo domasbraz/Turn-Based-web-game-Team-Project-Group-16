@@ -522,9 +522,9 @@ function regenEnergy()
 
     units.forEach(function (unit)
     {
-        let energy = unit.getAttribute("energy");
+        let energy = parseInt(unit.getAttribute("energy"));
 
-        let regen = unit.getAttribute("energyRegen");
+        let regen = parseInt(unit.getAttribute("energyRegen"));
 
         energy += regen;
 

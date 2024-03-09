@@ -126,3 +126,8 @@ div
 {
     grid-area: 27 / 96 / span 10 / span 10;
 }
+
+.background
+{
+    grid-area: 1 / 1 / span 110 / span 200;
+}

@@ -120,6 +120,8 @@ function switchGuiBot(type)
         {
             element.style.display = "block";
         });
+        document.getElementsByClassName("enemyInfo")[0].style.display = "none";
+        //TODO: re-implement enemy info
     }
     //shows cards
     else if (type = "cards")
@@ -374,6 +376,8 @@ var wonLast;
 
 var winner;
 
+var playedFirst = null;
+
 //dueling process
 function startDuel()
 {
@@ -386,6 +390,7 @@ function startDuel()
         if ((round % 2 == 0 && wonLast != "player" && isNaN(aiPlayed)) || (wonLast == "ai" && isNaN(aiPlayed)))
         {
             aiCard(cards.aiCards);
+            playedFirst = "ai";
             
             //there is a rule that states that a trump card cannot be defended, in other words, whoever places a trump card first guarantees victory for that duel
             //trump card is set to value of 13 by default
@@ -416,8 +421,16 @@ function startDuel()
         if (!isNaN(playerPlayed) && !isNaN(aiPlayed))
         {
             //winning conition: whoever has the higher card
-            //TODO: adjustment to remove player bias
-            showResult(playerPlayed >= aiPlayed);
+            let condition;
+            if (playedFirst == "ai")
+            {
+                condition = playerPlayed >= aiPlayed;
+            }
+            else
+            {
+                condition = playerPlayed > aiPlayed;
+            }
+            showResult(condition);
         }
         //tells ai to play their card if they havent already and the player has
         else if (!isNaN(playerPlayed))
@@ -458,6 +471,7 @@ var aiTurns = 1;
 //performes the next duel
 function nextDuel()
 {
+    playedFirst = null;
     switchGuiBot("cards");
     document.getElementsByClassName("hand")[0].style.display = "none";
     //hides the previous cards in play
@@ -593,7 +607,7 @@ function createUnit(unitSlot, type, stats, skills)
 function selectUnit(unit)
 {
     //checks if cards gui is hidden, gui is hidden once a duel is over
-    let duelPhaseOver = document.getElementsByClassName("b1GUI")[0].style.display == "none";
+    let duelPhaseOver = document.getElementsByClassName("b2GUI")[0].style.display == "block";
 
     if(duelPhaseOver && unit.getAttribute("hasTurn") == "true")
     {
@@ -908,10 +922,9 @@ function updateUnitEnergy(unit)
     {
         newEnergy = 0;
     }
-    else
-    {
-        newEnergy = Math.floor((newEnergy / maxEnergy) * 100);
-    }
+    
+    newEnergy = Math.floor((newEnergy / maxEnergy) * 100);
+    
 
     let currentEnergy = document.getElementsByClassName(unitType + "Energy" + unitSlot)[0];
     

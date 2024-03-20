@@ -654,6 +654,7 @@ function deSelectUnit()
     document.getElementsByClassName("skillInfo")[0].innerHTML = "";
     deSelectSkills();
     disableTargeting(true);
+    disableTargeting(false);
     unitSelected = false;
     hideSkills();
 }
@@ -745,6 +746,8 @@ function deSelectSkills()
     });
 
     skillSelected = false;
+    disableTargeting(true);
+    disableTargeting(false);
 }
 
 
@@ -752,12 +755,24 @@ function enableTargeting(isEnemy, skill, unitUsed)
 {
     if (isEnemy)
     {
-        document.querySelectorAll(".eUnits").forEach(function (e)
+        document.querySelectorAll(".eUnits").forEach(function (unit)
         {
-            e.setAttribute("onmouseover", "applyEnemyTarget(this)");
-            e.setAttribute("onmouseout", "removeEnemyTarget(this)");
-            e.setAttribute("onclick", skill + "(this, " + unitUsed + ")")
-        })
+            unit.setAttribute("onmouseover", "applyEnemyTarget(this)");
+            unit.setAttribute("onmouseout", "removeEnemyTarget(this)");
+            unit.setAttribute("onclick", skill + "(this, " + unitUsed + ")");
+        });
+    }
+    else
+    {
+        document.querySelectorAll(".pUnits").forEach(function (unit)
+        {
+            if (unit.getAttribute("selected") != "true")
+            {
+                unit.setAttribute("onmouseover", "applyAllyTarget(this)");
+                unit.setAttribute("onmouseout", "removeAllyTarget(this)");
+                unit.setAttribute("onclick", skill + "(this, " + unitUsed + ")");
+            }
+        });
     }
 }
 
@@ -776,16 +791,34 @@ function disableTargeting(isEnemy)
             e.setAttribute("onmouseout", "");
             e.setAttribute("onclick", "");
         })
+        if (targeting)
+        {
+            document.querySelectorAll("[target='true']").forEach(function (target)
+            {
+                removeEnemyTarget(target);
+            });
+            //loop not entirely neccessary, just a failsafe
+        }
+    }
+    else
+    {
+        document.querySelectorAll(".pUnits").forEach(function (unit)
+        {
+            unit.setAttribute("onmouseover", "");
+            unit.setAttribute("onmouseout", "");
+            unit.setAttribute("onclick", "selectUnit(this)");
+        });
+        if (targeting)
+        {
+            document.querySelectorAll("[target='true']").forEach(function (target)
+            {
+                removeAllyTarget(target);
+            });
+            //loop not entirely neccessary, just a failsafe
+        }
     }
 
-    if (targeting)
-    {
-        document.querySelectorAll("[target='true']").forEach(function (target)
-        {
-            removeEnemyTarget(target);
-        });
-        //loop not entirely neccessary, just a failsafe
-    }
+    
 }
 
 var targeting = false;
@@ -815,6 +848,20 @@ function removeEnemyTarget(target)
 
     unitInfo.innerHTML = "";
     unitInfo.style.backgroundColor = "";
+}
+
+function applyAllyTarget(target)
+{
+    target.style.border = "2px solid green";
+    targeting = true;
+    target.setAttribute("target", "true");
+}
+
+function removeAllyTarget(target)
+{
+    target.style.border = "1px solid black";
+    targeting = false;
+    target.setAttribute("target", "false");
 }
 
 function finalAttackCalc(target, skillDmg)

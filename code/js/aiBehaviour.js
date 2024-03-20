@@ -31,5 +31,10 @@ function basicAttack(origin)
 
     let target = document.getElementsByClassName("pUnit" + targetSlot)[0];
 
+    if (target.hasAttribute("protected"))
+    {
+        target = document.getElementsByClassName(target.getAttribute("protected"))[0];
+    }
+
     enemy1S1(target, origin);
 }

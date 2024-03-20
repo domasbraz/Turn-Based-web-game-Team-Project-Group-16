@@ -203,7 +203,7 @@ function knightS3Buff(origin)
         
         origin.setAttribute("s3Used", hasUsed);
         usedTurn(origin);
-        deSelectSkills();
+        deSelectUnit();
         nextDuel();
     }
     else
@@ -251,4 +251,48 @@ function knightS4Damage(target, origin)
     {
         //TODO: inform user of insuficient energy
     }
+}
+
+function knightS5(origin)
+{
+    document.getElementsByClassName("skillInfo")[0].innerHTML =
+    "<h1>Guardian</h1><br><p>You protect an ally from enemy attacks<br>Only 1 ally can be protected at a time<br><br>Lasts 3 rounds</p>";
+    enableTargeting(false, "knightS5Buff", origin.id);
+}
+
+//TODO: finish
+function knightS5Buff(target, origin)
+{
+    target.setAttribute("protected", origin.getAttribute("class").spit(" ")[1]);
+    disableTargeting(false);
+    usedTurn(origin);
+    deSelectUnit();
+    nextDuel();
+}
+
+function knightS6(origin)
+{
+    document.getElementsByClassName("skillInfo")[0].innerHTML =
+    "<h1>Power Shift</h1><br><p>You transfer 50% of your attack to an ally<br>Only affects 1 ally at a time<br><br>Lasts 2 rounds</p>";
+    enableTargeting(false, "knightS6Buff", origin.id);
+}
+
+function knightS6Buff(target, origin)
+{
+    target.setAttribute("powershift", origin.getAttribute("class").split(" ")[1]);
+
+    let targetAtk = target.getAttribute("atk");
+    let originAtk = origin.getAttribute("atk");
+
+    originAtk /= 2;
+
+    targetAtk += originAtk;
+
+    target.setAttribute("atktransfer", originAtk);
+
+    target.setAttribute("atk", targetAtk);
+    disableTargeting(false);
+    usedTurn(origin);
+    deSelectUnit();
+    nextDuel();
 }

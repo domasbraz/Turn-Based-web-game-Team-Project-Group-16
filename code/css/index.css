@@ -69,3 +69,7 @@ body{
 #buttons{
     height: 50%;
 }
+
+button:hover{
+        background-color: #5d5f5d;
+}

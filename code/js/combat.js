@@ -75,29 +75,107 @@ function displayUnit(unitSlot)
 
 
 //add status effect to given unit
-function addStatusFx(unit)
+function addStatusFx(unit, status)
 {
-    let numFx = window[unit + "StatusNum"];
+    let numFx;
+    if (unit.hasAttribute("statusEffects"))
+    {
+        let statusFx = unit.getAttribute("statusEffects").split(" ");
+        let newStatus = "";
+
+        statusFx.forEach(function (fx)
+        {
+            if (fx == status)
+            {
+                //TODO: tooltip implementation
+                return;
+            }
+            else
+            {
+                newStatus += fx + " ";
+            }
+        })
+
+        unit.setAttribute("statusEffects", newStatus);
+    }
+    else
+    {
+        unit.setAttribute("statusEffects", status);
+    }
+    if (unit.hasAttribute("effects"))
+    {
+        numFx = parseInt(unit.getAttribute(effects));
+    }
+    else
+    {
+        numFx = 0;
+    }
 
     if (numFx < 4)
     {
         numFx++;
+        let container = document.getElementsByClassName("combatContainer")[0];
 
-        window[unit + "StatusNum"]++;
+        let unitClass = unit.getAttribute("class").split(" ")[1];
 
-        let doc = document.getElementsByTagName("div")[0];
+        let unitType = unitClass.charAt(0);
+        let unitSlot = unitClass.charAt(5);
 
-        let slot = unit.replaceAll(/[^0-9]/g,"");
-
-        if (unit.charAt(0) == "p")
+        if (unitType == "p")
         {
-            doc.innerHTML += "<div class='" + unit + "Status" + numFx + "' style='border: 1px solid blue; grid-area: 94 / " + ((67 - ((slot - 1) * 21)) + (5 * (numFx - 1))) + " / span 8 / span 4;'></div>";
+            container.innerHTML += "<div class='" + unitClass + "Status" + " " + unitType + "Info" + unitSlot + " status" + numFx + "' statusType='" + status + "' style='border: 1px solid blue; grid-area: 94 / " + ((67 - ((unitSlot - 1) * 21)) + (5 * (numFx - 1))) + " / span 8 / span 4;'>"
+            +
+            "<img width='100%' height='100%' src='../../img/png images/status effects/" + status + ".png'>"
+            +
+            "</div>";
         }
         else
         {
-            doc.innerHTML += "<div class='" + unit + "Status" + numFx + "' style='border: 1px solid blue; grid-area: 94 / " + ((115 + ((slot - 1) * 21)) + (5 * (numFx - 1))) + " / span 8 / span 4;'></div>";
+            container.innerHTML += "<div class='" + unitClass + "Status" + " " + unitType + "Info" + unitSlot + " status" + numFx + "' statusType='" + status + "' style='border: 1px solid blue; grid-area: 94 / " + ((115 + ((unitSlot - 1) * 21)) + (5 * (numFx - 1))) + " / span 8 / span 4;'>"
+            +
+            "<img width='100%' height='100%' src='../../img/png images/status effects/" + status + ".png'>"
+            +
+            "</div>";
         }
+
+        unit.setAttribute("effects", numFx);
     }
+    
+}
+
+function removeStatusFx(unit, status)
+{
+    let unitInfo = unit.getAttribute("class").split(" ")[1];
+
+    let statusFx = document.querySelectorAll("." + unitInfo + "Status");
+
+    statusFx.forEach(function (fx, index)
+    {
+        if (fx.getAttribute("statusType", status))
+        {
+            fx.parentNode.removeChild(fx);
+        }
+        else
+        {
+            let fxClass = fx.getAttribute("class").split(" ");
+            let inFirstPosition = fxClass[2].charAt(6) == "1";
+            let spaceTaken = document.getElementsByClassName("status" + (index + 1)).length > 0;
+
+            if (!inFirstPosition && !spaceTaken)
+            {
+                let posFx = fx.style.gridArea.split(" / ");
+
+                posFx[1] -= 20;
+
+                fx.style.gridArea = posFx[0] + " / " + posFx[1] + " / " + posFx[2] + " / " + posFx[3];
+
+                fx.setAttribute("class", fxClass[0] + " " + fxClass[1] + " status" + (index + 1));
+            }
+        }
+
+
+    })
+
 }
 
 //switches between card gui
@@ -1036,6 +1114,20 @@ function removeUnit(unit)
             remainingUnitHpStyle.style.gridArea = posHpStyle[0] + " / " + positionUnit[1] + " / " + posHpStyle[2] + " / " + posHpStyle[3];
             remainingUnitEnergy.style.gridArea = posEnergy[0] + " / " + positionUnit[1] + " / " + posEnergy[2] + " / " + posEnergy[3];
             remainingUnitEnergyStyle.style.gridArea = posEnergyStyle[0] + " / " + positionUnit[1] + " / " + posEnergyStyle[2] + " / " + posEnergyStyle[3];
+
+            let statusFx = document.querySelectorAll("." + unitType + "Unit" + remainingUnitSlot + "Status");
+            let posStatus;
+
+            statusFx.forEach(function (fx)
+            {
+                posStatus = fx.style.gridArea.split(" / ");
+
+                fx.style.gridArea = posStatus[0] + " / " + positionUnit[1] + " / " + posStatus[2] + " / " + posStatus[3];
+
+                let statusValue = fx.getAttribute("class").split(" ")[2];
+
+                fx.setAttribute("class", unitType + "Unit" + (index + 1) + "Status " + unitType + "Info" + (index + 1) + " " + statusValue);
+            });
 
             remainingUnit.setAttribute("class", unitType + "Units" + " " + unitType + "Unit" + (index + 1));
 

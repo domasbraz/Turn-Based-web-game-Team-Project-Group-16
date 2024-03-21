@@ -1,4 +1,4 @@
-createKnights(1);
+createKnights(2);
 createEnemy1s(2);
 
 function createKnights(amount)

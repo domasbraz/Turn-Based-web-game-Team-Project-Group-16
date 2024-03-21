@@ -2,7 +2,7 @@ function createUnitKnight(position)
 {
     //hp, atk, def, energy
     let stats = [100, 50, 5, 100];
-    let skills = [1, 2, 3, 4];
+    let skills = [1, 2, 3, 6];
 
     createUnit("pUnit" + position, "knight", stats, skills);
 }
@@ -281,8 +281,8 @@ function knightS6Buff(target, origin)
 {
     target.setAttribute("powershift", origin.getAttribute("class").split(" ")[1]);
 
-    let targetAtk = target.getAttribute("atk");
-    let originAtk = origin.getAttribute("atk");
+    let targetAtk = parseFloat(target.getAttribute("atk"));
+    let originAtk = parseFloat(origin.getAttribute("atk"));
 
     originAtk /= 2;
 
@@ -295,4 +295,6 @@ function knightS6Buff(target, origin)
     usedTurn(origin);
     deSelectUnit();
     nextDuel();
+    addStatusFx(target.getAttribute("class").split(" ")[1])
+    
 }

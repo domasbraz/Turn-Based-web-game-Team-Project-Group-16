@@ -55,12 +55,41 @@ function knightS2(origin)
 {
     disableTargeting(true);
     document.getElementsByClassName("skillInfo")[0].innerHTML =
-    "<h1>Guard</h1><br><p>Increases your defense by 30%<br><br>Lasts 2 rounds<br></p><button onclick='knightS2Buff(" + origin.id + ", false)'>Use</button>";
+    "<h1>Guard</h1><br><p>Increases your defense by 30%<br><br>Lasts 2 rounds<br></p><button onclick='knightS2Buff(" + origin.id + ")'>Use</button>";
 }
 
-function knightS2Buff(origin, remove)
+function knightS2Buff(origin)
 {
-    let element = document.getElementById(origin.id);
+    let alreadyApplied = addStatusFx(origin.id, "knightS2Buff", 2);
+
+    let def = parseFloat(origin.getAttribute("def"));
+    let defIncrease;
+    if (!alreadyApplied)
+    {
+        defIncrease = def * 0.3
+        def += defIncrease;
+
+    }
+    else
+    {
+        defIncrease = parseFloat(origin.getAttribute("knightS2Buff"));
+
+        def -= defIncrease;
+
+        defIncrease = def * 0.3;
+
+        def += defIncrease;
+    }
+
+    origin.setAttribute("def", def);
+
+    origin.setAttribute("knightS2Buff", defIncrease);
+
+    usedTurn(origin.id);
+    deSelectUnit();
+    nextDuel();
+
+/*     let element = document.getElementById(origin.id);
     let def = element.getAttribute("def");
 
     if (remove)
@@ -96,11 +125,23 @@ function knightS2Buff(origin, remove)
         usedTurn(element);
         deSelectUnit();
         nextDuel();
-    }
+    } */
 }
 
-//TODO: show status fx
-function knightS2Duration(unit, type)
+function removeknightS2Buff(origin)
+{
+    removeStatusFx(origin.id, "knightS2Buff");
+
+    let def = origin.getAttribute("def");
+    let defIncrease = origin.getAttribute("knightS2Buff");
+
+    def -= defIncrease;
+
+    origin.setAttribute("def", def);
+    origin.removeAttribute("knightS2Buff");
+}
+
+/* function knightS2Duration(unit, type)
 {
     unit = document.getElementById(unit.id);
     let duration;
@@ -149,7 +190,7 @@ function knightS2Duration(unit, type)
             }
             break;
     }
-}
+} */
 
 function knightS3(origin)
 {
@@ -222,7 +263,7 @@ function knightS4(origin)
 }
 
 
-//TODO: implement armour pierce
+//TODO: implement armour pierce or not?
 function knightS4Damage(target, origin)
 {
     let energy = document.getElementById(origin.id).getAttribute("energy");
@@ -256,18 +297,26 @@ function knightS4Damage(target, origin)
 function knightS5(origin)
 {
     document.getElementsByClassName("skillInfo")[0].innerHTML =
-    "<h1>Guardian</h1><br><p>You protect an ally from enemy attacks<br>Only 1 ally can be protected at a time<br><br>Lasts 3 rounds</p>";
-    enableTargeting(false, "knightS5Buff", origin.id);
+    "<h1>Guardian</h1><br><p>You protect an ally from enemy attacks<br>Only 1 ally can be protected at a time<br><br>Lasts 2 rounds</p>";
+    enableTargeting(false, "knightS5Guardian", origin.id);
 }
 
 //TODO: finish
-function knightS5Buff(target, origin)
+function knightS5Guardian(target, origin)
 {
     target.setAttribute("protected", origin.getAttribute("class").spit(" ")[1]);
+    addStatusFx(target.id, "knightS5Guardian", 2);
+
     disableTargeting(false);
     usedTurn(origin);
     deSelectUnit();
     nextDuel();
+}
+
+function removeknightS5Guardian(unit)
+{
+    removeStatusFx(unit.id, "knightS5Guardian");
+    unit.removeAttribute("protected");
 }
 
 function knightS6(origin)
@@ -279,22 +328,51 @@ function knightS6(origin)
 
 function knightS6Buff(target, origin)
 {
-    target.setAttribute("powershift", origin.getAttribute("class").split(" ")[1]);
+    let alreadyApplied = addStatusFx(target.id, "knightS6Buff", 2);
+    if (!alreadyApplied)
+    {
+        target.setAttribute("powershift", origin.getAttribute("class").split(" ")[1]);
 
-    let targetAtk = parseFloat(target.getAttribute("atk"));
-    let originAtk = parseFloat(origin.getAttribute("atk"));
+        let targetAtk = parseFloat(target.getAttribute("atk"));
+        let originAtk = parseFloat(origin.getAttribute("atk"));
 
-    originAtk /= 2;
+        originAtk /= 2;
 
-    targetAtk += originAtk;
+        targetAtk += originAtk;
 
-    target.setAttribute("atktransfer", originAtk);
+        target.setAttribute("atktransfer", originAtk);
 
-    target.setAttribute("atk", targetAtk);
-    disableTargeting(false);
-    usedTurn(origin);
-    deSelectUnit();
-    nextDuel();
-    addStatusFx(target.getAttribute("class").split(" ")[1])
-    
+        target.setAttribute("atk", targetAtk);
+        disableTargeting(false);
+        usedTurn(origin);
+        deSelectUnit();
+        nextDuel();
+    }
+}
+
+function removeknightS6Buff(unit)
+{
+    let origin = unit.getAttribute("powershift");
+
+    unit.removeAttribute("powershift");
+
+    let atkTransfer = parseFloat(unit.getAttribute("atktransfer"));
+
+    let unitAtk = parseFloat(unit.getAttribute("atk"));
+
+    unitAtk -= atkTransfer;
+
+    unit.setAttribute("atk", unitAtk);
+
+    unit.removeAttribute("atktransfer");
+
+    origin = document.getElementsByClassName(origin)[0];
+
+    let originAtk = origin.getAttribute("atk");
+
+    originAtk += atkTransfer;
+
+    origin.setAttribute("atk", originAtk);
+
+    removeStatusFx(unit.id, "knightS6Buff");
 }

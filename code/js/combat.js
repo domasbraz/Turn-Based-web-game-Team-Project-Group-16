@@ -75,27 +75,28 @@ function displayUnit(unitSlot)
 
 
 //add status effect to given unit
-function addStatusFx(unit, status)
+function addStatusFx(unit, status, duration)
 {
+    let unitClass = unit.getAttribute("class").split(" ")[1];
     let numFx;
     if (unit.hasAttribute("statusEffects"))
     {
         let statusFx = unit.getAttribute("statusEffects").split(" ");
         let newStatus = "";
 
-        statusFx.forEach(function (fx)
+        statusFx.forEach(function (fx, index)
         {
             if (fx == status)
             {
-                //TODO: tooltip implementation
-                return;
+                document.getElementsByClassName(unitClass + "Status")[index].setAttribute("duration", duration);
+                return true;
             }
             else
             {
                 newStatus += fx + " ";
             }
         })
-
+        newStatus += status;
         unit.setAttribute("statusEffects", newStatus);
     }
     else
@@ -113,33 +114,42 @@ function addStatusFx(unit, status)
 
     if (numFx < 4)
     {
+        let statusIcon = status;
+
+        if (status.slice(-4) == "Buff")
+        {
+            statusIcon = "buff";
+        }
+        else if (status.slice(-8) == "Guardian")
+        {
+            statusIcon = "guardian"
+        }
         numFx++;
         let container = document.getElementsByClassName("combatContainer")[0];
-
-        let unitClass = unit.getAttribute("class").split(" ")[1];
 
         let unitType = unitClass.charAt(0);
         let unitSlot = unitClass.charAt(5);
 
         if (unitType == "p")
         {
-            container.innerHTML += "<div class='" + unitClass + "Status" + " " + unitType + "Info" + unitSlot + " status" + numFx + "' statusType='" + status + "' style='border: 1px solid blue; grid-area: 94 / " + ((67 - ((unitSlot - 1) * 21)) + (5 * (numFx - 1))) + " / span 8 / span 4;'>"
+            container.innerHTML += "<div class='" + unitClass + "Status" + " " + unitType + "Info" + unitSlot + " status" + numFx + "' statusType='" + status + "' duration='" + duration + "' style='border: 1px solid blue; grid-area: 94 / " + ((67 - ((unitSlot - 1) * 21)) + (5 * (numFx - 1))) + " / span 8 / span 4;'>"
             +
-            "<img width='100%' height='100%' src='../../img/png images/status effects/" + status + ".png'>"
+            "<img width='100%' height='100%' src='../../img/png images/status effects/" + statusIcon + ".png'>"
             +
             "</div>";
         }
         else
         {
-            container.innerHTML += "<div class='" + unitClass + "Status" + " " + unitType + "Info" + unitSlot + " status" + numFx + "' statusType='" + status + "' style='border: 1px solid blue; grid-area: 94 / " + ((115 + ((unitSlot - 1) * 21)) + (5 * (numFx - 1))) + " / span 8 / span 4;'>"
+            container.innerHTML += "<div class='" + unitClass + "Status" + " " + unitType + "Info" + unitSlot + " status" + numFx + "' statusType='" + status + "' duration='" + duration + "' style='border: 1px solid blue; grid-area: 94 / " + ((115 + ((unitSlot - 1) * 21)) + (5 * (numFx - 1))) + " / span 8 / span 4;'>"
             +
-            "<img width='100%' height='100%' src='../../img/png images/status effects/" + status + ".png'>"
+            "<img width='100%' height='100%' src='../../img/png images/status effects/" + statusIcon + ".png'>"
             +
             "</div>";
         }
 
         unit.setAttribute("effects", numFx);
     }
+    return false;
     
 }
 
@@ -148,6 +158,8 @@ function removeStatusFx(unit, status)
     let unitInfo = unit.getAttribute("class").split(" ")[1];
 
     let statusFx = document.querySelectorAll("." + unitInfo + "Status");
+
+    let unitStatusInfo = "";
 
     statusFx.forEach(function (fx, index)
     {
@@ -171,11 +183,22 @@ function removeStatusFx(unit, status)
 
                 fx.setAttribute("class", fxClass[0] + " " + fxClass[1] + " status" + (index + 1));
             }
+            unitStatusInfo += fx.getAttribute("statusType") + " ";
         }
+    });
 
+    if (unitStatusInfo.length > 0)
+    {
+        unit.setAttribute("statusEffects", unitStatusInfo);
+    }
+    else
+    {
+        unit.removeAttribute("statusEffects");
+    }
 
-    })
-
+    let numFx = parseInt(unit.getAttribute("effects"));
+    numFx--;
+    unit.setAttribute("effects", numFx);
 }
 
 //switches between card gui
@@ -605,6 +628,7 @@ function nextRound()
     setTurns();
     wonLast = null;
     regenEnergy();
+    postRoundConditionS();
     startDuel();
 }
 
@@ -1004,6 +1028,7 @@ function updateUnitHp(unit)
 
     if (newHp <= 0)
     {
+        removeUnitPreconditions();
         removeUnit(unit);
     }
     else
@@ -1228,4 +1253,93 @@ function skipTurn(unit)
     },
     3000
     );
+}
+
+function postRoundConditionS()
+{
+    statusDurationDown();
+}
+
+function statusDurationDown()
+{
+    let playerUnits = document.querySelectorAll("pUnits");
+
+    playerUnits.forEach(function (unit)
+    {
+        let unitClass = unit.getAttribute("class").split(" ")[1];
+        if (unit.hasAttribute("statusEffects"))
+        {
+            let statusFx = document.querySelectorAll("." + unitClass + "Status");
+
+            statusFx.forEach(function (fx)
+            {
+                let duration = parseInt(fx.getAttribute("duration"));
+
+                duration--;
+
+                if (duration < 1)
+                {
+                    removeEffect(unit, fx.getAttribute("statusType"));
+                }
+                else
+                {
+                    fx.setAttribute("duration", duration);
+                }
+            })
+        }
+    });
+
+    let enemyUnits = document.querySelectorAll("eUnits");
+
+    enemyUnits.forEach(function (unit)
+    {
+        let unitClass = unit.getAttribute("class").split(" ")[1];
+        if (unit.hasAttribute("statusEffects"))
+        {
+            let statusFx = document.querySelectorAll("." + unitClass + "Status");
+
+            statusFx.forEach(function (fx)
+            {
+                let duration = parseInt(fx.getAttribute("duration"));
+
+                duration--;
+
+                if (duration < 1)
+                {
+                    removeEffect(unit, fx.getAttribute("statusType"));
+                }
+                else
+                {
+                    fx.setAttribute("duration", duration);
+                }
+            })
+        }
+    });
+}
+
+function removeEffect(unit, effect)
+{
+    window["remove" + effect](unit.id);
+}
+
+function removeUnitPreconditions(unit)
+{
+    checkGuardian(unit.id);
+}
+
+function checkGuardian(unit)
+{
+    let protectedUnits = document.querySelectorAll("[protected]");
+
+    let unitClass = unit.getAttribute("class").split(" ")[1];
+
+    protectedUnits.forEach(function (protectedUnit)
+    {
+        let guardian = protectedUnit.getAttribute("protected");
+
+        if (guardian == unitClass)
+        {
+            protectedUnit.removeAttribute("protected");
+        }
+    });
 }

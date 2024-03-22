@@ -60,7 +60,7 @@ function knightS2(origin)
 
 function knightS2Buff(origin)
 {
-    let alreadyApplied = addStatusFx(origin.id, "knightS2Buff", 2);
+    let alreadyApplied = addStatusFx(origin, "knightS2Buff", 2);
 
     let def = parseFloat(origin.getAttribute("def"));
     let defIncrease;
@@ -85,9 +85,8 @@ function knightS2Buff(origin)
 
     origin.setAttribute("knightS2Buff", defIncrease);
 
-    usedTurn(origin.id);
-    deSelectUnit();
-    nextDuel();
+    usedTurn(origin);
+    nextDuel(origin);
 
 /*     let element = document.getElementById(origin.id);
     let def = element.getAttribute("def");
@@ -130,7 +129,7 @@ function knightS2Buff(origin)
 
 function removeknightS2Buff(origin)
 {
-    removeStatusFx(origin.id, "knightS2Buff");
+    removeStatusFx(origin, "knightS2Buff");
 
     let def = origin.getAttribute("def");
     let defIncrease = origin.getAttribute("knightS2Buff");
@@ -244,8 +243,7 @@ function knightS3Buff(origin)
         
         origin.setAttribute("s3Used", hasUsed);
         usedTurn(origin);
-        deSelectUnit();
-        nextDuel();
+        nextDuel(origin);
     }
     else
     {
@@ -301,21 +299,19 @@ function knightS5(origin)
     enableTargeting(false, "knightS5Guardian", origin.id);
 }
 
-//TODO: finish
 function knightS5Guardian(target, origin)
 {
     target.setAttribute("protected", origin.getAttribute("class").spit(" ")[1]);
-    addStatusFx(target.id, "knightS5Guardian", 2);
+    addStatusFx(target, "knightS5Guardian", 2);
 
     disableTargeting(false);
     usedTurn(origin);
-    deSelectUnit();
-    nextDuel();
+    nextDuel(origin);
 }
 
 function removeknightS5Guardian(unit)
 {
-    removeStatusFx(unit.id, "knightS5Guardian");
+    removeStatusFx(unit, "knightS5Guardian");
     unit.removeAttribute("protected");
 }
 
@@ -328,7 +324,7 @@ function knightS6(origin)
 
 function knightS6Buff(target, origin)
 {
-    let alreadyApplied = addStatusFx(target.id, "knightS6Buff", 2);
+    let alreadyApplied = addStatusFx(target, "knightS6Buff", 2);
     if (!alreadyApplied)
     {
         target.setAttribute("powershift", origin.getAttribute("class").split(" ")[1]);
@@ -345,8 +341,7 @@ function knightS6Buff(target, origin)
         target.setAttribute("atk", targetAtk);
         disableTargeting(false);
         usedTurn(origin);
-        deSelectUnit();
-        nextDuel();
+        nextDuel(origin);
     }
 }
 
@@ -374,5 +369,5 @@ function removeknightS6Buff(unit)
 
     origin.setAttribute("atk", originAtk);
 
-    removeStatusFx(unit.id, "knightS6Buff");
+    removeStatusFx(unit, "knightS6Buff");
 }

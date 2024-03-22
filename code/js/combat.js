@@ -103,6 +103,7 @@ function addStatusFx(unit, status, duration)
     {
         unit.setAttribute("statusEffects", status);
     }
+
     if (unit.hasAttribute("effects"))
     {
         numFx = parseInt(unit.getAttribute(effects));
@@ -134,7 +135,7 @@ function addStatusFx(unit, status, duration)
         {
             container.innerHTML += "<div class='" + unitClass + "Status" + " " + unitType + "Info" + unitSlot + " status" + numFx + "' statusType='" + status + "' duration='" + duration + "' style='border: 1px solid blue; grid-area: 94 / " + ((67 - ((unitSlot - 1) * 21)) + (5 * (numFx - 1))) + " / span 8 / span 4;'>"
             +
-            "<img width='100%' height='100%' src='../../img/png images/status effects/" + statusIcon + ".png'>"
+            "<img width='100%' height='100%' draggable='false' src='../../img/png images/status effects/" + statusIcon + ".png'>"
             +
             "</div>";
         }
@@ -142,7 +143,7 @@ function addStatusFx(unit, status, duration)
         {
             container.innerHTML += "<div class='" + unitClass + "Status" + " " + unitType + "Info" + unitSlot + " status" + numFx + "' statusType='" + status + "' duration='" + duration + "' style='border: 1px solid blue; grid-area: 94 / " + ((115 + ((unitSlot - 1) * 21)) + (5 * (numFx - 1))) + " / span 8 / span 4;'>"
             +
-            "<img width='100%' height='100%' src='../../img/png images/status effects/" + statusIcon + ".png'>"
+            "<img width='100%' height='100%' draggable='false' src='../../img/png images/status effects/" + statusIcon + ".png'>"
             +
             "</div>";
         }
@@ -569,9 +570,27 @@ function endCombat()
 var playerTurns = 1;
 var aiTurns = 1;
 
-//performes the next duel
-function nextDuel()
+function replaceAttributes(oldUnitInfo, newUnitInfo) 
 {
+    let newInfo = newUnitInfo.attributes;
+    for (let x = 0; x < newInfo.length; x++) 
+    {
+        let info = newInfo[x];
+        if (!oldUnitInfo.hasAttribute(info.name) || oldUnitInfo.getAttribute(info.name) !== info.value) 
+        {
+            oldUnitInfo.setAttribute(info.name, info.value);
+        }
+    }
+}
+
+//performes the next duel
+function nextDuel(unit)
+{
+    if (unit != undefined)
+    {
+        replaceAttributes(document.getElementById(unit.id), unit);
+    }
+    
     playedFirst = null;
     switchGuiBot("cards");
     document.getElementsByClassName("hand")[0].style.display = "none";
@@ -622,6 +641,7 @@ function nextDuel()
 function nextRound()
 {
     round++;
+    console.log(round);
     resetHand();
     cards = dealCards();
     displayCards();
@@ -908,7 +928,14 @@ function disableTargeting(isEnemy)
         {
             unit.setAttribute("onmouseover", "");
             unit.setAttribute("onmouseout", "");
-            unit.setAttribute("onclick", "selectUnit(this)");
+            if (unit.getAttribute("hasturn") == "true")
+            {
+                unit.setAttribute("onclick", "selectUnit(this)");
+            }
+            else
+            {
+                unit.setAttribute("onclick", "");
+            }
         });
         if (targeting)
         {
@@ -1258,6 +1285,7 @@ function skipTurn(unit)
 function postRoundConditionS()
 {
     statusDurationDown();
+    resetSelection();
 }
 
 function statusDurationDown()
@@ -1324,7 +1352,7 @@ function removeEffect(unit, effect)
 
 function removeUnitPreconditions(unit)
 {
-    checkGuardian(unit.id);
+    checkGuardian(unit);
 }
 
 function checkGuardian(unit)
@@ -1341,5 +1369,15 @@ function checkGuardian(unit)
         {
             protectedUnit.removeAttribute("protected");
         }
+    });
+}
+
+function resetSelection()
+{
+    let units = document.querySelectorAll(".pUnits");
+
+    units.forEach(function (unit)
+    {
+        unit.setAttribute("onclick", "selectUnit(this)");
     });
 }

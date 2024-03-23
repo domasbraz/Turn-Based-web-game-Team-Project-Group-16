@@ -1055,7 +1055,7 @@ function updateUnitHp(unit)
 
     if (newHp <= 0)
     {
-        removeUnitPreconditions();
+        removeUnitPreconditions(unit);
         removeUnit(unit);
     }
     else

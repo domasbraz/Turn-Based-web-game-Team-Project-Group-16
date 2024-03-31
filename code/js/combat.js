@@ -1,7 +1,3 @@
-//TODO: change implementation of statusfx
-var p1StatusNum, p2StatusNum, p3StatusNum, p4StatusNum, e1StatusNum, e2StatusNum, e3StatusNum, e4StatusNum;
-p1StatusNum = p2StatusNum = p3StatusNum = p4StatusNum = e1StatusNum = e2StatusNum = e3StatusNum = e4StatusNum = 0;
-
 
 function displayUnit(unitSlot)
 {
@@ -995,8 +991,8 @@ function removeAllyTarget(target)
 
 function finalAttackCalc(target, skillDmg)
 {
-    let hp = target.getAttribute("hp");
-    let def = target.getAttribute("def");
+    let hp = parseFloat(target.getAttribute("hp"));
+    let def = parseFloat(target.getAttribute("def"));
 
     if ((def / skillDmg) > 0.7)
     {
@@ -1004,6 +1000,11 @@ function finalAttackCalc(target, skillDmg)
     }
 
     let finalDmg = skillDmg - def;
+
+    if (hasStatusFx(target, "curse"))
+    {
+        finalDmg *= 1.1;
+    }
 
     target.setAttribute("hp", hp - finalDmg);
     disableTargeting(true);
@@ -1285,6 +1286,7 @@ function skipTurn(unit)
 function postRoundConditionS()
 {
     statusDurationDown();
+    decreaseCooldowns();
     resetSelection();
 }
 
@@ -1380,4 +1382,90 @@ function resetSelection()
     {
         unit.setAttribute("onclick", "selectUnit(this)");
     });
+}
+
+function hasStatusFx(unit, status)
+{
+    if (unit.hasAttribute("statusEffects"))
+    {
+        let statusFx = unit.getAttribute("statusEffects").split(" ");
+
+        statusFx.forEach(function (fx)
+        {
+            if (fx == status)
+            {
+                return true;
+            }
+        })
+    }
+    return false;
+}
+
+function setCooldown(unit, skill, duration)
+{
+    if (unit.hasAttribute("cooldowns"))
+    {
+        let existingCooldowns = unit.getAttribute("cooldowns");
+        unit.setAttribute("cooldown" , existingCooldowns += " " + skill);
+    }
+    else
+    {
+        unit.setAttribute("cooldowns", skill);
+    }
+
+    unit.setAttribute(skill + "CD", duration);
+}
+
+function hasCooldown(unit, skill)
+{
+    if (unit.hasAttribute("cooldowns"))
+    {
+        let cooldowns = unit.getAttribute("cooldowns").split(" ");
+
+        cooldowns.forEach(function (cooldown)
+        {
+            if (cooldown = skill)
+            {
+                return true;
+            }
+        })
+    }
+    return false;
+}
+
+function decreaseCooldowns()
+{
+    let units = document.querySelectorAll("[cooldowns]");
+
+    units.forEach(function (unit)
+    {
+        let cooldowns = unit.getAttribute("cooldowns").split(" ");
+
+        let newCooldowns = "";
+
+        cooldowns.forEach(function (cooldown)
+        {
+            let duration = parseInt(unit.getAttribute(cooldown + "CD"));
+
+            if (duration == 1)
+            {
+                unit.removeAttribute(cooldown + "CD");
+            }
+            else
+            {
+                duration--;
+                unit.setAttribute(cooldown + "CD", duration);
+                newCooldowns += cooldown + " ";
+            }
+        });
+
+        if (newCooldowns == "")
+        {
+            unit.removeAttribute("cooldowns");
+        }
+        else
+        {
+            unit.setAttribute("cooldowns", newCooldowns);
+        }
+    })
 }

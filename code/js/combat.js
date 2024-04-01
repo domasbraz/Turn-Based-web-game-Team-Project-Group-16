@@ -80,18 +80,24 @@ function addStatusFx(unit, status, duration)
         let statusFx = unit.getAttribute("statusEffects").split(" ");
         let newStatus = "";
 
-        statusFx.forEach(function (fx, index)
+        for (let index = 0; index < statusFx.length; index++)
         {
+            let fx = statusFx[index];
             if (fx == status)
             {
                 document.getElementsByClassName(unitClass + "Status")[index].setAttribute("duration", duration);
+                if (fx == "poison")
+                {
+                    addPoisonStack(unitClass);
+                }
+                
                 return true;
             }
             else
             {
                 newStatus += fx + " ";
             }
-        })
+        }
         newStatus += status;
         unit.setAttribute("statusEffects", newStatus);
     }
@@ -144,6 +150,12 @@ function addStatusFx(unit, status, duration)
             "</div>";
         }
 
+        if (status == "poison")
+        {
+            console.log("being executed");
+            addPoisonStack(unitClass);
+        }
+
         unit.setAttribute("effects", numFx);
     }
     return false;
@@ -160,9 +172,14 @@ function removeStatusFx(unit, status)
 
     statusFx.forEach(function (fx, index)
     {
-        if (fx.getAttribute("statusType", status))
+        if (fx.getAttribute("statusType") == status)
         {
             fx.parentNode.removeChild(fx);
+            if (status == "poison")
+            {
+                let poison = document.getElementsByClassName(unitInfo + "PoisonStacks")[0];
+                poison.parentNode.removeChild(poison);
+            }
         }
         else
         {
@@ -177,6 +194,12 @@ function removeStatusFx(unit, status)
                 posFx[1] -= 20;
 
                 fx.style.gridArea = posFx[0] + " / " + posFx[1] + " / " + posFx[2] + " / " + posFx[3];
+
+                if (fx.getAttribute("statusType") == "poison")
+                {
+                    let poison = document.getElementsByClassName(unitInfo + "PoisonStacks")[0];
+                    poison.style.gridArea = posFx[0] + " / " + posFx[1] + " / " + posFx[2] + " / " + posFx[3];
+                }
 
                 fx.setAttribute("class", fxClass[0] + " " + fxClass[1] + " status" + (index + 1));
             }
@@ -196,6 +219,32 @@ function removeStatusFx(unit, status)
     let numFx = parseInt(unit.getAttribute("effects"));
     numFx--;
     unit.setAttribute("effects", numFx);
+}
+
+function addPoisonStack(unitClass)
+{
+    let poison = document.getElementsByClassName(unitClass + "PoisonStacks");
+
+    if (poison.length > 0)
+    {
+        let stacks = parseInt(poison[0].textContent);
+
+        stacks++;
+
+        poison[0].textContent = stacks;
+    }
+    else
+    {
+        let unitType = unitClass.charAt(0);
+
+        let poisonFx = document.querySelector("." + unitClass + "Status[statustype='poison']");
+
+        let position = poisonFx.style.gridArea;
+
+        let container = document.getElementsByClassName("combatContainer")[0];
+
+        container.innerHTML += "<div class='" + unitClass + "PoisonStacks " + unitType + "Info" + unitClass.charAt(5) + "' style='grid-area:" + position + "'>1</div>";
+    }
 }
 
 //switches between card gui
@@ -1180,6 +1229,15 @@ function removeUnit(unit)
                 let statusValue = fx.getAttribute("class").split(" ")[2];
 
                 fx.setAttribute("class", unitType + "Unit" + (index + 1) + "Status " + unitType + "Info" + (index + 1) + " " + statusValue);
+
+                if (fx.getAttribute("statusType") == "poison")
+                {
+                    let poison = document.getElementsByClassName(unitType + "Unit" + remainingUnitSlot + "PoisonStacks")[0];
+
+                    poison.style.gridArea = posStatus[0] + " / " + positionUnit[1] + " / " + posStatus[2] + " / " + posStatus[3];
+
+                    poison.setAttribute("class", unitType + "Unit" + (index + 1) + "PoisonStacks " + unitType + "Info" + (index + 1));
+                }
             });
 
             remainingUnit.setAttribute("class", unitType + "Units" + " " + unitType + "Unit" + (index + 1));
@@ -1466,6 +1524,49 @@ function decreaseCooldowns()
         else
         {
             unit.setAttribute("cooldowns", newCooldowns);
+        }
+    })
+}
+
+function poisonDmg()
+{
+    let pUnits = document.querySelectorAll("pUnits");
+    let eUnits = document.querySelectorAll("eUnits");
+
+    //https://www.w3schools.com/howto/howto_js_spread_operator.asp
+    let units = [...pUnits, ...eUnits];
+
+    units.forEach(function (unit)
+    {
+        if (hasStatusFx(unit, "poison"))
+        {
+            let unitClass = unit.getAttribute("class").split(" ")[1];
+            let poison = document.getElementsByClassName(unitClass + "PoisonStacks")[0];
+
+            let stacks = parseInt(poison.textContent);
+
+            let maxHp = parseFloat(unit.getAttribute("maxHp"));
+
+            let hp = parseFloat(unit.getAttribute("hp"));
+
+            let dmg = maxHp * (stacks / 100);
+
+            hp -= dmg;
+
+            unit.setAttribute("hp", hp);
+
+            updateUnitHp(unit);
+
+            stacks = parseInt(stacks / 2);
+
+            if (stacks > 0)
+            {
+                poison.textContent = stacks;
+            }
+            else
+            {
+                removeStatusFx(unit, "poison");
+            }
         }
     })
 }

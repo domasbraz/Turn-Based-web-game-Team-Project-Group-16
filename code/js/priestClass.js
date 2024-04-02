@@ -50,3 +50,65 @@ function priestS2Curse(target, origin)
     usedTurn(origin);
     nextDuel(origin);
 }
+
+function priestS3(origin)
+{
+    document.getElementsByClassName("skillInfo")[0].innerHTML =
+    "<h1>Poison Mist</h1><br><p>Attacks an enemy 5 times with a 20% chance of applying poison<br><br>Cooldown: 2 rounds</p>";
+
+    if (hasCooldown(origin, "S3"))
+    {
+        enableTargetting(true, "priestS3Attack", origin);
+    }
+}
+
+function priestS3Attack(target, origin)
+{
+    let numOfAtks = 5;
+
+    for (numOfAtks; numOfAtks > 0; numOfAtks--)
+    {
+        let chance = getRndInteger(1, 5);
+
+        if (chance == 1)
+        {
+            addStatusFx(target, "poison", 99);
+        }
+    }
+
+    setCooldown(origin, "S3", 2);
+    usedTurn(origin);
+    nextDuel(origin);
+}
+
+function priestS4(origin)
+{
+    document.getElementsByClassName("skillInfo")[0].innerHTML =
+    "<h1>Divine Blessing</h1><br><p>Heal your party for 30% of your attack<br><br>Cooldown: 2 rounds</p>";
+
+    if (hasCooldown(origin, "S4"))
+    {
+        enableTargetting(false, "priestS4Heal", origin);
+    }
+}
+
+function priestS4Heal(target, origin)
+{
+    //target not used but included because of structure of how the skill functions are called
+
+    let heal = parseFloat(origin.getAttribute("atk"));
+    heal *= 0.3;
+    let units = document.querySelectorAll(".pUnits");
+
+    units.forEach(function (unit)
+    {
+        let hp = parseFloat(unit.getAttribute("hp"));
+        hp += heal;
+        unit.setAttribute("hp", hp);
+        updateUnitHp(unit);
+    })
+
+    setCooldown(origin, "S4", 2);
+    usedTurn(origin);
+    nextDuel(origin);
+}

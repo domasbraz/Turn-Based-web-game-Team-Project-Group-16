@@ -1343,6 +1343,7 @@ function skipTurn(unit)
 
 function postRoundConditionS()
 {
+    poisonDmg();
     statusDurationDown();
     decreaseCooldowns();
     resetSelection();
@@ -1569,4 +1570,10 @@ function poisonDmg()
             }
         }
     })
+}
+
+function getRndInteger(min, max) 
+{
+    max++;
+    return Math.floor(Math.random() * (max - min)) + min;
 }

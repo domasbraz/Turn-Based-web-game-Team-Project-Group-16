@@ -1529,47 +1529,69 @@ function decreaseCooldowns()
     })
 }
 
-function poisonDmg()
+function poisonDmg(target)
 {
-    let pUnits = document.querySelectorAll("pUnits");
-    let eUnits = document.querySelectorAll("eUnits");
-
-    //https://www.w3schools.com/howto/howto_js_spread_operator.asp
-    let units = [...pUnits, ...eUnits];
-
-    units.forEach(function (unit)
+    if (target != undefined)
     {
-        if (hasStatusFx(unit, "poison"))
+        let targetClass = target.getAttribute("class").split(" ")[1];
+        let poison = document.getElementsByClassName(targetClass + "PoisonStacks")[0];
+
+        let stacks = parseInt(poison.textContent);
+
+        let maxHp = parseFloat(target.getAttribute("maxHp"));
+
+        let hp = parseFloat(target.getAttribute("hp"));
+
+        let dmg = maxHp * (stacks / 100);
+
+        hp -= dmg;
+
+        target.setAttribute("hp", hp);
+
+        updateUnitHp(target);
+    }
+    else
+    {
+        let pUnits = document.querySelectorAll("pUnits");
+        let eUnits = document.querySelectorAll("eUnits");
+
+        //https://www.w3schools.com/howto/howto_js_spread_operator.asp
+        let units = [...pUnits, ...eUnits];
+
+        units.forEach(function (unit)
         {
-            let unitClass = unit.getAttribute("class").split(" ")[1];
-            let poison = document.getElementsByClassName(unitClass + "PoisonStacks")[0];
-
-            let stacks = parseInt(poison.textContent);
-
-            let maxHp = parseFloat(unit.getAttribute("maxHp"));
-
-            let hp = parseFloat(unit.getAttribute("hp"));
-
-            let dmg = maxHp * (stacks / 100);
-
-            hp -= dmg;
-
-            unit.setAttribute("hp", hp);
-
-            updateUnitHp(unit);
-
-            stacks = parseInt(stacks / 2);
-
-            if (stacks > 0)
+            if (hasStatusFx(unit, "poison"))
             {
-                poison.textContent = stacks;
+                let unitClass = unit.getAttribute("class").split(" ")[1];
+                let poison = document.getElementsByClassName(unitClass + "PoisonStacks")[0];
+
+                let stacks = parseInt(poison.textContent);
+
+                let maxHp = parseFloat(unit.getAttribute("maxHp"));
+
+                let hp = parseFloat(unit.getAttribute("hp"));
+
+                let dmg = maxHp * (stacks / 100);
+
+                hp -= dmg;
+
+                unit.setAttribute("hp", hp);
+
+                updateUnitHp(unit);
+
+                stacks = parseInt(stacks / 2);
+
+                if (stacks > 0)
+                {
+                    poison.textContent = stacks;
+                }
+                else
+                {
+                    removeStatusFx(unit, "poison");
+                }
             }
-            else
-            {
-                removeStatusFx(unit, "poison");
-            }
-        }
-    })
+        })
+    }
 }
 
 function getRndInteger(min, max) 

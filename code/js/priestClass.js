@@ -35,9 +35,13 @@ function priestS2(origin)
     document.getElementsByClassName("skillInfo")[0].innerHTML =
     "<h1>Curse of Pain</h1><br><p>Curses an enemy, making them take 10% more damage for 2 rounds<br><br>Cooldown: 2 rounds</p>";
 
-    if (hasCooldown(origin, "S2"))
+    if (!hasCooldown(origin, "S2"))
     {
         enableTargetting(true, "priestS2Curse", origin);
+    }
+    else
+    {
+        document.getElementsByClassName("skillInfo")[0].innerHTML += "<p><b>Currently on Cooldown</b></p>"
     }
 }
 
@@ -56,9 +60,13 @@ function priestS3(origin)
     document.getElementsByClassName("skillInfo")[0].innerHTML =
     "<h1>Poison Mist</h1><br><p>Attacks an enemy 5 times with a 20% chance of applying poison<br><br>Cooldown: 2 rounds</p>";
 
-    if (hasCooldown(origin, "S3"))
+    if (!hasCooldown(origin, "S3"))
     {
         enableTargetting(true, "priestS3Attack", origin);
+    }
+    else
+    {
+        document.getElementsByClassName("skillInfo")[0].innerHTML += "<p><b>Currently on Cooldown</b></p>"
     }
 }
 
@@ -86,9 +94,13 @@ function priestS4(origin)
     document.getElementsByClassName("skillInfo")[0].innerHTML =
     "<h1>Divine Blessing</h1><br><p>Heal your party for 30% of your attack<br><br>Cooldown: 2 rounds</p>";
 
-    if (hasCooldown(origin, "S4"))
+    if (!hasCooldown(origin, "S4"))
     {
         enableTargetting(false, "priestS4Heal", origin);
+    }
+    else
+    {
+        document.getElementsByClassName("skillInfo")[0].innerHTML += "<p><b>Currently on Cooldown</b></p>"
     }
 }
 
@@ -109,6 +121,68 @@ function priestS4Heal(target, origin)
     })
 
     setCooldown(origin, "S4", 2);
+    usedTurn(origin);
+    nextDuel(origin);
+}
+
+function priestS5(origin)
+{
+    document.getElementsByClassName("skillInfo")[0].innerHTML =
+    "<h1>Purify</h1><br><p>Cleanse an ally form all debuffs<br><br>Cooldown: 3 rounds</p>";
+
+    if (!hasCooldown(origin, "S5"))
+    {
+        enableTargetting(false, "priestS5Buff", origin);
+    }
+    else
+    {
+        document.getElementsByClassName("skillInfo")[0].innerHTML += "<p><b>Currently on Cooldown</b></p>"
+    }
+}
+
+function priestS5Buff(target, origin)
+{
+    if (hasStatusFx(target, "poison"))
+    {
+        removeStatusFx(target, "poison");
+    }
+    if (hasStatusFx(target, "debuff"))
+    {
+        removeStatusFx(target, "debuff");
+    }
+    if (hasStatusFx(target, "bleed"))
+    {
+        removeStatusFx(target, "bleed");
+    }
+
+    setCooldown(origin, "S5", 3);
+    usedTurn(origin);
+    nextDuel(origin);
+}
+
+function priestS6(origin)
+{
+    document.getElementsByClassName("skillInfo")[0].innerHTML =
+    "<h1>Blood Boil</h1><br><p>Makes the enemy take poison damage based on their stacks<br><br>Cooldown: 3 rounds</p>";
+
+    if (!hasCooldown(origin, "S6"))
+    {
+        enableTargetting(true, "priestS6Attack", origin);
+    }
+    else
+    {
+        document.getElementsByClassName("skillInfo")[0].innerHTML += "<p><b>Currently on Cooldown</b></p>"
+    }
+}
+
+function priestS6Attack(target, origin)
+{
+    if (hasStatusFx(target, "poison"))
+    {
+        poisonDmg(target);
+    }
+
+    setCooldown(origin, "S6", 3);
     usedTurn(origin);
     nextDuel(origin);
 }

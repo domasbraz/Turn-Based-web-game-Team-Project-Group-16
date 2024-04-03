@@ -11,7 +11,7 @@ function priestS1(origin)
     document.getElementsByClassName("skillInfo")[0].innerHTML =
     "<h1>Quick Heal</h1><br><p>Heals an ally for 50% of your attack<br><br>Cooldown: 2 rounds</p>";
 
-    enableTargetting(false, "priestS1Heal", origin);
+    enableTargeting(false, "priestS1Heal", origin.id);
 }
 
 function priestS1Heal(target, origin)
@@ -37,7 +37,7 @@ function priestS2(origin)
 
     if (!hasCooldown(origin, "S2"))
     {
-        enableTargetting(true, "priestS2Curse", origin);
+        enableTargeting(true, "priestS2Curse", origin.id);
     }
     else
     {
@@ -62,7 +62,7 @@ function priestS3(origin)
 
     if (!hasCooldown(origin, "S3"))
     {
-        enableTargetting(true, "priestS3Attack", origin);
+        enableTargeting(true, "priestS3Attack", origin.id);
     }
     else
     {
@@ -96,7 +96,7 @@ function priestS4(origin)
 
     if (!hasCooldown(origin, "S4"))
     {
-        enableTargetting(false, "priestS4Heal", origin);
+        enableTargeting(false, "priestS4Heal", origin.id);
     }
     else
     {
@@ -132,7 +132,7 @@ function priestS5(origin)
 
     if (!hasCooldown(origin, "S5"))
     {
-        enableTargetting(false, "priestS5Buff", origin);
+        enableTargeting(false, "priestS5Buff", origin.id);
     }
     else
     {
@@ -167,7 +167,7 @@ function priestS6(origin)
 
     if (!hasCooldown(origin, "S6"))
     {
-        enableTargetting(true, "priestS6Attack", origin);
+        enableTargeting(true, "priestS6Attack", origin.id);
     }
     else
     {

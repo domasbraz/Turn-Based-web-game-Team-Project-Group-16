@@ -152,7 +152,6 @@ function addStatusFx(unit, status, duration)
 
         if (status == "poison")
         {
-            console.log("being executed");
             addPoisonStack(unitClass);
         }
 
@@ -686,7 +685,7 @@ function nextDuel(unit)
 function nextRound()
 {
     round++;
-    console.log(round);
+    console.log("round: " + round);
     resetHand();
     cards = dealCards();
     displayCards();

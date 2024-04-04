@@ -553,7 +553,7 @@ function startDuel()
         }
 
         //checks if it is safe to reveal player hand, this is prevent a bug from happening if players play a card before ai gets to place theirs down
-        if ((isNaN(playerPlayed) && (round % 2 == 1 && wonLast != "ai")) || (isNaN(playerPlayed) && !isNaN(aiPlayed)))
+        if ((isNaN(playerPlayed) && ((round % 2 == 1 && wonLast != "ai") || (wonLast == "player"))) || (isNaN(playerPlayed) && !isNaN(aiPlayed)))
         {
             setTimeout(function ()
             {
@@ -634,6 +634,7 @@ function nextDuel(unit)
     {
         replaceAttributes(document.getElementById(unit.id), unit);
     }
+    remainingTurns();
     
     playedFirst = null;
     switchGuiBot("cards");
@@ -1448,13 +1449,16 @@ function hasStatusFx(unit, status)
     {
         let statusFx = unit.getAttribute("statusEffects").split(" ");
 
-        statusFx.forEach(function (fx)
+        //statusFx.forEach(function (fx)
+        for (let index = 0; index < statusFx.length; index++)
         {
+            let fx = statusFx[index];
+            
             if (fx == status)
             {
                 return true;
             }
-        })
+        }
     }
     return false;
 }
@@ -1464,7 +1468,7 @@ function setCooldown(unit, skill, duration)
     if (unit.hasAttribute("cooldowns"))
     {
         let existingCooldowns = unit.getAttribute("cooldowns");
-        unit.setAttribute("cooldown" , existingCooldowns += " " + skill);
+        unit.setAttribute("cooldowns", existingCooldowns += " " + skill);
     }
     else
     {
@@ -1480,13 +1484,15 @@ function hasCooldown(unit, skill)
     {
         let cooldowns = unit.getAttribute("cooldowns").split(" ");
 
-        cooldowns.forEach(function (cooldown)
+        for (let index = 0; index < cooldowns.length; index++)
         {
-            if (cooldown = skill)
+            let cooldown = cooldowns[index];
+            if (cooldown == skill)
             {
                 return true;
             }
-        })
+        }
+        
     }
     return false;
 }
@@ -1551,14 +1557,17 @@ function poisonDmg(target)
     }
     else
     {
-        let pUnits = document.querySelectorAll("pUnits");
-        let eUnits = document.querySelectorAll("eUnits");
+        let pUnits = document.getElementsByClassName("pUnits");
+        let eUnits = document.getElementsByClassName("eUnits");
 
         //https://www.w3schools.com/howto/howto_js_spread_operator.asp
         let units = [...pUnits, ...eUnits];
 
-        units.forEach(function (unit)
+        for (let index = 0; index < units.length; index++)
         {
+            let unit = units[index];
+            console.log(unit);
+
             if (hasStatusFx(unit, "poison"))
             {
                 let unitClass = unit.getAttribute("class").split(" ")[1];
@@ -1589,7 +1598,7 @@ function poisonDmg(target)
                     removeStatusFx(unit, "poison");
                 }
             }
-        })
+        }
     }
 }
 

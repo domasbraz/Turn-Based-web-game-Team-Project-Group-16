@@ -11,7 +11,14 @@ function priestS1(origin)
     document.getElementsByClassName("skillInfo")[0].innerHTML =
     "<h1>Quick Heal</h1><br><p>Heals an ally for 50% of your attack<br><br>Cooldown: 2 rounds</p>";
 
-    enableTargeting(false, "priestS1Heal", origin.id);
+    if (!hasCooldown(origin, "S1"))
+    {
+        enableTargeting(false, "priestS1Heal", origin.id);
+    }
+    else
+    {
+        document.getElementsByClassName("skillInfo")[0].innerHTML += "<p><b>Currently on Cooldown</b></p>"
+    }
 }
 
 function priestS1Heal(target, origin)
@@ -26,6 +33,7 @@ function priestS1Heal(target, origin)
     target.setAttribute("hp", targetHp)
 
     updateUnitHp(target);
+    setCooldown(origin, "S1", 2);
     usedTurn(origin);
     nextDuel(origin);
 }
@@ -77,6 +85,7 @@ function priestS3Attack(target, origin)
     for (numOfAtks; numOfAtks > 0; numOfAtks--)
     {
         let chance = getRndInteger(1, 5);
+        console.log(chance);
 
         if (chance == 1)
         {

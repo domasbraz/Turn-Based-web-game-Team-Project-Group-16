@@ -318,31 +318,40 @@ function removeknightS5Guardian(unit)
 function knightS6(origin)
 {
     document.getElementsByClassName("skillInfo")[0].innerHTML =
-    "<h1>Power Shift</h1><br><p>You transfer 50% of your attack to an ally<br>Only affects 1 ally at a time<br><br>Lasts 2 rounds</p>";
-    enableTargeting(false, "knightS6Buff", origin.id);
+    "<h1>Power Shift</h1><br><p>You transfer 50% of your attack to an ally<br>Only affects 1 ally at a time<br><br>Lasts 2 rounds<br>Cooldown: 2 rounds</p>";
+    
+    if (!hasCooldown(origin, "S6"))
+    {
+        enableTargeting(false, "knightS6Buff", origin.id);
+    }
+    else
+    {
+        document.getElementsByClassName("skillInfo")[0].innerHTML += "<p><b>Currently on Cooldown</b></p>"
+    }
 }
 
 function knightS6Buff(target, origin)
 {
-    let alreadyApplied = addStatusFx(target, "knightS6Buff", 2);
-    if (!alreadyApplied)
-    {
-        target.setAttribute("powershift", origin.getAttribute("class").split(" ")[1]);
+    
+    
+    target.setAttribute("powershift", origin.getAttribute("class").split(" ")[1]);
 
-        let targetAtk = parseFloat(target.getAttribute("atk"));
-        let originAtk = parseFloat(origin.getAttribute("atk"));
+    let targetAtk = parseFloat(target.getAttribute("atk"));
+    let originAtk = parseFloat(origin.getAttribute("atk"));
 
-        originAtk /= 2;
+    originAtk /= 2;
 
-        targetAtk += originAtk;
+    targetAtk += originAtk;
 
-        target.setAttribute("atktransfer", originAtk);
+    target.setAttribute("atktransfer", originAtk);
 
-        target.setAttribute("atk", targetAtk);
-        disableTargeting(false);
-        usedTurn(origin);
-        nextDuel(origin);
-    }
+    target.setAttribute("atk", targetAtk);
+
+    setCooldown(origin, "S6", 2);
+    addStatusFx(target, "knightS6Buff", 2);
+    usedTurn(origin);
+    nextDuel(origin);
+    
 }
 
 function removeknightS6Buff(unit)

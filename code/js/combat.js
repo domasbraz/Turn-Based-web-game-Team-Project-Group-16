@@ -106,9 +106,10 @@ function addStatusFx(unit, status, duration)
         unit.setAttribute("statusEffects", status);
     }
 
+    console.log(unit.hasAttribute("effects"));
     if (unit.hasAttribute("effects"))
     {
-        numFx = parseInt(unit.getAttribute(effects));
+        numFx = parseInt(unit.getAttribute("effects"));
     }
     else
     {
@@ -117,6 +118,7 @@ function addStatusFx(unit, status, duration)
 
     if (numFx < 4)
     {
+        console.log(numFx);
         let statusIcon = status;
 
         if (status.slice(-4) == "Buff")
@@ -156,6 +158,7 @@ function addStatusFx(unit, status, duration)
         }
 
         unit.setAttribute("effects", numFx);
+        replaceAttributes(document.getElementById(unit.id), unit);
     }
     return false;
     
@@ -1566,7 +1569,6 @@ function poisonDmg(target)
         for (let index = 0; index < units.length; index++)
         {
             let unit = units[index];
-            console.log(unit);
 
             if (hasStatusFx(unit, "poison"))
             {

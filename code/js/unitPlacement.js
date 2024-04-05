@@ -1,6 +1,6 @@
 
-createPriests(1);
-createEnemy1s(1);
+createPriests(2);
+createEnemy1s(2);
 
 
 setTurns();

@@ -475,29 +475,32 @@ function showResult(won)
     //add 1 second before declaring result so it doesn't appear so suddenlly
     setTimeout(function()
     {
-        let result = document.getElementsByClassName("gameMsg")[0];
+        /* let result = document.getElementsByClassName("gameMsg")[0];
         let resultText = result.children[0];
 
-        result.style.display = "block";
+        result.style.display = "block"; */
 
         //displays whether player has won or lost duel
         if (won)
         {
-            resultText.textContent = "Duel Won!";
-            resultText.style.color = "rgb(0, 255, 0)";
+            /* resultText.textContent = "Duel Won!";
+            resultText.style.color = "rgb(0, 255, 0)"; */
+            showGameMessage("Duel Won!", "rgb(0, 255, 0)");
             wonLast = "player";
         }
         else
         {
-            resultText.textContent = "Duel Lost!";
-            resultText.style.color = "rgb(255, 0, 0)";
+            /* resultText.textContent = "Duel Lost!";
+            resultText.style.color = "rgb(255, 0, 0)"; */
+            showGameMessage("Duel Lost!", "rgb(255, 0, 0)");
             wonLast = "ai";
         }
 
         //hide message declaring winner after 3 seconds
         setTimeout(function()
         {
-            result.style.display = "none";
+            //result.style.display = "none";
+            hideGameMessage();
             if (won)
             {
                 switchGuiBot("combat");
@@ -595,20 +598,22 @@ function startDuel()
 
 function endCombat()
 {
-    let result = document.getElementsByClassName("gameMsg")[0];
+    /* let result = document.getElementsByClassName("gameMsg")[0];
     let resultText = result.children[0];
 
-    result.style.display = "block";
+    result.style.display = "block"; */
 
     if (winner == "player")
     {
-        resultText.textContent = "Victory!";
-        resultText.style.color = "rgb(0, 255, 0)";
+        /* resultText.textContent = "Victory!";
+        resultText.style.color = "rgb(0, 255, 0)"; */
+        showGameMessage("Victory!", "rgb(0, 255, 0)");
     }
     else
     {
-        resultText.textContent = "Defeat!";
-        resultText.style.color = "rgb(255, 0, 0)";
+        /* resultText.textContent = "Defeat!";
+        resultText.style.color = "rgb(255, 0, 0)"; */
+        showGameMessage("Defeat!", "rgb(255, 0, 0)");
     }
         
 }
@@ -1068,18 +1073,21 @@ function finalAttackCalc(target, skillDmg)
 
 function showDmgDealt(dmg)
 {
-    let result = document.getElementsByClassName("gameMsg")[0];
+    /* let result = document.getElementsByClassName("gameMsg")[0];
     let resultText = result.children[0];
 
     result.style.display = "block";
 
     resultText.textContent = dmg + " Damage dealt"
-    resultText.style.color = "rgb(255, 0, 0)";
+    resultText.style.color = "rgb(255, 0, 0)"; */
+
+    showGameMessage(dmg + " Damage dealt", "rgb(255, 0, 0)");
 
     //hide message declaring winner after 3 seconds
     setTimeout(function()
     {
-        result.style.display = "none";
+        //result.style.display = "none";
+        hideGameMessage();
         setTimeout(function()
         {
             nextDuel();
@@ -1090,6 +1098,22 @@ function showDmgDealt(dmg)
     },
     3000
     );
+}
+
+function showGameMessage(text, colour)
+{
+    let result = document.getElementsByClassName("gameMsg")[0];
+    let resultText = result.children[0];
+
+    result.style.display = "block";
+
+    resultText.textContent = text;
+    resultText.style.color = colour;
+}
+
+function hideGameMessage()
+{
+    result.style.display = "none";
 }
 
 function updateUnitHp(unit)
@@ -1321,23 +1345,27 @@ function usedTurn(unit)
     remainingTurns();
 }
 
+//TODO: better user experience
 function skipTurn(unit)
 {
     usedTurn(unit);
     deSelectUnit();
 
-    let result = document.getElementsByClassName("gameMsg")[0];
+    /* let result = document.getElementsByClassName("gameMsg")[0];
     let resultText = result.children[0];
 
     result.style.display = "block";
 
     resultText.textContent = "Skipped Turn!"
-    resultText.style.color = "rgb(255, 255, 255)";
+    resultText.style.color = "rgb(255, 255, 255)"; */
+
+    showGameMessage("Skipped  Turn!", "rgb(255, 255, 255)");
 
     //hide message after 3 seconds
     setTimeout(function()
     {
-        result.style.display = "none";
+        //result.style.display = "none";
+        hideGameMessage();
         nextDuel();
     },
     3000

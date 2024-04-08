@@ -95,7 +95,7 @@ button:hover{
  
 
 #questBoard{
-    background-image: url("../img/png images/backgrounds/quest board.png");
+    background-image: url("img/png images/backgrounds/quest board.png");
     background-size:cover;                      
     background-repeat: no-repeat;
     font-family: 'Trebuchet MS';

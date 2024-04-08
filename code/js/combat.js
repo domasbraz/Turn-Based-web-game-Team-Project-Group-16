@@ -1634,6 +1634,5 @@ function poisonDmg(target)
 
 function getRndInteger(min, max) 
 {
-    max++;
-    return Math.floor(Math.random() * (max - min)) + min;
+    return Math.floor(Math.random() * max) + min;
 }

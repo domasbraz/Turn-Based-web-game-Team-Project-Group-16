@@ -1113,6 +1113,7 @@ function showGameMessage(text, colour)
 
 function hideGameMessage()
 {
+    let result = document.getElementsByClassName("gameMsg")[0];
     result.style.display = "none";
 }
 

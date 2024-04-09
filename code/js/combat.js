@@ -317,6 +317,20 @@ function switchGuiBot(type)
     deSelectUnit();
 }
 
+function hideGuiBot()
+{
+    var botGUI1 = document.querySelectorAll(".b1GUI");
+    var botGUI2 = document.querySelectorAll(".b2GUI");
+    botGUI1.forEach(function(element) 
+    {
+        element.style.display = "none";
+    });
+    botGUI2.forEach(function(element)
+    {
+        element.style.display = "none";
+    }); 
+}
+
 var unitSelected = false;
 
 //default unit info (unselected unit tooltip)
@@ -1046,7 +1060,7 @@ function removeAllyTarget(target)
     target.setAttribute("target", "false");
 }
 
-function finalAttackCalc(target, skillDmg)
+function finalAttackCalc(target, skillDmg, skill)
 {
     let hp = parseFloat(target.getAttribute("hp"));
     let def = parseFloat(target.getAttribute("def"));
@@ -1067,7 +1081,8 @@ function finalAttackCalc(target, skillDmg)
     disableTargeting(true);
     deSelectUnit();
     updateUnitHp(target);
-    showDmgDealt(finalDmg);
+    //showDmgDealt(finalDmg);
+    return showEffect(target, finalDmg, skill);
     
 }
 
@@ -1586,6 +1601,7 @@ function poisonDmg(target)
         target.setAttribute("hp", hp);
 
         updateUnitHp(target);
+        return dmg;
     }
     else
     {
@@ -1618,6 +1634,8 @@ function poisonDmg(target)
 
                 updateUnitHp(unit);
 
+                showEffect(unit, dmg, "red", 100);
+
                 stacks = parseInt(stacks / 2);
 
                 if (stacks > 0)
@@ -1637,3 +1655,55 @@ function getRndInteger(min, max)
 {
     return Math.floor(Math.random() * max) + min;
 }
+
+
+function showEffect(unit, display, colour, interval)
+{
+    return new Promise((resolve, reject) =>
+    {
+        if (colour == undefined)
+        {
+            colour = "red";
+        }
+        if (interval == undefined)
+        {
+            interval = 200;
+        }
+        let unitPos = parseInt(unit.style.gridArea.split(" / ")[1]);
+        let container = document.getElementsByClassName("combatContainer")[0];
+        let unitClass = unit.getAttribute("class").split(" ")[1];
+
+        container.innerHTML += "<div class='" + unitClass + "dmgNumbers' style='border:none; color:" + colour + "; grid-area: 30 / " + (unitPos + 15) + " / span 10 / span 100; z-index:5; overflow:visible'></div>";
+
+        let element = document.getElementsByClassName(unitClass + "dmgNumbers")[0];
+
+        element.innerHTML = "<h1>" + display + "</h1>";
+
+        let pos = element.style.gridArea.split(" / ");
+
+        let posY = parseInt(pos[0]);
+            
+        unit.interval = setInterval(animation, interval);
+
+        function animation()
+        {
+            if (posY == 20)
+            {
+                clearInterval(unit.interval);
+                //element.style.gridArea = pos[0] + " / " + pos[1] + " / " + pos[2] + " / " + pos[3];
+                element.parentNode.removeChild(element);
+                resolve();
+            }
+            else
+            {
+                posY--;
+                element.style.gridArea = posY + " / " + pos[1] + " / " + pos[2] + " / " + pos[3];
+                //this variable is being rolled back or something idk, so i need to redefine it
+                element = document.getElementsByClassName(unitClass + "dmgNumbers")[0];
+            }
+        }
+        
+    })
+}
+
+

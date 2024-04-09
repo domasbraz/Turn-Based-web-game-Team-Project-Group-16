@@ -35,7 +35,11 @@ function priestS1Heal(target, origin)
     updateUnitHp(target);
     setCooldown(origin, "S1", 2);
     usedTurn(origin);
-    nextDuel(origin);
+    hideGuiBot();
+    showEffect(target, healAmount, "green").then(() =>
+    {
+        nextDuel(origin);
+    });
 }
 
 function priestS2(origin)
@@ -60,7 +64,11 @@ function priestS2Curse(target, origin)
     setCooldown(origin, "S2", 2);
 
     usedTurn(origin);
-    nextDuel(origin);
+    hideGuiBot();
+    showEffect(target, "Cursed").then(() =>
+    {
+        nextDuel(origin);
+    });
 }
 
 function priestS3(origin)
@@ -78,9 +86,13 @@ function priestS3(origin)
     }
 }
 
-function priestS3Attack(target, origin)
+async function priestS3Attack(target, origin)
 {
     let numOfAtks = 5;
+
+    setCooldown(origin, "S3", 2);
+    usedTurn(origin);
+    hideGuiBot();
 
     for (numOfAtks; numOfAtks > 0; numOfAtks--)
     {
@@ -90,11 +102,14 @@ function priestS3Attack(target, origin)
         if (chance == 1)
         {
             addStatusFx(target, "poison", 99);
+            showEffect(target, "poisoned", "purple", 20).then(() => {});
+        }
+        else
+        {
+            showEffect(target, "Resist", "Blue", 20).then(() => {});
         }
     }
 
-    setCooldown(origin, "S3", 2);
-    usedTurn(origin);
     nextDuel(origin);
 }
 
@@ -127,11 +142,19 @@ function priestS4Heal(target, origin)
         hp += heal;
         unit.setAttribute("hp", hp);
         updateUnitHp(unit);
+        replaceAttributes(document.getElementById(unit.id), unit);
+        showEffect(unit, heal, "green")
     })
 
     setCooldown(origin, "S4", 2);
     usedTurn(origin);
-    nextDuel(origin);
+    hideGuiBot();
+    setTimeout(() =>
+    {
+        nextDuel(origin);
+    },
+    3000
+    );
 }
 
 function priestS5(origin)
@@ -166,7 +189,11 @@ function priestS5Buff(target, origin)
 
     setCooldown(origin, "S5", 3);
     usedTurn(origin);
-    nextDuel(origin);
+    hideGuiBot()
+    showEffect(target, "Cured", "yellow").then(() =>
+    {
+        nextDuel(origin);
+    });
 }
 
 function priestS6(origin)
@@ -186,12 +213,17 @@ function priestS6(origin)
 
 function priestS6Attack(target, origin)
 {
+    let dmg = 0;
     if (hasStatusFx(target, "poison"))
     {
-        poisonDmg(target);
+        dmg = poisonDmg(target);
     }
 
     setCooldown(origin, "S6", 3);
     usedTurn(origin);
-    nextDuel(origin);
+    hideGuiBot();
+    showEffect(target, dmg).then(() =>
+    {
+        nextDuel(origin)
+    });
 }

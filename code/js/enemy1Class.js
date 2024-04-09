@@ -16,8 +16,11 @@ function enemy1S1(target, origin)
     let dmg = Math.floor(atk * dmgMultiplyer);
 
     usedTurn(origin);
-
-    finalAttackCalc(target, dmg);
+    hideGuiBot();
+    finalAttackCalc(target, dmg).then(() =>
+    {
+        nextDuel();
+    });
 
 }
 

@@ -39,8 +39,13 @@ function knightS1Damage(target, origin)
         updateUnitEnergy(origin);
 
         usedTurn(origin);
+        hideGuiBot();
+        finalAttackCalc(target, dmg).then(()=>
+        {
+            nextDuel(origin);
+        })
 
-        finalAttackCalc(target, dmg);
+
 
         
     }
@@ -85,8 +90,13 @@ function knightS2Buff(origin)
 
     origin.setAttribute("knightS2Buff", defIncrease);
 
+
     usedTurn(origin);
-    nextDuel(origin);
+    hideGuiBot();
+    showEffect(origin, "Buff", "green").then(() => 
+    {
+        nextDuel(origin);
+    });
 
 /*     let element = document.getElementById(origin.id);
     let def = element.getAttribute("def");
@@ -214,6 +224,7 @@ function knightS3Buff(origin)
 
         units.forEach(function (unit)
         {
+            showEffect(unit, "Buff", "green");
             let def = parseFloat(unit.getAttribute("def"));
             //TODO: make scalable
             if (hasUsed == 1)
@@ -226,6 +237,7 @@ function knightS3Buff(origin)
                 def *= 1.1;
             }
             unit.setAttribute("def", def);
+            replaceAttributes(document.getElementById(unit.id), unit)
         });
         let maxEnergy = parseInt(origin.getAttribute("maxEnergy"));
         if (hasUsed == 1)
@@ -243,7 +255,15 @@ function knightS3Buff(origin)
         
         origin.setAttribute("s3Used", hasUsed);
         usedTurn(origin);
-        nextDuel(origin);
+        deSelectUnit();
+        hideGuiBot();
+        //failsafe
+        setTimeout(() =>
+        {
+            nextDuel(origin);
+        },
+        3000
+        );  
     }
     else
     {
@@ -282,8 +302,12 @@ function knightS4Damage(target, origin)
         updateUnitEnergy(origin);
 
         usedTurn(origin);
+        hideGuiBot();
 
-        finalAttackCalc(target, dmg);
+        finalAttackCalc(target, dmg).then(()=>
+        {
+            nextDuel(origin);
+        })
 
     }
     else
@@ -306,7 +330,11 @@ function knightS5Guardian(target, origin)
 
     disableTargeting(false);
     usedTurn(origin);
-    nextDuel(origin);
+    hideGuiBot();
+    showEffect(target, "Protected", "green").then(() =>
+    {
+        nextDuel(origin);
+    })
 }
 
 function removeknightS5Guardian(unit)
@@ -350,7 +378,11 @@ function knightS6Buff(target, origin)
     setCooldown(origin, "S6", 2);
     addStatusFx(target, "knightS6Buff", 2);
     usedTurn(origin);
-    nextDuel(origin);
+    hideGuiBot();
+    showEffect(target, "Buff", "green").then(() =>
+    {
+        nextDuel(origin);
+    });
     
 }
 

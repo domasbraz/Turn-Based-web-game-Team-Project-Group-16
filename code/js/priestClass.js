@@ -137,6 +137,10 @@ function priestS4Heal(target, origin)
     heal *= 0.3;
     let units = document.querySelectorAll(".pUnits");
 
+    setCooldown(origin, "S4", 2);
+    usedTurn(origin);
+    hideGuiBot();
+
     units.forEach(function (unit)
     {
         let hp = parseFloat(unit.getAttribute("hp"));
@@ -147,14 +151,12 @@ function priestS4Heal(target, origin)
         showEffect(unit, heal, "green")
     })
 
-    setCooldown(origin, "S4", 2);
-    usedTurn(origin);
-    hideGuiBot();
+    
     setTimeout(() =>
     {
         nextDuel(origin);
     },
-    3000
+    4000
     );
 }
 

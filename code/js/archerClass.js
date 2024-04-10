@@ -118,6 +118,7 @@ function archerS3Buff(origin)
 {
     addStatusFx(origin, "archerS3Buff", 2);
     usedTurn(origin);
+    hideGuiBot();
 
     showEffect(origin, "Buff", "green").then(() =>
     {
@@ -224,7 +225,7 @@ async function archerS5Attack(origin)
 
     let targets = document.getElementsByClassName("eUnits");
 
-    let slots = targets.length - 1;
+    let slots = targets.length;
 
     let numOfAtks = 10;
 
@@ -236,7 +237,7 @@ async function archerS5Attack(origin)
     for (numOfAtks; numOfAtks > 0; numOfAtks--)
     {
         await Promise.all(promises);
-        let randomSlot = getRndInteger(1, slots);
+        let randomSlot = getRndInteger(1, slots) - 1;
 
         if (numOfAtks == 1)
         {

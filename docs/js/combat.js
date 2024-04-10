@@ -139,7 +139,7 @@ function addStatusFx(unit, status, duration)
         {
             container.innerHTML += "<div class='" + unitClass + "Status" + " " + unitType + "Info" + unitSlot + " status" + numFx + "' statusType='" + status + "' duration='" + duration + "' style='border: 1px solid blue; grid-area: 94 / " + ((67 - ((unitSlot - 1) * 21)) + (5 * (numFx - 1))) + " / span 8 / span 4;'>"
             +
-            "<img width='100%' height='100%' draggable='false' src='img/png images/status effects/" + statusIcon + ".png'>"
+            "<img width='100%' height='100%' draggable='false' src='png images/status effects/" + statusIcon + ".png'>"
             +
             "</div>";
         }
@@ -147,7 +147,7 @@ function addStatusFx(unit, status, duration)
         {
             container.innerHTML += "<div class='" + unitClass + "Status" + " " + unitType + "Info" + unitSlot + " status" + numFx + "' statusType='" + status + "' duration='" + duration + "' style='border: 1px solid blue; grid-area: 94 / " + ((115 + ((unitSlot - 1) * 21)) + (5 * (numFx - 1))) + " / span 8 / span 4;'>"
             +
-            "<img width='100%' height='100%' draggable='false' src='img/png images/status effects/" + statusIcon + ".png'>"
+            "<img width='100%' height='100%' draggable='false' src='png images/status effects/" + statusIcon + ".png'>"
             +
             "</div>";
         }
@@ -417,7 +417,7 @@ function displayCards()
     {
         hand.innerHTML += "<div class='card' onclick='playCard(this)'></div>";
         let pCards = document.getElementsByClassName("card");
-        pCards[x].innerHTML = "<img draggable='false' width='100%' height='100%' src='img/png images/cards/" + playerHand[x] + "_sword_card.png'>";
+        pCards[x].innerHTML = "<img draggable='false' width='100%' height='100%' src='png images/cards/" + playerHand[x] + "_sword_card.png'>";
     }
 
     
@@ -439,7 +439,7 @@ function aiCard(aiCards)
 
         //display the card that ai has chosen
         let cardPlayed = document.getElementsByClassName("cardEnemy")[0];
-        cardPlayed.innerHTML = "<img draggable='false' height='100%' width='100%' src='img/png images/cards/" + aiPlayed + "_sword_card.png'>";
+        cardPlayed.innerHTML = "<img draggable='false' height='100%' width='100%' src='png images/cards/" + aiPlayed + "_sword_card.png'>";
         cardPlayed.style.display = "block";
 
         startDuel();
@@ -763,11 +763,11 @@ function createUnit(unitSlot, type, stats, skills)
 
     if (unitSlot.charAt(0) == "p")
     {
-        unit.innerHTML = "<img draggable='false' width='100%' height='100%' src='img/png images/characters/" + type + "/" + type + ".png'>";
+        unit.innerHTML = "<img draggable='false' width='100%' height='100%' src='png images/characters/" + type + "/" + type + ".png'>";
     }
     else
     {
-        unit.innerHTML = "<img draggable='false' width='100%' height='100%' src='img/png images/characters/enemies/" + type + ".png'>";
+        unit.innerHTML = "<img draggable='false' width='100%' height='100%' src='png images/characters/enemies/" + type + ".png'>";
     }
 
     let hasSkills = "";
@@ -864,7 +864,7 @@ function showSkills(unit)
             "<div selected='false' class='skills skill" + (x + 1) + "' style='grid-area: 125 / " + (21 + (x * 13)) + " / span 15 / span 8;'></div>";
     
             let skillIcon = document.getElementsByClassName("skill" + (x + 1))[0];
-            skillIcon.innerHTML = "<img draggable='false' width='100%' height='100%' src='img/png images/characters/" + type + "/" + type + "S" + skills[x] + ".png'>";
+            skillIcon.innerHTML = "<img draggable='false' width='100%' height='100%' src='png images/characters/" + type + "/" + type + "S" + skills[x] + ".png'>";
             skillIcon.setAttribute("onclick", "selectSkill(this); " + type + "S" + skills[x] + "(" + origin + ");");
             skillIcon.setAttribute("origin", origin); //might not be needed
         }
@@ -875,7 +875,7 @@ function showSkills(unit)
             "<div selected='false' class='skills skill" + (x + 1) + "' style='grid-area: 125 / " + (21 + (x * 13)) + " / span 15 / span 8;'></div>";
 
             let skillIcon = document.getElementsByClassName("skill" + (x + 1))[0];
-            skillIcon.innerHTML = "<img draggable='false' width='100%' height='100%' src='img/png images/skip button.png'>";
+            skillIcon.innerHTML = "<img draggable='false' width='100%' height='100%' src='png images/skip button.png'>";
             skillIcon.setAttribute("onclick", "selectSkill(this); skipTurn(" + unit.id + ");");
             skillIcon.setAttribute("origin", origin); //might not be needed
         }

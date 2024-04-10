@@ -1060,7 +1060,7 @@ function removeAllyTarget(target)
     target.setAttribute("target", "false");
 }
 
-function finalAttackCalc(target, skillDmg, skill)
+function finalAttackCalc(target, skillDmg, poison, bleed, duration)
 {
     let hp = parseFloat(target.getAttribute("hp"));
     let def = parseFloat(target.getAttribute("def"));
@@ -1082,7 +1082,11 @@ function finalAttackCalc(target, skillDmg, skill)
     deSelectUnit();
     updateUnitHp(target);
     //showDmgDealt(finalDmg);
-    return showEffect(target, finalDmg, skill);
+    if (poison)
+    {
+        addStatusFx(target, "poison", 99);
+    }
+    return showEffect(target, finalDmg, red, duration);
     
 }
 
@@ -1704,6 +1708,41 @@ function showEffect(unit, display, colour, interval)
         }
         
     })
+}
+
+function hasEnoughtEnergy(unit, requiredEnergy)
+{
+    let availableEnergy = parseFloat(unit.getAttribute("energy"));
+
+    if (availableEnergy < requiredEnergy)
+    {
+        return false;
+    }
+    else
+    {
+        return true;
+    }
+}
+
+function getNextUnit(unit)
+{
+    let unitClass = unit.getAttribute("class").split(" ")[1];
+    let unitType = unitClass.charAt(0);
+    let unitSlot = parseInt(unitClass.charAt(5));
+
+    unitSlot++;
+
+    let unitFound = document.getElementsByClassName(unitType + "Unit" + unitSlot).length > 0;
+
+    if (unitFound)
+    {
+        return document.getElementsByClassName(unitType + "Unit" + unitSlot)[0];
+    }
+    else
+    {
+        return undefined;
+    }
+
 }
 
 

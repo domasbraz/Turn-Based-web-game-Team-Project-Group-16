@@ -36,6 +36,10 @@ function userPriestInput()
         alert("'" + priestAmount + "' is an invalid value.\r\nPlease enter a value between 0 and " + remainder);
         userPriestInput();
     }
+    else
+    {
+        userArcherInput();
+    }
 }
 
 function userArcherInput()

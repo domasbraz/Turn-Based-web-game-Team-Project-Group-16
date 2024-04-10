@@ -319,6 +319,7 @@ function switchGuiBot(type)
 
 function hideGuiBot()
 {
+    deSelectUnit();
     var botGUI1 = document.querySelectorAll(".b1GUI");
     var botGUI2 = document.querySelectorAll(".b2GUI");
     botGUI1.forEach(function(element) 

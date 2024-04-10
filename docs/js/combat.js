@@ -1086,7 +1086,7 @@ function finalAttackCalc(target, skillDmg, poison, bleed, duration)
     {
         addStatusFx(target, "poison", 99);
     }
-    return showEffect(target, finalDmg, red, duration);
+    return showEffect(target, finalDmg, "red", duration);
     
 }
 

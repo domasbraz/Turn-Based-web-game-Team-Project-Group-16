@@ -1,12 +1,3 @@
-createKnights(2);
-//createPriests(2);
-createEnemy1s(2);
-
-
-setTurns();
-
-//console.log(playerTurns + " " + aiTurns);
-
 function userKnightInput()
 {
     let knightAmount = parseInt(prompt("Enter how many knights will be in battle (max 4)"));
@@ -64,6 +55,11 @@ function getRemainingPlayerSlots()
 
     return (4 - taken);
 }
+
+userKnightInput();
+userEnemy1Input();
+
+
 
 function createKnights(amount)
 {

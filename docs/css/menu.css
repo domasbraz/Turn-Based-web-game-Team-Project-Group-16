@@ -1,0 +1,370 @@
+html{
+    margin: 0px;
+    padding: 0px;
+}
+
+body{
+    overflow: hidden;
+    margin:0;
+    padding:0;
+}
+
+#title{
+    margin:0;
+    padding:0;
+    top:5%;
+}
+
+h1{
+    padding:0;
+    margin:0;
+}
+
+#mainMenu{
+    background-image: url('../images/background/forest background/Free Pixel Art Forest/Preview/Background.png');
+    background-size:contain;
+    background-position: center; 
+    background-repeat:repeat-x; 
+    text-align: center;
+    height:100vh;
+    display: block;
+    margin:0;
+    padding:0;
+
+}
+
+#play{
+    background-image: url('../../img/png images/Play Button.png') ;
+    background-size:cover ; 
+    background-repeat: no-repeat;
+    background-position: center;
+    align-items: center;
+    height: 100%;
+    width: 10%;
+    border-radius: 20%;
+   
+}
+
+
+#playbutton{
+    height: 7vh;
+    background-attachment: fixed;
+    background-position: center;
+    margin: 2% ;
+}
+
+#settings{
+    background-image: url('../../img/png images/Settings Button.png') ;
+    background-size: cover; 
+    background-repeat: no-repeat;  
+    height: 100%;
+    width: 10%;
+    border-radius: 20%;
+}
+
+
+#settingsbutton{
+    height: 7vh;
+    background-attachment: fixed;
+    background-position: center;
+    margin: 2% ;
+}
+
+#exit{
+    background-image: url('../../img/png images/Exit Button.png') ;
+    background-size: cover; 
+    background-repeat: no-repeat;
+    height: 100%;
+    width: 10%;
+    border-radius: 20%;
+}
+
+#exitbutton{
+    height: 7vh;
+    background-attachment:fixed;
+    margin: 2% ;
+}
+
+#container{
+    height:70%; 
+}
+
+button:hover{
+        background-color: #5d5f5d;
+}
+ 
+
+#questBoard{
+    background-image: url("../../img/png images/backgrounds/quest board.png");
+    background-size:cover;                      
+    background-repeat: no-repeat;
+    font-family: 'Trebuchet MS';
+    font-weight: bold;
+    display:none;
+    background-position: center;
+    height:100vh;
+    width:100vw;
+}
+
+.questInfo{
+    display: none;
+    border: 3px solid black;
+    background-color: bisque;
+    width: 30%;
+    height: 30%;
+    right: 1%;
+ 
+    position: absolute;
+    opacity: 80%;
+}
+
+#gameNavBar{
+    border-right: 2px solid black;
+    height: 100vh;
+    width:7%;
+    background-color: #5d5f5d;
+}
+
+#gameNavBar p{
+    margin:0;
+    padding-bottom: 20px;
+}
+
+#gameNavBar p:hover{
+    background-color: #4a4b4a;
+    z-index: -1;
+    border-bottom: 1px solid rgb(161, 161, 161);
+}
+
+ /* styling/positioning for quest images  */
+.easyQ{
+    position: absolute;
+    left: 40%;
+    top: 20%;
+}
+.medQ{
+    position: absolute;
+    left: 20%;
+    top: 20%;
+
+}
+.hardQ{
+    position: absolute;
+    left: 70%;
+    top: 50%;
+
+}
+/* styling for info */
+#e{
+    border: 3px solid black;
+    background-color: bisque;
+    width: 30%;
+    height: 30%;
+    right: 1%;
+    visibility: hidden;
+    position: absolute;
+    opacity: 80%;
+}
+#m{
+    border: 3px solid black;
+    background-color: bisque;
+    width: 30%;
+    height: 30%;
+    right: 1%;
+    visibility: hidden;
+    position: absolute;
+    opacity: 80%;
+}
+#h{
+    border: 3px solid black;
+    background-color: bisque;
+    width: 30%;
+    height: 30%;
+    right: 1%;
+    visibility: hidden;
+    position: absolute;
+    opacity: 80%;
+}
+/* button styling */
+.yes{
+    width: 20%;
+    height: 10%;
+    background-color: #5fcb66;
+    bottom: 10%;
+    left: 33%;
+    position: absolute;
+    font-weight: bold;
+}
+.no{
+    width: 20%;
+    height: 10%;
+    background-color: #e84f4f;
+    bottom: 10%;
+    left: 56%;
+    position: absolute;
+    font-weight: bold;
+ }  
+
+ #backBtn{
+    width: 4%;
+ }
+
+ img:hover{
+    background-color: #5d5f5d;
+ }
+
+ #toPartySelection{
+    text-align: right;
+ }
+
+ #toPartySelectionImg{
+    opacity: 50%;
+    text-align: right;
+    width:4%;
+ }
+
+#partySelectionContainer{
+    font-family: 'Trebuchet MS';
+    font-weight: bold;
+    position: absolute;
+    width: 100%;    
+    height: 100%;
+    border: 1px solid rgb(0, 0, 0);
+    display: none;
+    background-color: rgb(12, 13, 14);
+}
+
+#teamContainer{
+    position: absolute;
+    right: 5%;
+    top: 5%;
+    width: 60%;    
+    height: 50%;
+    /* border: 1px solid rgb(172, 44, 44); */
+    display: flex;
+    background-color: aliceblue;
+    align-items: center;
+}
+
+
+.selectedCharacter{
+    flex:1;
+    margin-right:2%;
+}
+
+
+#characterSelection{
+    position: absolute;
+    left: 9%;
+    top: 5%;
+    width: 25%;    
+    height: 90%;
+    /* border: 1px solid rgb(79, 182, 0); */
+    align-items: center;
+    align-content: center;
+    text-align: center;
+    background-color: aliceblue;
+    display:inline;
+}
+
+#characters{
+    align-items: center;
+    align-content: center;
+}
+
+#firstThree{
+    display: flex;
+    text-align: right;
+    width:100%;
+    height: 20%;
+}
+#lastThree{
+    display: flex;
+    text-align: right;
+    width:100%;
+    height: 20%;
+}
+
+#skillDescription div{
+    display:none;
+    text-align: center;
+}
+
+#characterSkills img{
+    width:12%;
+    flex:.5;
+    
+}
+
+#firstP{
+    display: block;
+}
+
+#secondP , #thirdP , #fourthP, #fifthP{
+    display: none;
+}
+
+#buttonContainer{
+    position: absolute;
+ 
+    left: 5%;
+    top: 95%;
+    width: 90%;
+    height: 10%;  
+}
+
+#removeMemberContainer{
+    position: absolute;
+ 
+    top: 90%;
+    width: 100%;
+    height: 10%;  
+    display:block;
+    align-self: center;
+}
+/* Skills Styling */
+#skillsContainer{
+    position: absolute;
+    left: 35%;
+    top: 60%;
+    width: 10%;    
+    height: 35%;
+    /* border: 1px solid rgb(46, 91, 78); */
+    background-color: aliceblue;
+}
+#skillInfo{
+    position: absolute;
+    left: 48%;
+    top: 60%;
+    width: 47%;    
+    height: 35%;
+    /* border: 1px solid rgb(46, 4, 68);  */
+    text-align: center;  
+    background-color: aliceblue; 
+}
+
+.characterSelectedSkills{
+    display:none;
+}
+
+/* buttons */
+#previous{
+    width: 30%;
+    height: 45%;
+}
+#next{
+    width: 30%;
+    height: 45%;
+}
+
+#add{
+    width: 30%;
+    height: 45%;
+}
+#selectSkill{
+    width: 20%;
+    height: 10%;
+    position: absolute;
+    top: 80%;
+    left: 40%;
+ }

@@ -1,0 +1,75 @@
+body{
+    background-image: url('../images/background/forest background/Free Pixel Art Forest/Preview/Background.png');
+    background-size: 55%;
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat:repeat-x;
+    text-align: center;
+}
+
+#title{
+    margin: 5%;
+}
+
+#play{
+    background-image: url('../images/buttons/Large Buttons/Large Buttons/Play Button.png') ;
+    background-size:cover ; 
+    background-repeat: no-repeat;
+    background-position: center;
+    align-items: center;
+    height: 100%;
+    width: 10%;
+    border-radius: 20%;
+   
+}
+
+
+#playbutton{
+    height: 7vh;
+    background-attachment: fixed;
+    background-position: center;
+    margin: 2% ;
+}
+
+#settings{
+    background-image: url('../images/buttons/Large Buttons/Large Buttons/Settings Button.png') ;
+    background-size: cover; 
+    background-repeat: no-repeat;
+    background-position: center;
+    height: 100%;
+    width: 10%;
+    border-radius: 20%;
+}
+
+
+#settingsbutton{
+    height: 7vh;
+    background-attachment: fixed;
+    background-position: center;
+    margin: 2% ;
+}
+
+#exit{
+    background-image: url('../images/buttons/Large Buttons/Large Buttons/Exit Button.png') ;
+    background-size: cover; 
+    background-repeat: no-repeat;
+    background-position: center;
+    height: 100%;
+    width: 10%;
+    border-radius: 20%;
+}
+
+#exitbutton{
+    height: 7vh;
+    background-attachment: fixed;
+    background-position: center;
+    margin: 2% ;
+}
+
+#buttons{
+    height: 50%;
+}
+
+button:hover{
+        background-color: #5d5f5d;
+}

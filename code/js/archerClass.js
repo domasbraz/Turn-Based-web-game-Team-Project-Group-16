@@ -1,7 +1,7 @@
 function createUnitArcher(position, skills)
 {
     let stats = [100, 30, 5, 100];
-    if (skills = undefined)
+    if (skills == undefined)
     {
         skills = [1, 2, 3, 4];
     }

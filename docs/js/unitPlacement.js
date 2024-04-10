@@ -42,7 +42,7 @@ function userArcherInput()
 {
     let remainder = getRemainingPlayerSlots();
 
-    let archerAmount = parseInt(prompt("Enter how many priests will be in battle (max " + remainder + ")"));
+    let archerAmount = parseInt(prompt("Enter how many archers will be in battle (max " + remainder + ")"));
 
     if (archerAmount <= remainder && archerAmount > 0)
     {

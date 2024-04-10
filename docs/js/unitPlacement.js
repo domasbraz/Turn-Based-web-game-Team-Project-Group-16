@@ -26,11 +26,32 @@ function userPriestInput()
     if (priestAmount <= remainder && priestAmount > 0)
     {
         createPriests(priestAmount)
+        if (priestAmount < remainder)
+        {
+            userArcherInput();
+        }
     }
     else if (priestAmount != 0)
     {
         alert("'" + priestAmount + "' is an invalid value.\r\nPlease enter a value between 0 and " + remainder);
         userPriestInput();
+    }
+}
+
+function userArcherInput()
+{
+    let remainder = getRemainingPlayerSlots();
+
+    let archerAmount = parseInt(prompt("Enter how many priests will be in battle (max " + remainder + ")"));
+
+    if (archerAmount <= remainder && archerAmount > 0)
+    {
+        createArchers(archerAmount)
+    }
+    else if (archerAmount != 0)
+    {
+        alert("'" + archerAmount + "' is an invalid value.\r\nPlease enter a value between 0 and " + remainder);
+        userArcherInput();
     }
 }
 
@@ -79,6 +100,19 @@ function createPriests(amount)
     {
         let skills = pickRandomSkills2();
         createUnitPriest(slot, skills);
+        slot++;
+    }
+}
+
+function createArchers(amount)
+{
+    let remainder = getRemainingPlayerSlots();
+    let slot = (4 - remainder) + 1;
+
+    for (amount; amount > 0; amount--)
+    {
+        let skills = pickRandomSkills();
+        createUnitArcher(slot, skills);
         slot++;
     }
 }

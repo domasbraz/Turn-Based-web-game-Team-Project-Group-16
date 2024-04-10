@@ -31,7 +31,6 @@ function priestS1Heal(target, origin)
     targetHp += healAmount;
 
     target.setAttribute("hp", targetHp)
-
     updateUnitHp(target);
     setCooldown(origin, "S1", 2);
     usedTurn(origin);
@@ -93,23 +92,25 @@ async function priestS3Attack(target, origin)
     setCooldown(origin, "S3", 2);
     usedTurn(origin);
     hideGuiBot();
-
+    let promises = [];
     for (numOfAtks; numOfAtks > 0; numOfAtks--)
     {
+        await Promise.all(promises);
         let chance = getRndInteger(1, 5);
         console.log(chance);
 
         if (chance == 1)
         {
             addStatusFx(target, "poison", 99);
-            showEffect(target, "poisoned", "purple", 20).then(() => {});
+            promises.push(showEffect(target, "poisoned", "purple", 20).then(() => {}));
         }
         else
         {
-            showEffect(target, "Resist", "Blue", 20).then(() => {});
+            promises.push(showEffect(target, "Resist", "Blue", 20).then(() => {}));
         }
     }
 
+    await Promise.all(promises);
     nextDuel(origin);
 }
 

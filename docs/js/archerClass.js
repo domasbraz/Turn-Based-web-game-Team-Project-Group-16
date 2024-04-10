@@ -164,7 +164,7 @@ function archerS4Attack(origin)
 
     origin.setAttribute("energy", energy);
 
-    updateUnitEnergy(energy);
+    updateUnitEnergy(origin);
     usedTurn(origin);
     hideGuiBot();
 
@@ -232,8 +232,10 @@ async function archerS5Attack(origin)
     usedTurn(origin);
     hideGuiBot();
 
+    let promises = [];
     for (numOfAtks; numOfAtks > 0; numOfAtks--)
     {
+        await Promise.all(promises);
         let randomSlot = getRndInteger(1, slots);
 
         if (numOfAtks == 1)
@@ -245,7 +247,7 @@ async function archerS5Attack(origin)
         }
         else
         {
-            finalAttackCalc(targets[randomSlot], dmg, poison, false, 20).then(() => {});
+            promises.push(finalAttackCalc(targets[randomSlot], dmg, poison, false, 20).then(() => {}));
         }
     }
 }
@@ -272,8 +274,10 @@ async function archerS6Attack(target, origin)
     usedTurn(origin);
     setCooldown(origin, "S6", 3)
 
+    let promises = [];
     for (numOfStacks; numOfStacks > 0; numOfStacks--)
     {
+        await Promise.all(promises);
         addStatusFx(target, "poison", 99);
         if (numOfStacks == 1)
         {
@@ -284,7 +288,7 @@ async function archerS6Attack(target, origin)
         }
         else
         {
-            showEffect(target, "Poisoned", "purple", 20).then(() => {});
+            promises.push(showEffect(target, "Poisoned", "purple", 20).then(() => {}));
         }
     }
 }

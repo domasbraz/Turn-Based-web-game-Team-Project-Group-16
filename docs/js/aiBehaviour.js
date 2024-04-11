@@ -25,15 +25,24 @@ function randomEnemy1()
 //TODO: implement proper skills
 function basicAttack(origin)
 {
-    let playerUnits = document.getElementsByClassName("pUnits").length;
-
-    let targetSlot = Math.floor((Math.random() * playerUnits) + 1);
-
-    let target = document.getElementsByClassName("pUnit" + targetSlot)[0];
-
-    if (target.hasAttribute("protected"))
+    let tauntedUnits = document.querySelectorAll(".pUnits[taunt]");
+    let target;
+    if (tauntedUnits.length > 0)
     {
-        target = document.getElementsByClassName(target.getAttribute("protected"))[0];
+        target = tauntedUnits[0];
+    }
+    else
+    {
+        let playerUnits = document.getElementsByClassName("pUnits").length;
+
+        let targetSlot = Math.floor((Math.random() * playerUnits) + 1);
+
+        target = document.getElementsByClassName("pUnit" + targetSlot)[0];
+
+        if (target.hasAttribute("protected"))
+        {
+            target = document.getElementsByClassName(target.getAttribute("protected"))[0];
+        }
     }
 
     enemy1S1(target, origin);

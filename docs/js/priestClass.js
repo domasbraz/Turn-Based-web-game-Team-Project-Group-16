@@ -136,6 +136,7 @@ function priestS4Heal(target, origin)
     let heal = parseFloat(origin.getAttribute("atk"));
     heal *= 0.3;
     let units = document.querySelectorAll(".pUnits");
+
     setCooldown(origin, "S4", 2);
     usedTurn(origin);
     hideGuiBot();
@@ -149,6 +150,7 @@ function priestS4Heal(target, origin)
         replaceAttributes(document.getElementById(unit.id), unit);
         showEffect(unit, heal, "green")
     })
+
     
     setTimeout(() =>
     {
@@ -214,17 +216,18 @@ function priestS6(origin)
 
 function priestS6Attack(target, origin)
 {
-    let dmg = 0;
-    if (hasStatusFx(target, "poison"))
-    {
-        dmg = poisonDmg(target);
-    }
-
     setCooldown(origin, "S6", 3);
     usedTurn(origin);
     hideGuiBot();
-    showEffect(target, dmg).then(() =>
+    if (hasStatusFx(target, "poison"))
     {
-        nextDuel(origin)
-    });
+        poisonDmg(target).then(() =>
+        {
+            nextDuel(origin);
+        });
+    }
+    else
+    {
+        nextDuel(origin);
+    }
 }

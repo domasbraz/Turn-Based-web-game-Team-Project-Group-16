@@ -90,6 +90,10 @@ function addStatusFx(unit, status, duration)
                 {
                     addPoisonStack(unitClass);
                 }
+                if (fx == "bleed")
+                {
+                    addBleedStack(unitClass);
+                }
                 
                 return true;
             }
@@ -155,6 +159,10 @@ function addStatusFx(unit, status, duration)
         if (status == "poison")
         {
             addPoisonStack(unitClass);
+        }
+        if (status == "bleed")
+        {
+            addBleedStack(unitClass);
         }
 
         unit.setAttribute("effects", numFx);
@@ -246,6 +254,32 @@ function addPoisonStack(unitClass)
         let container = document.getElementsByClassName("combatContainer")[0];
 
         container.innerHTML += "<div class='" + unitClass + "PoisonStacks " + unitType + "Info" + unitClass.charAt(5) + "' style='grid-area:" + position + "'>1</div>";
+    }
+}
+
+function addBleedStack(unitClass)
+{
+    let bleed = document.getElementsByClassName(unitClass + "BleedStacks");
+
+    if (bleed.length > 0)
+    {
+        let stacks = parseInt(bleed[0].textContent);
+
+        stacks++;
+
+        bleed[0].textContent = stacks;
+    }
+    else
+    {
+        let unitType = unitClass.charAt(0);
+
+        let bleedFx = document.querySelector("." + unitClass + "Status[statustype='bleed']");
+
+        let position = bleedFx.style.gridArea;
+
+        let container = document.getElementsByClassName("combatContainer")[0];
+
+        container.innerHTML += "<div class='" + unitClass + "BleedStacks " + unitType + "Info" + unitClass.charAt(5) + "' style='grid-area:" + position + "'>1</div>";
     }
 }
 
@@ -785,7 +819,17 @@ function createUnit(unitSlot, type, stats, skills)
     unit.setAttribute("energy", stats[3]);
     unit.setAttribute("maxHp", stats[0]);
     unit.setAttribute("maxEnergy", stats[3]);
-    unit.setAttribute("energyRegen", 10);
+
+    let energyRegen;
+    if (stats[4] == undefined || stats[4] == null)
+    {
+        energyRegen = 25;
+    }
+    else
+    {
+        energyRegen = stats[4];
+    }
+    unit.setAttribute("energyRegen", energyRegen);
     
     unit.setAttribute("type", type);
     unit.setAttribute("id", type + unitSlot.charAt(5));
@@ -1077,6 +1121,23 @@ function finalAttackCalc(target, skillDmg, poison, bleed, duration)
     {
         finalDmg *= 1.1;
     }
+    if (hasStatusFx(target, "evasionBuff"))
+    {
+        let evasionChance = parseFloat(target.getAttribute("evasion"));
+        evasionChance = 100 / evasionChance;
+
+        let success = getRndInteger(1, evasionChance) == 1;
+        if (success)
+        {
+            finalDmg = 0;
+        }
+        if (target.hasAttribute("taunt"))
+        {
+            let func = window[target.getAttribute("taunt")];
+            func(target, success);
+        }
+    }
+    
 
     target.setAttribute("hp", hp - finalDmg);
     disableTargeting(true);
@@ -1087,7 +1148,18 @@ function finalAttackCalc(target, skillDmg, poison, bleed, duration)
     {
         addStatusFx(target, "poison", 99);
     }
-    return showEffect(target, finalDmg, "red", duration);
+    if (bleed)
+    {
+        addStatusFx(target, "bleed", 99);
+    }
+    if (finalDmg == 0)
+    {
+        return showEffect(target, "Evaded", "blue");
+    }
+    else
+    {
+        return showEffect(target, finalDmg, "red", duration);
+    }
     
 }
 
@@ -1396,6 +1468,7 @@ function skipTurn(unit)
 function postRoundConditionS()
 {
     poisonDmg();
+    bleedDmg();
     statusDurationDown();
     decreaseCooldowns();
     resetSelection();
@@ -1606,7 +1679,7 @@ function poisonDmg(target)
         target.setAttribute("hp", hp);
 
         updateUnitHp(target);
-        return dmg;
+        return showEffect(unit, dmg, "red", 100);
     }
     else
     {
@@ -1639,8 +1712,6 @@ function poisonDmg(target)
 
                 updateUnitHp(unit);
 
-                showEffect(unit, dmg, "red", 100);
-
                 stacks = parseInt(stacks / 2);
 
                 if (stacks > 0)
@@ -1651,6 +1722,63 @@ function poisonDmg(target)
                 {
                     removeStatusFx(unit, "poison");
                 }
+
+                return showEffect(unit, dmg, "red", 100);
+            }
+        }
+    }
+}
+
+function bleedDmg(target)
+{
+    if (target != undefined)
+    {
+        let targetClass = target.getAttribute("class").split(" ")[1];
+        let bleed = document.getElementsByClassName(targetClass + "BleedStacks")[0];
+
+        let stacks = parseInt(bleed.textContent);
+
+        let hp = parseFloat(target.getAttribute("hp"));
+
+        let dmg = hp * (stacks / 50);
+
+        hp -= dmg;
+
+        target.setAttribute("hp", hp);
+
+        updateUnitHp(target);
+        return showEffect(unit, dmg, "red", 100);
+    }
+    else
+    {
+        let pUnits = document.getElementsByClassName("pUnits");
+        let eUnits = document.getElementsByClassName("eUnits");
+
+        //https://www.w3schools.com/howto/howto_js_spread_operator.asp
+        let units = [...pUnits, ...eUnits];
+
+        for (let index = 0; index < units.length; index++)
+        {
+            let unit = units[index];
+
+            if (hasStatusFx(unit, "bleed"))
+            {
+                let unitClass = unit.getAttribute("class").split(" ")[1];
+                let bleed = document.getElementsByClassName(unitClass + "BleedStacks")[0];
+
+                let stacks = parseInt(bleed.textContent);
+
+                let hp = parseFloat(unit.getAttribute("hp"));
+
+                let dmg = hp * (stacks / 50);
+
+                hp -= dmg;
+
+                unit.setAttribute("hp", hp);
+
+                updateUnitHp(unit);
+
+                return showEffect(unit, dmg, "red", 100);
             }
         }
     }

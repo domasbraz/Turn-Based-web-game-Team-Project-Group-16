@@ -57,6 +57,27 @@ function userArcherInput()
         alert("'" + archerAmount + "' is an invalid value.\r\nPlease enter a value between 0 and " + remainder);
         userArcherInput();
     }
+    else
+    {
+        userAssassinInput();
+    }
+}
+
+function userAssassinInput()
+{
+    let remainder = getRemainingPlayerSlots();
+
+    let assassinAmount = parseInt(prompt("Enter how many assassins will be in battle (max " + remainder + ")"));
+
+    if (assassinAmount <= remainder && assassinAmount > 0)
+    {
+        createAssassins(assassinAmount)
+    }
+    else if (assassinAmount != 0)
+    {
+        alert("'" + archerAmount + "' is an invalid value.\r\nPlease enter a value between 0 and " + remainder);
+        userAssassinInput();
+    }
 }
 
 function userEnemy1Input()
@@ -117,6 +138,19 @@ function createArchers(amount)
     {
         let skills = pickRandomSkills();
         createUnitArcher(slot, skills);
+        slot++;
+    }
+}
+
+function createAssassins(amount)
+{
+    let remainder = getRemainingPlayerSlots();
+    let slot = (4 - remainder) + 1;
+
+    for (amount; amount > 0; amount--)
+    {
+        let skills = pickRandomSkills();
+        createUnitAssassin(slot, skills);
         slot++;
     }
 }

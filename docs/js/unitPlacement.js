@@ -50,7 +50,11 @@ function userArcherInput()
 
     if (archerAmount <= remainder && archerAmount > 0)
     {
-        createArchers(archerAmount)
+        createArchers(archerAmount);
+        if (archerAmount < remainder)
+        {
+            userAssassinInput();
+        }
     }
     else if (archerAmount != 0)
     {

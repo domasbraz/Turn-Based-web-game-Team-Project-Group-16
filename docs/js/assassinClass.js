@@ -221,7 +221,7 @@ function assassinS5Taunt(unit, success)
 
     if (evasionChance < 1)
     {
-        unit.removeStatusFx(unit, "evasionBuff");
+        removeStatusFx(unit, "evasionBuff");
         unit.removeAttribute("evasion");
     }
     else
@@ -280,6 +280,11 @@ function assassinS6Buff(origin)
     }
 
     origin.setAttribute("bleedChance", bleedChance);
+
+    showEffect(origin, "Buffed", "green").then(() =>
+    {
+        nextDuel(origin);
+    });
 
 }
 

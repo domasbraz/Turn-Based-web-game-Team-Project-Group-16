@@ -787,5 +787,172 @@ function tutorialMessage6()
 {
     let tutorial = document.getElementsByClassName("tutorial")[0];
     tutorial.style.display = "none";
+
+    let tutorialMessage2 = document.getElementsByClassName("tutorialMessage2")[0];
+
+    tutorialMessage2.style.display = "block";
+
+    tutorialMessage2.innerHTML = 
+    "<p>Start by picking the basic attack skill for the knight";
+
+    tutorialMessage2.style.top = "20%";
+    tutorialMessage2.style.left = "50%";
+
+    let skill1 = document.getElementById("basicAttack");
+    skill1.style.border = "2px solid red";
+    skill1.setAttribute("onclick", "addSkill('knight', 'S1'); tutorialMessage7()");
 }
 
+function addSkill(unit, skill)
+{
+    let container = document.getElementById("skillsContainer");
+
+    container.innerHTML +=
+    "<img class='addedSkills' style='width: 50%;' src='../../img/png images/characters/" + unit + "/" + unit + skill + ".png'>";
+}
+
+function tutorialMessage7()
+{
+    let skill1 = document.getElementById("basicAttack");
+    skill1.style.border = "none";
+    skill1.removeAttribute("onclick");
+
+    let skill2 = document.getElementById("guard");
+    skill2.style.border = "2px solid red";
+    skill2.setAttribute("onclick", "addSkill('knight', 'S2'); tutorialMessage8()");
+
+    let tutorialMessage2 = document.getElementsByClassName("tutorialMessage2")[0];
+    tutorialMessage2.innerHTML = 
+    "<p>Now select the guard skill</p>";
+}
+
+function tutorialMessage8()
+{
+    let skill2 = document.getElementById("guard");
+    skill2.style.border = "none";
+    skill2.removeAttribute("onclick");
+
+    let addBtn = document.getElementById("add");
+    addBtn.style.border = "2px solid red";
+    addBtn.setAttribute("onclick", "addKnight(); tutorialMessage9()");
+
+    let tutorialMessage2 = document.getElementsByClassName("tutorialMessage2")[0];
+    tutorialMessage2.innerHTML = 
+    "<p>Now let's add the knight to our party</p>";
+}
+
+function addKnight()
+{
+    let container = document.getElementById("firstCharacter");
+
+    container.innerHTML +=
+    "<img width='100%' height='100%' src='../../img/png images/characters/knight/knight.png'>"
+}
+
+function tutorialMessage9()
+{
+    let addBtn = document.getElementById("add");
+    addBtn.style.border = "1px solid gray";
+    addBtn.removeAttribute("onclick");
+
+    let nextBtn = document.getElementById("next");
+    nextBtn.style.border = "2px solid red";
+    nextBtn.setAttribute("onclick", "showPriest(); tutorialMessage10()");
+
+    let tutorialMessage2 = document.getElementsByClassName("tutorialMessage2")[0];
+    tutorialMessage2.innerHTML = 
+    "<p>Ok, next let's switch to the priest class</p>";
+}
+
+function showPriest()
+{
+    let classImg = document.getElementById("knightImg");
+    classImg.src = "/img/png images/characters/priest/priest.png";
+
+    let skills = document.getElementsByClassName("knightSkills");
+
+    for (let index = 0; index < skills.length; index++)
+    {
+        let skill = skills[index];
+        
+        skill.src = "/img/png images/characters/priest/priestS" + (index + 1) + ".png";
+    }
+
+    let addedSkills = document.getElementsByClassName("addedSkills");
+    addedSkills[1].parentNode.removeChild(addedSkills[1]);
+    addedSkills[0].parentNode.removeChild(addedSkills[0]);
+
+    let classStats = document.getElementsByClassName("Stats");
+    classStats[0].style.display = "none";
+    classStats[3].style.display = "block";
+
+    let charVal = document.getElementById("firstP");
+    charVal.textContent = "Second Character";
+}
+
+function tutorialMessage10()
+{
+    let nextBtn = document.getElementById("next");
+    nextBtn.style.border = "1px solid gray";
+    nextBtn.removeAttribute("onclick");
+
+    let skill1 = document.getElementById("basicAttack");
+    skill1.style.border = "2px solid red";
+    skill1.setAttribute("onclick", "addSkill('priest', 'S1'); tutorialMessage11()");
+
+    let tutorialMessage2 = document.getElementsByClassName("tutorialMessage2")[0];
+    tutorialMessage2.innerHTML = 
+    "<p>The priest can heal unit using the Quick Heal skill, let's select it</p>";
+}
+
+function tutorialMessage11()
+{
+    let skill1 = document.getElementById("basicAttack");
+    skill1.style.border = "none";
+    skill1.removeAttribute("onclick");
+
+    let skill2 = document.getElementById("guard");
+    skill2.style.border = "2px solid red";
+    skill2.setAttribute("onclick", "addSkill('priest', 'S2'); tutorialMessage12()");
+
+    let tutorialMessage2 = document.getElementsByClassName("tutorialMessage2")[0];
+    tutorialMessage2.innerHTML = 
+    "<p>Now let's select the Curse of Pain skill</p>";
+}
+
+function tutorialMessage12()
+{
+    let skill2 = document.getElementById("guard");
+    skill2.style.border = "1px solid gray";
+    skill2.removeAttribute("onclick");
+
+    let addBtn = document.getElementById("add");
+    addBtn.style.border = "2px solid red";
+    addBtn.setAttribute("onclick", "addPriest(); tutorialMessage13()");
+
+    let tutorialMessage2 = document.getElementsByClassName("tutorialMessage2")[0];
+    tutorialMessage2.innerHTML = 
+    "<p>Great, now let's add the priest to the party</p>";
+}
+
+function addPriest()
+{
+    let container = document.getElementById("secondCharacter");
+
+    container.innerHTML +=
+    "<img width='70%' src='../../img/png images/characters/priest/priest.png'>"
+}
+
+function tutorialMessage13()
+{
+    let addBtn = document.getElementById("add");
+    addBtn.style.border = "1px solid gray";
+    addBtn.removeAttribute("onclick");
+
+    let tutorialMessage2 = document.getElementsByClassName("tutorialMessage2")[0];
+    tutorialMessage2.innerHTML = 
+    "<p>That should be enough for now, let's depart for battle!</p>";
+
+    document.body.innerHTML +=
+    "<button style='position: absolute; top: 10%; right: 10%; font-size: 20px; color: green; border: 2px solid red'>Depart</button>";
+}

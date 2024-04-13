@@ -798,7 +798,7 @@ function createUnit(unitSlot, type, stats, skills)
 
     if (unitSlot.charAt(0) == "p")
     {
-        unit.innerHTML = "<img draggable='false' width='100%' height='100%' src='../../img/png images/characters/" + type + "/" + type + ".gif'>";
+        unit.innerHTML = "<img draggable='false' width='100%' height='100%' src='../../img/png images/characters/" + type + "/" + type + "v2.gif'>";
     }
     else
     {
@@ -1878,11 +1878,11 @@ function playAttackAnimation(unit, type)
 {
     img = unit.children[0];
 
-    img.src = "../../img/png images/characters/" + type + "/" + type + "Attack.gif";
+    img.src = "../../img/png images/characters/" + type + "/" + type + "Attackv2.gif";
 
     setTimeout(() =>
     {
-        img.src = "../../img/png images/characters/" + type + "/" + type + ".gif";
+        img.src = "../../img/png images/characters/" + type + "/" + type + "v2.gif";
     },
     1500);
 }

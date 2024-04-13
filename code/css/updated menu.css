@@ -13,11 +13,12 @@ body{
 
 #box{
     text-align: center;
-    position: absolute;
-    width: 25%;
+  position: relative; 
+     width: 25%; 
     height: 35%;
-    left: 40%;
-    top: 20%;
+    left: 37%;
+    top: 10%; 
+    align-items: center;
     background-color: #2f312f;
     border: 4px solid black;
 }

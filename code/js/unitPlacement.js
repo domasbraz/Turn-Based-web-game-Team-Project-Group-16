@@ -1,5 +1,7 @@
-createKnights(2);
-createPriests(2);
+//createKnights(2);
+//createPriests(2);
+createArchers(2);
+createAssassins(2);
 createEnemy1s(2);
 
 //source test
@@ -84,6 +86,32 @@ function createPriests(amount)
     {
         let skills = pickRandomSkills2();
         createUnitPriest(slot, skills);
+        slot++;
+    }
+}
+
+function createArchers(amount)
+{
+    let remainder = getRemainingPlayerSlots();
+    let slot = (4 - remainder) + 1;
+
+    for (amount; amount > 0; amount--)
+    {
+        let skills = pickRandomSkills();
+        createUnitArcher(slot, skills);
+        slot++;
+    }
+}
+
+function createAssassins(amount)
+{
+    let remainder = getRemainingPlayerSlots();
+    let slot = (4 - remainder) + 1;
+
+    for (amount; amount > 0; amount--)
+    {
+        let skills = pickRandomSkills();
+        createUnitAssassin(slot, skills);
         slot++;
     }
 }

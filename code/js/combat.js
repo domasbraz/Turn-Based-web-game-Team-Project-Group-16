@@ -802,7 +802,7 @@ function createUnit(unitSlot, type, stats, skills)
     }
     else
     {
-        unit.innerHTML = "<img draggable='false' width='100%' height='100%' src='../../img/png images/characters/enemies/" + type + ".png'>";
+        unit.innerHTML = "<img draggable='false' width='100%' height='100%' src='../../img/png images/characters/enemies/enemySword.gif'>";
     }
 
     let hasSkills = "";
@@ -1874,4 +1874,16 @@ function getNextUnit(unit)
 
 }
 
+function playAttackAnimation(unit, type)
+{
+    img = unit.children[0];
+
+    img.src = "../../img/png images/characters/" + type + "/" + type + "Attack.gif";
+
+    setTimeout(() =>
+    {
+        img.src = "../../img/png images/characters/" + type + "/" + type + ".gif";
+    },
+    1500);
+}
 

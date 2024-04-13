@@ -802,7 +802,7 @@ function createUnit(unitSlot, type, stats, skills)
     }
     else
     {
-        unit.innerHTML = "<img draggable='false' width='100%' height='100%' src='../../img/png images/characters/enemies/enemySword.gif'>";
+        unit.innerHTML = "<img draggable='false' width='100%' height='100%' src='../../img/png images/characters/enemies/enemySpear.gif'>";
     }
 
     let hasSkills = "";

@@ -798,7 +798,7 @@ function createUnit(unitSlot, type, stats, skills)
 
     if (unitSlot.charAt(0) == "p")
     {
-        unit.innerHTML = "<img draggable='false' width='100%' height='100%' src='../../img/png images/characters/" + type + "/" + type + ".png'>";
+        unit.innerHTML = "<img draggable='false' width='100%' height='100%' src='../../img/png images/characters/" + type + "/" + type + ".gif'>";
     }
     else
     {

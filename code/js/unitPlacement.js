@@ -1,5 +1,5 @@
 createKnights(2);
-//createPriests(2);
+createPriests(2);
 //createArchers(2);
 //createAssassins(2);
 createEnemy1s(2);

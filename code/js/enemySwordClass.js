@@ -4,7 +4,7 @@ function createUnitEnemy1(position)
     let stats = [100, 10, 5, 100];
     let skills = [1, 2];
 
-    createUnit("eUnit" + position, "enemy1", stats, skills);
+    createUnit("eUnit" + position, "enemySword", stats, skills);
 }
 
 function enemy1S1(target, origin)

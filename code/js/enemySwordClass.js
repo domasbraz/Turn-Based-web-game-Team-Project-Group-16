@@ -1,4 +1,4 @@
-function createUnitEnemy1(position)
+function createUnitEnemySword(position)
 {
     //hp, atk, def, energy
     let stats = [100, 10, 5, 100];
@@ -7,7 +7,7 @@ function createUnitEnemy1(position)
     createUnit("eUnit" + position, "enemySword", stats, skills);
 }
 
-function enemy1S1(target, origin)
+function enemySwordS1(target, origin)
 {
     let atk = document.getElementById(origin.id).getAttribute("atk");
         
@@ -16,11 +16,36 @@ function enemy1S1(target, origin)
     let dmg = Math.floor(atk * dmgMultiplyer);
 
     usedTurn(origin);
-    hideGuiBot();
+    hideGuiBot(origin);
     finalAttackCalc(target, dmg).then(() =>
     {
         nextDuel();
     });
 
+}
+
+function enemySwordS2(target, origin)
+{
+    let success = getRndInteger(1, 5) == 5;
+
+    if (success)
+    {
+        let atk = document.getElementById(origin.id).getAttribute("atk");
+        
+        let dmgMultiplyer = getRndInteger(100, 200);
+    
+        let dmg = Math.floor((atk * dmgMultiplyer) / 100);
+    
+        usedTurn(origin);
+        hideGuiBot();
+        finalAttackCalc(target, dmg).then(() =>
+        {
+            nextDuel(origin);
+        });
+    }
+    else
+    {
+        enemySwordS1(target, origin);
+    }
 }
 

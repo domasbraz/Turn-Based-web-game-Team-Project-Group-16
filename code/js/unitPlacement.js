@@ -2,7 +2,7 @@ createKnights(2);
 createPriests(2);
 //createArchers(2);
 //createAssassins(2);
-createEnemy1s(2);
+createEnemySword(2);
 
 //source test
 
@@ -46,7 +46,7 @@ function userPriestInput()
     }
 }
 
-function userEnemy1Input()
+function userEnemySwordInput()
 {
     let enemy1Amount = parseInt(prompt("Enter how many enemies will be in battle (max 4)"));
 
@@ -141,11 +141,11 @@ function pickRandomSkills2()
     return array;
 }
 
-function createEnemy1s(amount)
+function createEnemySword(amount)
 {
     for (let x = 1; x <= amount; x++)
     {
-        createUnitEnemy1(x);
+        createUnitEnemySword(x);
     }
 }
 

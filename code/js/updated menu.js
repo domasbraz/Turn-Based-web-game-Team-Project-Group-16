@@ -1,4 +1,4 @@
-    let isFirstThree = false;
+let isFirstThree = false;
     let isLastThree= false;
     let isSkillStatsActive = false;
     //knight skills
@@ -62,7 +62,15 @@ function back(){
 
 }
 
+function backToMenu(){
+    document.getElementById("mainMenu").style.display = 'block';
+    document.getElementById('credits').style.display = 'none';
+    document.getElementById('questBoard').style.display = 'none';
+    document.getElementById("partySelectionContainer").style.display = "none";
+}
+
 function credits(){
+    document.getElementById("mainMenu").style.display = 'none';
     document.getElementById('credits').style.display = 'block';
     document.getElementById('questBoard').style.display = 'none';
     document.getElementById("partySelectionContainer").style.display = "none";

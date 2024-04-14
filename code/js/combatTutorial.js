@@ -2298,7 +2298,7 @@ function tutorialMessage23()
 
 function endTutorial()
 {
-    window.location.assign("/code/combatTutorial.html");
+    window.location.assign("/code/menu.html");
 }
 
 

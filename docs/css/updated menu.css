@@ -28,7 +28,7 @@ body{
 }
 
 #credits{
-    background-image: url("../../img/png images/backgrounds/main menu background.png");
+    background-image: url("../png images/backgrounds/main menu background.png");
     background-size:cover;                      
     background-repeat: no-repeat;
     font-family: 'Trebuchet MS';
@@ -55,7 +55,7 @@ h1{
 }
 
 #mainMenu{
-    background-image: url("../../img/png images/backgrounds/main menu background.png");
+    background-image: url("../png images/backgrounds/main menu background.png");
     background-size:cover;
     background-position: center; 
     background-repeat:repeat-x; 
@@ -138,7 +138,7 @@ button:hover{
  
 
 #questBoard{
-    background-image: url("../../img/png images/backgrounds/quest board.png");
+    background-image: url("../png images/backgrounds/quest board.png");
     background-size:cover;                      
     background-repeat: no-repeat;
     font-family: 'Trebuchet MS';

@@ -694,7 +694,7 @@ function depart()
 
         localStorage.setItem("playerUnits", partyInfo);
 
-        window.location.assign("/code/combat.html");
+        window.location.assign("combat.html");
 
     }
 }

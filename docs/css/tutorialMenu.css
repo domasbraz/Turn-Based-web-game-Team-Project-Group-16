@@ -28,7 +28,7 @@ body{
 }
 
 #credits{
-    background-image: url("../../img/png images/backgrounds/main menu background.png");
+    background-image: url("../png images/backgrounds/main menu background.png");
     background-size:cover;                      
     background-repeat: no-repeat;
     font-family: 'Trebuchet MS';
@@ -55,7 +55,7 @@ h1{
 }
 
 #mainMenu{
-    background-image: url("../../img/png images/backgrounds/main menu background.png");
+    background-image: url("../png images/backgrounds/main menu background.png");
     background-size:cover;
     background-position: center; 
     background-repeat:repeat-x; 
@@ -68,7 +68,7 @@ h1{
 }
 
 #play{
-    background-image: url('../../img/png images/Play Button.png') ;
+    background-image: url('../png images/Play Button.png') ;
     background-size:cover ; 
     background-repeat: no-repeat;
     background-position: center;
@@ -88,7 +88,7 @@ h1{
 }
 
 #settings{
-    background-image: url('../../img/png images/Settings Button.png') ;
+    background-image: url('../png images/Settings Button.png') ;
     background-size: cover; 
     background-repeat: no-repeat;  
     height: 100%;
@@ -105,7 +105,7 @@ h1{
 }
 
 #exit{
-    background-image: url('../../img/png images/Exit Button.png') ;
+    background-image: url('../png images/Exit Button.png') ;
     background-size: cover; 
     background-repeat: no-repeat;
     height: 100%;
@@ -129,7 +129,7 @@ button:hover{
  
 
 #questBoard{
-    background-image: url("../../img/png images/backgrounds/quest board.png");
+    background-image: url("../png images/backgrounds/quest board.png");
     background-size:cover;                      
     background-repeat: no-repeat;
     font-family: 'Trebuchet MS';

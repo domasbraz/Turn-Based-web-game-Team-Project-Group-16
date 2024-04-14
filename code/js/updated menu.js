@@ -170,14 +170,14 @@ function check(index){
         Stats.forEach(div =>{
             div.style.display = 'none';
         });
-        console.log('skills active is '+isSkillStatsActive );
+        //console.log('skills active is '+isSkillStatsActive );
     });
 
     characterSkills.addEventListener('mouseleave', function(){
         showSkillStats()
         isSkillStatsActive = false;    
         showCharacterStats(currentIndex);
-        console.log('skills active is '+isSkillStatsActive );
+        //console.log('skills active is '+isSkillStatsActive );
         
     });
     return Stats[index];
@@ -653,4 +653,114 @@ function showSkillStats(){
             priestSkillsP[i].style.display = 'block';
         })
     }
+}
+
+function acceptQuest(difficulty)
+{
+    toPartySelection();
+
+    localStorage.setItem("difficulty", difficulty);
+
+}
+
+function depart()
+{
+    let partyCount = document.getElementsByClassName("characters").length - 4;
+
+    if (partyCount > 0)
+    {
+        let partyInfo = "";
+
+        for (let i = 0; i < partyCount; i++)
+        {
+            let unitType = document.getElementsByClassName("characters")[i].id.slice(0, -3);
+
+            partyInfo += unitType;
+
+            let unitSkills = document.getElementsByClassName("CharacterSelectedSkills")[i];
+
+            let skillCount = unitSkills.children.length;
+
+
+            for (let j = 1; j < skillCount; j++)
+            {
+                let skill = unitSkills.children[j].src.slice(-5, -4);
+
+                partyInfo += "%" + skill;
+            }
+
+            partyInfo += " ";
+        }
+
+        localStorage.setItem("playerUnits", partyInfo);
+
+        window.location.assign("/code/combat.html");
+
+    }
+}
+
+let replay = localStorage.getItem("questBoard");
+
+if (replay == "true")
+{
+    play();
+}
+
+function promptTutorial()
+{
+    document.body.innerHTML += 
+    "<div class='tutorial' style='width: 100%; height: 100%; background-color: #00000070; display: block; position: absolute; top:0; z-index: 50'></div>"
+
+    let tutorial = document.getElementsByClassName("tutorial")[0];
+
+    tutorial.innerHTML =
+    "<div class='tutorialMessage1' style='position: relative; width: 50%; height: 50%; margin: auto; border: 2px solid black; top: 25%; background-color: #784316; text-align: center; padding: 2%'></div>"
+
+    let tutorialMessage1 = document.getElementsByClassName("tutorialMessage1")[0];
+
+    tutorialMessage1.innerHTML =
+    "<h1>Play Tutorial</h1>"
+    +
+    "<p>We recommend you play the tutorial if you are a new player</p>"
+    +
+    "<p>The tutorial will teach you the basics of the game</p>"
+    +
+    "<br><button onclick='playTutorial()' style='font-size: 20px; color: green;'>Play Tutorial</button>"
+    +
+    "<br><br><button onclick='play(); closePrompt();' style='font-size: 20px; color: red;'>Skip</button>";
+}
+
+function playTutorial()
+{
+    window.location.assign("/code/tutorialMenu.html");
+}
+
+function closePrompt()
+{
+    let tutorial = document.getElementsByClassName("tutorial")[0];
+
+    tutorial.style.display = "none";
+}
+
+//TODO
+function help()
+{
+/*     document.body.innerHTML += 
+    "<div class='tutorial' style='width: 100%; height: 100%; background-color: #00000070; display: block; position: absolute; top:0; z-index: 50'></div>"
+
+    let tutorial = document.getElementsByClassName("tutorial")[0];
+
+    tutorial.innerHTML =
+    "<div class='tutorialMessage1' style='position: relative; width: 50%; height: 50%; margin: auto; border: 2px solid black; top: 25%; background-color: #784316; text-align: center; padding: 2%'></div>"
+
+    let tutorialMessage1 = document.getElementsByClassName("tutorialMessage1")[0];
+
+    tutorialMessage1.innerHTML =
+    "<h1>Welcome To EVERGREEN!</h1>"
+    +
+    "<p>A game about completing quests and fighting enemies</p>"
+    +
+    "<p>You can try out different strategies and fight enemies in different difficulties</p>"
+    +
+    "<button onclick='tutorialMessage2()' style='font-size: 20px;'>Continue</button>"; */
 }

@@ -1,6 +1,6 @@
 function createUnitArcher(position, skills)
 {
-    let stats = [100, 30, 5, 100];
+    let stats = [80, 50, 5, 100];
     if (skills == undefined)
     {
         skills = [1, 2, 3, 4];
@@ -44,15 +44,18 @@ function archerS1Attack(target, origin)
 
     let poison = hasStatusFx(origin, "archerS3Buff");
 
-    let nextTarget = getNextUnit(target);
-    if (nextTarget != undefined)
+    playAttackAnimation(origin, "archer").then(() =>
     {
-        finalAttackCalc(nextTarget, dmg, poison);
-    }
-    finalAttackCalc(target, dmg, poison).then(() =>
-    {
-        //checkArcherS3Buff(origin);
-        nextDuel(origin)
+        let nextTarget = getNextUnit(target);
+        if (nextTarget != undefined)
+        {
+            finalAttackCalc(nextTarget, dmg, poison);
+        }
+        finalAttackCalc(target, dmg, poison).then(() =>
+        {
+            //checkArcherS3Buff(origin);
+            nextDuel(origin)
+        });
     });
 }
 
@@ -91,10 +94,13 @@ function archerS2Attack(target, origin)
 
     let poison = hasStatusFx(origin, "archerS3Buff");
 
-    finalAttackCalc(target, dmg, poison).then(() =>
+    playAttackAnimation(origin, "archer").then(() =>
     {
-        //checkArcherS3Buff(origin);
-        nextDuel(origin)
+        finalAttackCalc(target, dmg, poison).then(() =>
+        {
+            //checkArcherS3Buff(origin);
+            nextDuel(origin)
+        });
     });
 }
 
@@ -173,22 +179,25 @@ function archerS4Attack(origin)
 
     let targets = document.getElementsByClassName("eUnits");
 
-    for (let index = 0; index < targets.length; index++)
+    playAttackAnimation(origin, "archer").then(() =>
     {
-        let target = targets[index];
+        for (let index = 0; index < targets.length; index++)
+        {
+            let target = targets[index];
 
-        if (index == (targets.length - 1))
-        {
-            finalAttackCalc(target, dmg, poison).then(() =>
+            if (index == (targets.length - 1))
             {
-                nextDuel(origin);
-            });
+                finalAttackCalc(target, dmg, poison).then(() =>
+                {
+                    nextDuel(origin);
+                });
+            }
+            else
+            {
+                finalAttackCalc(target, dmg, poison);
+            }
         }
-        else
-        {
-            finalAttackCalc(target, dmg, poison);
-        }
-    }
+    });
 }
 
 function archerS5(origin)
@@ -234,6 +243,9 @@ async function archerS5Attack(origin)
     hideGuiBot();
 
     let promises = [];
+
+    promises.push(playAttackAnimation(origin, "archer").then(() => {}));
+    
     for (numOfAtks; numOfAtks > 0; numOfAtks--)
     {
         await Promise.all(promises);

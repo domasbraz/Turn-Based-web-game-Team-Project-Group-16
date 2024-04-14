@@ -7,9 +7,9 @@ function selectRandomEnemy()
 {
     let eUnits = document.getElementsByClassName("eUnits").length;
 
-    let slot = Math.floor((Math.random() * eUnits) + 1);
+    let slot = getRndInteger(1, eUnits);
 
-    let origin = document.getElementById("enemy1" + slot);
+    let origin = document.getElementsByClassName("eUnit" + slot)[0];
 
     if (origin.getAttribute("hasTurn") == "true")
     {
@@ -46,7 +46,7 @@ function useRandomSkill(origin)
 
     let skills = origin.getAttribute("skills").split(" ");
 
-    let skill = getRndInteger(0, skills.length - 2);
+    let skill = getRndInteger(1, skills.length - 1);
 
     let type = origin.getAttribute("type");
 

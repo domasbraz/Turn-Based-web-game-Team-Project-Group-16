@@ -1,6 +1,6 @@
 function createUnitPriest(position, skills)
 {
-    let stats = [100, 20, 5, 100];
+    let stats = [150, 10, 0, 100];
     if (skills == undefined)
     {
         skills = [1, 2, 3, 6];
@@ -38,9 +38,13 @@ function priestS1Heal(target, origin)
     setCooldown(origin, "S1", 2);
     usedTurn(origin);
     hideGuiBot();
-    showEffect(target, healAmount, "green").then(() =>
+
+    playAttackAnimation(origin, "priest").then(() =>
     {
-        nextDuel(origin);
+        showEffect(target, healAmount, "green").then(() =>
+        {
+            nextDuel(origin);
+        });
     });
 }
 
@@ -67,9 +71,13 @@ function priestS2Curse(target, origin)
 
     usedTurn(origin);
     hideGuiBot();
-    showEffect(target, "Cursed").then(() =>
+
+    playAttackAnimation(origin, "priest").then(() =>
     {
-        nextDuel(origin);
+        showEffect(target, "Cursed").then(() =>
+        {
+            nextDuel(origin);
+        });
     });
 }
 
@@ -95,7 +103,11 @@ async function priestS3Attack(target, origin)
     setCooldown(origin, "S3", 2);
     usedTurn(origin);
     hideGuiBot();
+    
     let promises = [];
+
+    promises.push(playAttackAnimation(origin, "priest").then(() => {}));
+
     for (numOfAtks; numOfAtks > 0; numOfAtks--)
     {
         await Promise.all(promises);
@@ -144,23 +156,26 @@ function priestS4Heal(target, origin)
     usedTurn(origin);
     hideGuiBot();
 
-    units.forEach(function (unit)
+    playAttackAnimation(origin, "priest").then(() =>
     {
-        let hp = parseFloat(unit.getAttribute("hp"));
-        hp += heal;
-        unit.setAttribute("hp", hp);
-        updateUnitHp(unit);
-        replaceAttributes(document.getElementById(unit.id), unit);
-        showEffect(unit, heal, "green")
-    })
+        units.forEach(function (unit)
+        {
+            let hp = parseFloat(unit.getAttribute("hp"));
+            hp += heal;
+            unit.setAttribute("hp", hp);
+            updateUnitHp(unit);
+            replaceAttributes(document.getElementById(unit.id), unit);
+            showEffect(unit, heal, "green")
+        })
 
-    
-    setTimeout(() =>
-    {
-        nextDuel(origin);
-    },
-    4000
-    );
+        
+        setTimeout(() =>
+        {
+            nextDuel(origin);
+        },
+        4000
+        );
+    });
 }
 
 function priestS5(origin)
@@ -196,9 +211,13 @@ function priestS5Buff(target, origin)
     setCooldown(origin, "S5", 3);
     usedTurn(origin);
     hideGuiBot()
-    showEffect(target, "Cured", "yellow").then(() =>
+
+    playAttackAnimation(origin, "priest").then(() =>
     {
-        nextDuel(origin);
+        showEffect(target, "Cured", "yellow").then(() =>
+        {
+            nextDuel(origin);
+        });
     });
 }
 
@@ -222,15 +241,19 @@ function priestS6Attack(target, origin)
     setCooldown(origin, "S6", 3);
     usedTurn(origin);
     hideGuiBot();
-    if (hasStatusFx(target, "poison"))
+
+    playAttackAnimation(origin, "priest").then(() =>
     {
-        poisonDmg(target).then(() =>
+        if (hasStatusFx(target, "poison"))
+        {
+            poisonDmg(target).then(() =>
+            {
+                nextDuel(origin);
+            });
+        }
+        else
         {
             nextDuel(origin);
-        });
-    }
-    else
-    {
-        nextDuel(origin);
-    }
+        }
+    });
 }

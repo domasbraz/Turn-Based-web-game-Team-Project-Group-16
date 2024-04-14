@@ -656,14 +656,15 @@ function endCombat()
     {
         /* resultText.textContent = "Victory!";
         resultText.style.color = "rgb(0, 255, 0)"; */
-        showGameMessage("Victory!", "rgb(0, 255, 0)");
+        showGameMessage("Victory!", "rgb(0, 255, 0)", true);
     }
     else
     {
         /* resultText.textContent = "Defeat!";
         resultText.style.color = "rgb(255, 0, 0)"; */
-        showGameMessage("Defeat!", "rgb(255, 0, 0)");
+        showGameMessage("Defeat!", "rgb(255, 0, 0)", false);
     }
+    
         
 }
 
@@ -1192,7 +1193,7 @@ function showDmgDealt(dmg)
     );
 }
 
-function showGameMessage(text, colour)
+function showGameMessage(text, colour, gameWon)
 {
     let result = document.getElementsByClassName("gameMsg")[0];
     let resultText = result.children[0];
@@ -1201,6 +1202,18 @@ function showGameMessage(text, colour)
 
     resultText.textContent = text;
     resultText.style.color = colour;
+
+    if (gameWon != undefined)
+    {
+        resultText.innerHTML +=
+        "<br><br><button onclick='questBoard()' style='font-size: 30px; color: green;'>Back to Questboard</button>";
+
+        if (gameWon == false)
+        {
+            resultText.innerHTML +=
+            "<br><br><button onclick='location.reload()' style='font-size: 30px; color: red;'>Retry</button>";
+        }
+    }
 }
 
 function hideGameMessage()
@@ -1836,7 +1849,7 @@ function showEffect(unit, display, colour, interval)
             }
         }
         
-    })
+    });
 }
 
 function hasEnoughtEnergy(unit, requiredEnergy)
@@ -1876,28 +1889,38 @@ function getNextUnit(unit)
 
 function playAttackAnimation(unit, type)
 {
-    let unitType = unit.getAttribute("class").split(" ")[0].charAt(0);
-
-    img = unit.children[0];
-    if (unitType == "p")
+    return new Promise((resolve, reject) =>
     {
-        img.src = "../../img/png images/characters/" + type + "/" + type + "Attack.gif";
+        let unitType = unit.getAttribute("class").split(" ")[0].charAt(0);
 
-        setTimeout(() =>
+        img = unit.children[0];
+        if (unitType == "p")
         {
-            img.src = "../../img/png images/characters/" + type + "/" + type + ".gif";
-        },
-        1500);
-    }
-    else
-    {
-        img.src = "../../img/png images/characters/enemies/" + type + "Attack.gif";
+            img.src = "../../img/png images/characters/" + type + "/" + type + "Attack.gif";
 
-        setTimeout(() =>
+            setTimeout(() =>
+            {
+                img.src = "../../img/png images/characters/" + type + "/" + type + ".gif";
+                resolve();
+            },
+            1500);
+        }
+        else
         {
-            img.src = "../../img/png images/characters/enemies/" + type + ".gif";
-        },
-        1500);
-    }
+            img.src = "../../img/png images/characters/enemies/" + type + "Attack.gif";
+
+            setTimeout(() =>
+            {
+                img.src = "../../img/png images/characters/enemies/" + type + ".gif";
+                resolve();
+            },
+            1500);
+        }
+    });
 }
 
+function questBoard()
+{
+    window.location.assign("/code/menu.html");
+    localStorage.setItem("questBoard", "true");
+}

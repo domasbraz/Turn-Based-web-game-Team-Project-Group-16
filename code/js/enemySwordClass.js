@@ -1,11 +1,11 @@
-function createUnitEnemySword(position, skills)
+function createUnitEnemySword(position, stats)
 {
     //hp, atk, def, energy
-    let stats = [60, 30, 5, 100];
-    if (skills == undefined)
+    if (stats == undefined)
     {
-        skills = [1, 2];
+        stats = [60, 30, 5, 100];
     }
+    let skills = [1, 2];
 
     createUnit("eUnit" + position, "enemySword", stats, skills);
 }
@@ -20,9 +20,12 @@ function enemySwordS1(target, origin)
 
     usedTurn(origin);
     hideGuiBot(origin);
-    finalAttackCalc(target, dmg).then(() =>
+    playAttackAnimation(origin, "enemySword").then(() =>
     {
-        nextDuel();
+        finalAttackCalc(target, dmg).then(() =>
+        {
+            nextDuel();
+        });
     });
 
 }
@@ -41,9 +44,12 @@ function enemySwordS2(target, origin)
     
         usedTurn(origin);
         hideGuiBot();
-        finalAttackCalc(target, dmg).then(() =>
+        playAttackAnimation(origin, "enemySword").then(() =>
         {
-            nextDuel(origin);
+            finalAttackCalc(target, dmg).then(() =>
+            {
+                nextDuel(origin);
+            });
         });
     }
     else

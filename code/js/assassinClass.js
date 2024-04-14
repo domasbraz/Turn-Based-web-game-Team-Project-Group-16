@@ -1,6 +1,6 @@
 function createUnitAssassin(position, skills)
 {
-    let stats = [50, 40, 5, 100];
+    let stats = [50, 40, 10, 100];
     if (skills == undefined)
     {
         skills = [1, 2, 3, 4];
@@ -43,9 +43,12 @@ function assassinS1Attack(target, origin)
     hideGuiBot();
     checkBleedChance(target, origin);
 
-    finalAttackCalc(target, dmg).then(() =>
+    playAttackAnimation(origin, "assassin").then(() =>
     {
-        nextDuel(origin)
+        finalAttackCalc(target, dmg).then(() =>
+        {
+            nextDuel(origin)
+        });
     });
 }
 
@@ -121,9 +124,12 @@ function assassinS3Attack(target, origin)
 
     addStatusFx(target, "bleed", 99);
 
-    showEffect(target, "Bleeding").then(() =>
+    playAttackAnimation(origin, "assassin").then(() =>
     {
-        nextDuel(origin);
+        showEffect(target, "Bleeding").then(() =>
+        {
+            nextDuel(origin);
+        });
     });
 }
 
@@ -161,9 +167,12 @@ function assassinS4Attack(target, origin)
 
     let dmg = Math.floor((atk * dmgMultiplyer) / 100);
     
-    finalAttackCalc(target, dmg).then(() =>
+    playAttackAnimation(origin, "assassin").then(() =>
     {
-        nextDuel(origin);
+        finalAttackCalc(target, dmg).then(() =>
+        {
+            nextDuel(origin);
+        });
     });
 }
 

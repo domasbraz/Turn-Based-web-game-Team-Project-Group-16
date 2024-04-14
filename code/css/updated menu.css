@@ -68,7 +68,6 @@ h1{
 }
 
 #play{
-    background-image: url('../../img/png images/Play Button.png') ;
     background-size:cover ; 
     background-repeat: no-repeat;
     background-position: center;
@@ -88,7 +87,6 @@ h1{
 }
 
 #settings{
-    background-image: url('../../img/png images/Settings Button.png') ;
     background-size: cover; 
     background-repeat: no-repeat;  
     height: 100%;
@@ -105,7 +103,6 @@ h1{
 }
 
 #exit{
-    background-image: url('../../img/png images/Exit Button.png') ;
     background-size: cover; 
     background-repeat: no-repeat;
     height: 100%;
@@ -117,6 +114,18 @@ h1{
     height: 7vh;
     background-attachment:fixed;
     margin: 2% ;
+}
+
+#play, #exit{
+    font-size: 30px;
+    font-weight: bold;
+    background-color: #5fcb66;
+}
+
+#play:hover, #exit:hover{
+    font-size: 30px;
+    font-weight: bold;
+    background-color: #3a7e3e;
 }
 
 #container{

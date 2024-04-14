@@ -38,7 +38,7 @@ function start()
         
         case "easy":
             
-            stats = [100, 30, 10, 100];
+            stats = [100, 20, 10, 100];
             createEnemySword(2, stats);
 
             break;

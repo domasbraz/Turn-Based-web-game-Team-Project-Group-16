@@ -708,7 +708,8 @@ if (replay == "true")
 
 function promptTutorial()
 {
-    document.body.innerHTML += 
+    let container = document.getElementById("container");
+    container.innerHTML += 
     "<div class='tutorial' style='width: 100%; height: 100%; background-color: #00000070; display: block; position: absolute; top:0; z-index: 50'></div>"
 
     let tutorial = document.getElementsByClassName("tutorial")[0];

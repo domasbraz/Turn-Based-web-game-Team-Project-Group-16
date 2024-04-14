@@ -808,7 +808,7 @@ function addSkill(unit, skill)
     let container = document.getElementById("skillsContainer");
 
     container.innerHTML +=
-    "<img class='addedSkills' style='width: 50%;' src='../../img/png images/characters/" + unit + "/" + unit + skill + ".png'>";
+    "<img class='addedSkills' style='width: 50%;' src='png images/characters/" + unit + "/" + unit + skill + ".png'>";
 }
 
 function tutorialMessage7()
@@ -846,7 +846,7 @@ function addKnight()
     let container = document.getElementById("firstCharacter");
 
     container.innerHTML +=
-    "<img width='100%' height='100%' src='../../img/png images/characters/knight/knight.png'>"
+    "<img width='100%' height='100%' src='png images/characters/knight/knight.png'>"
 }
 
 function tutorialMessage9()
@@ -940,7 +940,7 @@ function addPriest()
     let container = document.getElementById("secondCharacter");
 
     container.innerHTML +=
-    "<img width='70%' src='../../img/png images/characters/priest/priest.png'>"
+    "<img width='70%' src='png images/characters/priest/priest.png'>"
 }
 
 function tutorialMessage13()
@@ -959,5 +959,5 @@ function tutorialMessage13()
 
 function redirectToCombat()
 {
-    window.location.assign("/code/combatTutorial.html");
+    window.location.assign("combatTutorial.html");
 }

@@ -732,7 +732,7 @@ function promptTutorial()
 
 function playTutorial()
 {
-    window.location.assign("/code/tutorialMenu.html");
+    window.location.assign("tutorialMenu.html");
 }
 
 function closePrompt()

@@ -23,6 +23,9 @@ function knightS1(origin)
 
 function knightS1Damage(target, origin)
 {
+    let tutorialMessage2 = document.getElementsByClassName("tutorialMessage2")[0];
+    tutorialMessage2.style.display = "none";
+    
     let energy = document.getElementById(origin.id).getAttribute("energy");
 
     let energyCost = 15;
@@ -45,7 +48,8 @@ function knightS1Damage(target, origin)
         hideGuiBot();
         finalAttackCalc(target, dmg).then(()=>
         {
-            nextDuel(origin);
+            //nextDuel(origin);
+            tutorialMessage10();
         })
 
 

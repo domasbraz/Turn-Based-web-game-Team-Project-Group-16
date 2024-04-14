@@ -22,7 +22,7 @@ function enemySwordS1(target, origin)
     hideGuiBot(origin);
     finalAttackCalc(target, dmg).then(() =>
     {
-        nextDuel();
+        //nextDuel();
     });
 
 }

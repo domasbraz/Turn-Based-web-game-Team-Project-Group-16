@@ -954,5 +954,10 @@ function tutorialMessage13()
     "<p>That should be enough for now, let's depart for battle!</p>";
 
     document.body.innerHTML +=
-    "<button style='position: absolute; top: 10%; right: 10%; font-size: 20px; color: green; border: 2px solid red'>Depart</button>";
+    "<button style='position: absolute; top: 10%; right: 10%; font-size: 20px; color: green; border: 2px solid red' onclick='redirectToCombat()'>Depart</button>";
+}
+
+function redirectToCombat()
+{
+    window.location.assign("/code/combatTutorial.html");
 }

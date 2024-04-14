@@ -22,7 +22,6 @@ function selectRandomEnemy()
     
 }
 
-//TODO: implement proper skills
 function useRandomSkill(origin)
 {
     let tauntedUnits = document.querySelectorAll(".pUnits[taunt]");

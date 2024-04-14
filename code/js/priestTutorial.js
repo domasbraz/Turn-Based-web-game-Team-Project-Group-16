@@ -1,6 +1,6 @@
 function createUnitPriest(position, skills)
 {
-    let stats = [100, 20, 5, 100];
+    let stats = [100, 50, 5, 100];
     if (skills == undefined)
     {
         skills = [1, 2, 3, 6];
@@ -26,6 +26,9 @@ function priestS1(origin)
 
 function priestS1Heal(target, origin)
 {
+    let tutorialMessage2 = document.getElementsByClassName("tutorialMessage2")[0];
+    tutorialMessage2.style.display = "none";
+    
     let targetHp = target.getAttribute("hp");
     let healAmount = origin.getAttribute("atk");
 
@@ -40,7 +43,8 @@ function priestS1Heal(target, origin)
     hideGuiBot();
     showEffect(target, healAmount, "green").then(() =>
     {
-        nextDuel(origin);
+        //nextDuel(origin);
+        tutorialMessage23();
     });
 }
 

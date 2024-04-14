@@ -1,29 +1,28 @@
 function aiPlayUnit()
 {
-    randomEnemy1();
+    selectRandomEnemy();
 }
 
-function randomEnemy1()
+function selectRandomEnemy()
 {
     let eUnits = document.getElementsByClassName("eUnits").length;
 
-    let slot = Math.floor((Math.random() * eUnits) + 1);
+    let slot = getRndInteger(1, eUnits);
 
-    let origin = document.getElementById("enemy1" + slot);
+    let origin = document.getElementsByClassName("eUnit" + slot)[0];
 
     if (origin.getAttribute("hasTurn") == "true")
     {
-        basicAttack(origin);
+        useRandomSkill(origin);
     }
     else
     {
-        randomEnemy1();
+        selectRandomEnemy();
     }
     
 }
 
-//TODO: implement proper skills
-function basicAttack(origin)
+function useRandomSkill(origin)
 {
     let tauntedUnits = document.querySelectorAll(".pUnits[taunt]");
     let target;
@@ -45,5 +44,13 @@ function basicAttack(origin)
         }
     }
 
-    enemy1S1(target, origin);
+    let skills = origin.getAttribute("skills").split(" ");
+
+    let skill = getRndInteger(1, skills.length - 1);
+
+    let type = origin.getAttribute("type");
+
+    let func = window[type + "S" + skill];
+
+    func(target, origin);
 }

@@ -385,45 +385,10 @@ unitInfo();
 
 
 //function made by Aaron Smyth
-function dealCards()
+function dealCards(playerCards, aiCards)
 {
-    //making the cards array
-    const cards = [1,2,3,4,5,6,7,8,9,10,11,12,13,1,2,3,4,5,6,7,8,9,10,11,12,13];
-    //making a copy of the array so splice doesnt permanently alter the intial array
-    const cardsCopy= Array.from(cards);
-    
-    function dealCards(cardsCopy)
-    {
-    
-        const randomNumber = Math.floor(Math.random() * cardsCopy.length);
 
-        const CardsSelected = cardsCopy[randomNumber];
-        //making it so theres in no duplicates when the cards are handed out
-        cardsCopy.splice(randomNumber, 1);
 
-        return CardsSelected;
-    }
-    
-       
-        
-    const card1 = dealCards(cardsCopy);
-    const card2 = dealCards(cardsCopy);
-    const card3 = dealCards(cardsCopy);
-    const card4 = dealCards(cardsCopy);
-    const card5 = dealCards(cardsCopy);
-    const card6 = dealCards(cardsCopy);
-    const card7 = dealCards(cardsCopy);
-    const card8 = dealCards(cardsCopy);
-    const card9 = dealCards(cardsCopy);
-    const card10 = dealCards(cardsCopy);
-    const card11 = dealCards(cardsCopy);
-    const card12 = dealCards(cardsCopy);
-    const card13 = dealCards(cardsCopy);
-    const card14 = dealCards(cardsCopy);
-    
-    var playerCards = [card1, card3, card5, card7, card9, card11, card13];
-    var aiCards =  [card2, card4, card6, card8, card10, card12, card14];
-    
     //sorting cards from lowest to highest 
     playerCards.sort(function(a,b){return a - b});
     aiCards.sort(function(a,b){return a - b});
@@ -437,7 +402,7 @@ function dealCards()
 }
 
 //sets cards in play
-var cards = dealCards();
+var cards = dealCards([1,2,3,4,5,6,7], [1,1,1,1,1,1,1]);
 var playerPlayed;
 var aiPlayed;
 
@@ -477,7 +442,6 @@ function aiCard(aiCards)
         cardPlayed.innerHTML = "<img draggable='false' height='100%' width='100%' src='../../img/png images/cards/" + aiPlayed + "_sword_card.png'>";
         cardPlayed.style.display = "block";
 
-        startDuel();
         
     },
     1000
@@ -513,7 +477,7 @@ function playCard(card)
     //set card value, only works if there are no other numeric values in the file or directory names
     playerPlayed = parseInt(image.replaceAll(/[^0-9]/g,""));
 
-    startDuel();
+
 
 }
 
@@ -556,7 +520,7 @@ function showResult(won)
             }
             else
             {
-                aiPlayUnit();
+                //aiPlayUnit();
             }
         },
         3000
@@ -656,15 +620,14 @@ function endCombat()
     {
         /* resultText.textContent = "Victory!";
         resultText.style.color = "rgb(0, 255, 0)"; */
-        showGameMessage("Victory!", "rgb(0, 255, 0)", true);
+        showGameMessage("Victory!", "rgb(0, 255, 0)");
     }
     else
     {
         /* resultText.textContent = "Defeat!";
         resultText.style.color = "rgb(255, 0, 0)"; */
-        showGameMessage("Defeat!", "rgb(255, 0, 0)", false);
+        showGameMessage("Defeat!", "rgb(255, 0, 0)");
     }
-    
         
 }
 
@@ -1193,7 +1156,7 @@ function showDmgDealt(dmg)
     );
 }
 
-function showGameMessage(text, colour, gameWon)
+function showGameMessage(text, colour)
 {
     let result = document.getElementsByClassName("gameMsg")[0];
     let resultText = result.children[0];
@@ -1202,18 +1165,6 @@ function showGameMessage(text, colour, gameWon)
 
     resultText.textContent = text;
     resultText.style.color = colour;
-
-    if (gameWon != undefined)
-    {
-        resultText.innerHTML +=
-        "<br><br><button onclick='questBoard()' style='font-size: 30px; color: green;'>Back to Questboard</button>";
-
-        if (gameWon == false)
-        {
-            resultText.innerHTML +=
-            "<br><br><button onclick='location.reload()' style='font-size: 30px; color: red;'>Retry</button>";
-        }
-    }
 }
 
 function hideGameMessage()
@@ -1849,7 +1800,7 @@ function showEffect(unit, display, colour, interval)
             }
         }
         
-    });
+    })
 }
 
 function hasEnoughtEnergy(unit, requiredEnergy)
@@ -1889,38 +1840,466 @@ function getNextUnit(unit)
 
 function playAttackAnimation(unit, type)
 {
-    return new Promise((resolve, reject) =>
+    let unitType = unit.getAttribute("class").split(" ")[0].charAt(0);
+
+    img = unit.children[0];
+    if (unitType == "p")
     {
-        let unitType = unit.getAttribute("class").split(" ")[0].charAt(0);
+        img.src = "../../img/png images/characters/" + type + "/" + type + "Attack.gif";
 
-        img = unit.children[0];
-        if (unitType == "p")
+        setTimeout(() =>
         {
-            img.src = "../../img/png images/characters/" + type + "/" + type + "Attack.gif";
+            img.src = "../../img/png images/characters/" + type + "/" + type + ".gif";
+        },
+        1500);
+    }
+    else
+    {
+        img.src = "../../img/png images/characters/enemies/" + type + "Attack.gif";
 
-            setTimeout(() =>
-            {
-                img.src = "../../img/png images/characters/" + type + "/" + type + ".gif";
-                resolve();
-            },
-            1500);
-        }
-        else
+        setTimeout(() =>
         {
-            img.src = "../../img/png images/characters/enemies/" + type + "Attack.gif";
-
-            setTimeout(() =>
-            {
-                img.src = "../../img/png images/characters/enemies/" + type + ".gif";
-                resolve();
-            },
-            1500);
-        }
-    });
+            img.src = "../../img/png images/characters/enemies/" + type + ".gif";
+        },
+        1500);
+    }
 }
 
-function questBoard()
+
+tutorialMessage1();
+
+function tutorialMessage1()
+{
+    document.body.innerHTML += 
+    "<div class='tutorial' style='width: 100%; height: 100%; background-color: #00000070; display: block; position: absolute; top:0; z-index: 50'></div>"
+
+    let tutorial = document.getElementsByClassName("tutorial")[0];
+
+    tutorial.innerHTML =
+    "<div class='tutorialMessage1' style='position: relative; width: 50%; height: 50%; margin: auto; border: 2px solid black; top: 25%; background-color: #784316; text-align: center; padding: 2%'></div>"
+
+    let tutorialMessage1 = document.getElementsByClassName("tutorialMessage1")[0];
+
+    tutorialMessage1.innerHTML =
+    "<h1>Combat</h1>"
+    +
+    "<br><p>This where you will fight your enemies with the units and skills you have selected</p>"
+    +
+    "<br><p>Defeat all enemies to complete the quest</p>"
+    +
+    "<br><button onclick='tutorialMessage2()' style='font-size: 20px;'>Continue</button>";
+}
+
+function tutorialMessage2()
+{
+    let tutorialMessage1 = document.getElementsByClassName("tutorialMessage1")[0];
+
+    tutorialMessage1.innerHTML =
+    "<h1>Dueling</h1>"
+    +
+    "<br><p>You must first duel your oponent with a game of cards before units can act</p>"
+    +
+    "<br><p>Dueling determines who will get to act</p>"
+    +
+    "<br><p>Duels have attackers and defenders</p>"
+    +
+    "<br><p>Attackers place down the first card and defenders will then place theirs</p>"
+    +
+    "<br><p>If the defener places an equal or higher value card, they win, else if their card value is lower, the attacker wins</p>"
+    +
+    "<br><p>The player will always start as the attacker at the start of combat</p>"
+    +
+    "<br><button onclick='tutorialMessage3()' style='font-size: 20px;'>Continue</button>";
+}
+
+function tutorialMessage3()
+{
+    let tutorial = document.getElementsByClassName("tutorial")[0];
+    tutorial.style.display = "none";
+
+    document.body.innerHTML +=
+    "<div class='tutorialMessage2' style='width: 20%; min-height: 20%; position: fixed; right: 40%; top: 20%; padding: 2%; background-color: #784316; border: 2px solid black; text-align: center;'></div>";
+
+    let tutorialMessage2 = document.getElementsByClassName("tutorialMessage2")[0];
+
+    tutorialMessage2.innerHTML =
+    "<h2>Since you are the attacker, you will need to place down the first card<br><br>Let's place down the highest value card for the best chance of winning!</h2>";
+
+    let cards = document.getElementsByClassName("card");
+
+    for (let index = 0; index < cards.length; index++)
+    {
+        let card = cards[index];
+        card.removeAttribute("onclick");
+    }
+
+    cards[6].style.border = "3px solid red";
+    cards[6].setAttribute("onclick", "tutorialMessage4(); playCard(this)");
+}
+
+function tutorialMessage4()
+{
+    aiCard([4]);
+
+    setTimeout(() =>
+    {
+        let tutorialMessage2 = document.getElementsByClassName("tutorialMessage2")[0];
+
+        tutorialMessage2.innerHTML =
+        "<h2>The defender failed to place down an equal or higher value card<br><br>You have won the Duel!<br><br>"
+        +
+        "<button onclick='tutorialMessage5()' style='font-size: 20px;'>Continue</button></h2>";
+    },
+    1000);
+
+}
+
+function tutorialMessage5()
+{
+    startDuel();
+
+    let tutorialMessage2 = document.getElementsByClassName("tutorialMessage2")[0];
+    tutorialMessage2.style.display = "none";
+
+    setTimeout(() =>
+    {
+        tutorialMessage2.style.display = "block";
+        tutorialMessage2.style.right = "20%";
+
+        tutorialMessage2.innerHTML =
+        "<h2>Since you have won the duel, you get to act first<br><br>Let's attack with the knight!<br><br>Select the knight unit</h2>"
+
+        let priest = document.getElementsByClassName("pUnit2")[0];
+        priest.removeAttribute("onclick");
+
+        let knight = document.getElementsByClassName("pUnit1")[0];
+        knight.style.border = "2px solid red";
+        knight.setAttribute("onclick", "selectUnit(this); tutorialMessage6()");
+    },
+    4100);
+}
+
+function tutorialMessage6()
+{
+    let tutorialMessage2 = document.getElementsByClassName("tutorialMessage2")[0];
+
+    tutorialMessage2.innerHTML =
+    "<h2>Now select the Basic Attack skill</h2>";
+
+    let skills = document.getElementsByClassName("skills");
+
+    skills[1].removeAttribute("onclick");
+    skills[2].removeAttribute("onclick");
+
+    skills[0].style.border = "2px solid red";
+    skills[0].setAttribute("onclick", "selectSkill(this); knightS1(knight1); tutorialMessage7()");
+}
+
+function tutorialMessage7()
+{
+    disableTargeting(true);
+
+    let tutorialMessage2 = document.getElementsByClassName("tutorialMessage2")[0];
+    tutorialMessage2.style.right = "40%";
+
+    tutorialMessage2.innerHTML =
+    "<h2>Here you can see the skill description<br><br>"
+    +
+    "<button onclick='tutorialMessage8()' style='font-size: 20px;'>Continue</button></h2>";
+
+    let info = document.getElementsByClassName("skillInfo")[0];
+    info.style.border = "2px solid red";
+}
+
+function tutorialMessage8()
+{
+    let tutorialMessage2 = document.getElementsByClassName("tutorialMessage2")[0];
+    tutorialMessage2.style.width = "40%";
+    tutorialMessage2.style.right = "50%";
+
+    tutorialMessage2.innerHTML =
+    "<h2>Some skills have an energy cost<br><br>The energy bar can be seen in th yellow bar under a unit's health bar"
+    +
+    "<br><br>This skill costs 15 energy to use"
+    +
+    "<br><br>If a unit does not have enough energy to match the cost, they are unnable to use the skill"
+    +
+    "<br><br><button onclick='tutorialMessage9()' style='font-size: 20px;'>Continue</button></h2>";
+}
+
+function tutorialMessage9()
+{
+    enableTargeting(true, "knightS1Damage", document.getElementsByClassName("pUnit1")[0].id);
+
+    let tutorialMessage2 = document.getElementsByClassName("tutorialMessage2")[0];
+    tutorialMessage2.style.width = "20%";
+    tutorialMessage2.innerHTML =
+    "<h2>Now select the enemy you wish to attack!</h2>";
+
+    let info = document.getElementsByClassName("skillInfo")[0];
+    info.style.border = "1px solid black";
+}
+
+function tutorialMessage10()
+{
+    let tutorial = document.getElementsByClassName("tutorial")[0];
+    let tutorialMessage1 = document.getElementsByClassName("tutorialMessage1")[0];
+
+    tutorial.style.display = "block";
+
+    tutorialMessage1.innerHTML =
+    "<h1>Attacking</h1>"
+    +
+    "<br><p>You just dealt 45 damage to the enemy!</p>"
+    +
+    "<br><p>Once a unit's health reaches 0, they are defeated</p>"
+    +
+    "<br><button onclick='tutorialMessage11()' style='font-size: 20px;'>Continue</button>";
+}
+
+function tutorialMessage11()
+{
+    let tutorialMessage1 = document.getElementsByClassName("tutorialMessage1")[0];
+
+    tutorialMessage1.innerHTML =
+    "<h1>Turns</h1>"
+    +
+    "<br><p>Your knight has just used their turn!</p>"
+    +
+    "<br><p>Once a unit uses a skill, they are unable to act for the same round</p>"
+    +
+    "<br><p>Once all units have used their turn, the next round starts</p>"
+    +
+    "<br><button onclick='tutorialMessage12()' style='font-size: 20px;'>Continue</button>";
+}
+
+function tutorialMessage12()
+{
+    let tutorialMessage1 = document.getElementsByClassName("tutorialMessage1")[0];
+
+    tutorialMessage1.innerHTML =
+    "<h1>Dueing Order</h1>"
+    +
+    "<br><p>The victor of the previous duel becomes the attacker for the next duel this round</p>"
+    +
+    "<br><p>Since you won the last duel, you will be the attacker again</p>"
+    +
+    "<br><p>At the start on even rounds, the enemy will always be the attacker in the first duel, while you will always start as the attacker on odd rounds</p>"
+    +
+    "<br><button onclick='tutorialMessage13()' style='font-size: 20px;'>Continue</button>";
+}
+
+function tutorialMessage13()
+{
+    let tutorialMessage1 = document.getElementsByClassName("tutorialMessage1")[0];
+
+    tutorialMessage1.innerHTML =
+    "<h1>Dueing Rules</h1>"
+    +
+    "<br><p>A duel starts at the begining of a new round or after a unit has acted</p>"
+    +
+    "<br><p>Dueling will only continue as long as both sides have turns</p>"
+    +
+    "<br><p>If one side uses all their turns, dueling is skipped and the oposing side plays the rest of their turns</p>"
+    +
+    "<br><p>Example: Enemy has won every duel and has used all their units, therefore there is no need to duel and you can play the rest of your units freely</p>"
+    +
+    "<br><button onclick='tutorialMessage14()' style='font-size: 20px;'>Continue</button>";
+}
+
+function tutorialMessage14()
+{
+    nextDuel();
+    let tutorial = document.getElementsByClassName("tutorial")[0];
+    tutorial.style.display = "none";
+
+    let tutorialMessage2 = document.getElementsByClassName("tutorialMessage2")[0];
+    tutorialMessage2.style.display = "block";
+
+    tutorialMessage2.style.right = "40%";
+
+    tutorialMessage2.innerHTML =
+    "<h2>You are the attacker, now play another card</h2>";
+
+    let cards = document.getElementsByClassName("card");
+
+    for (let index = 0; index < cards.length; index++)
+    {
+        let card = cards[index];
+        card.setAttribute("onclick", "tutorialMessage15(); playCard(this)");
+    }
+
+}
+
+function tutorialMessage15()
+{
+    aiCard([13]);
+
+    setTimeout(() =>
+    {
+        let tutorialMessage2 = document.getElementsByClassName("tutorialMessage2")[0];
+
+        tutorialMessage2.innerHTML =
+        "<h2>Looks like the defender has placed down a trump card!<br><br>"
+        +
+        "these trump cards beat all other values except for other trump cards<br><br>"
+        +
+        "<button onclick='tutorialMessage16()' style='font-size: 20px;'>Continue</button></h2>";
+    },
+    1000);
+}
+
+function tutorialMessage16()
+{
+    let tutorialMessage2 = document.getElementsByClassName("tutorialMessage2")[0];
+    tutorialMessage2.style.display = "none";
+
+    startDuel();
+
+    setTimeout(() =>
+    {
+            tutorialMessage2.style.display = "block";
+
+        tutorialMessage2.innerHTML =
+        "<h2>Your oponent has won the duel!<br><br>"
+        +
+        "they will now procceed to act<br><br>"
+        +
+        "<button onclick='tutorialMessage17()' style='font-size: 20px;'>Continue</button></h2>";
+    },
+    4000);
+}
+
+function tutorialMessage17()
+{
+    let target = document.getElementsByClassName("pUnit1")[0];
+    aiPlayUnit(target);
+
+    let tutorialMessage2 = document.getElementsByClassName("tutorialMessage2")[0];
+    tutorialMessage2.style.display = "none";
+
+    setTimeout(() =>
+    {
+        tutorialMessage2.style.display = "block";
+        tutorialMessage2.innerHTML =
+        "<h2>The enemy has attacked your knight!<br><br>"
+        +
+        "<button onclick='tutorialMessage18()' style='font-size: 20px;'>Continue</button></h2>";
+    },
+    2000);
+}
+
+function tutorialMessage18()
+{
+    let tutorialMessage2 = document.getElementsByClassName("tutorialMessage2")[0];
+
+    tutorialMessage2.innerHTML =
+    "<h2>Since the enemy won the last duel, they will be the attacker for the next duel<br><br>"
+    +
+    "<button onclick='tutorialMessage19()' style='font-size: 20px;'>Continue</button></h2>";
+}
+
+function tutorialMessage19()
+{
+    nextDuel();
+
+    let tutorialMessage2 = document.getElementsByClassName("tutorialMessage2")[0];
+    tutorialMessage2.style.display = "none";
+
+    setTimeout(() =>
+    {
+        startDuel();
+
+        tutorialMessage2.style.display = "block";
+
+        tutorialMessage2.innerHTML =
+        "<h2>Go ahead and play your next card<br><br>"
+        +
+        "<h2>Since the attacker player the lowest possible value, you are guaranteed to win this duel!<br><br></h2>";
+
+        let cards = document.getElementsByClassName("card");
+
+        for (let index = 0; index < cards.length; index++)
+        {
+            let card = cards[index];
+            card.setAttribute("onclick", "playCard(this); tutorialMessage20();");
+        }
+    },
+    1000);
+}
+
+function tutorialMessage20()
+{
+    let tutorialMessage2 = document.getElementsByClassName("tutorialMessage2")[0];
+    tutorialMessage2.style.display = "none";
+
+    startDuel();
+
+    setTimeout(() =>
+    {
+        tutorialMessage2.style.display = "block";
+
+        tutorialMessage2.innerHTML =
+        "<h2>Your knight has already used its turn<br><br>"
+        +
+        "<h2>Let's use the priest now<br><br></h2>"
+
+        let priest = document.getElementsByClassName("pUnit2")[0];
+
+        priest.setAttribute("onclick", "selectUnit(this); tutorialMessage21()")
+
+    },
+    4100);
+}
+
+function tutorialMessage21()
+{
+    let skills = document.getElementsByClassName("skills");
+
+    skills[1].removeAttribute("onclick");
+    skills[2].removeAttribute("onclick");
+
+    skills[0].style.border = "2px solid red";
+    skills[0].setAttribute("onclick", "selectSkill(this); priestS1(priest2); tutorialMessage22()");
+
+    let tutorialMessage2 = document.getElementsByClassName("tutorialMessage2")[0];
+
+    tutorialMessage2.innerHTML =
+    "<h2>Your knight took damage from the last attack<br><br>"
+    +
+    "<h2>Use the priest's Quick Heal skill to heal it<br><br></h2>";
+}
+
+function tutorialMessage22()
+{
+    let tutorialMessage2 = document.getElementsByClassName("tutorialMessage2")[0];
+    tutorialMessage2.style.right = "20%";
+
+    tutorialMessage2.innerHTML =
+    "<h2>Now select your knight to heal it<br><br></h2>";
+}
+
+function tutorialMessage23()
+{
+    let tutorial = document.getElementsByClassName("tutorial")[0];
+    tutorial.style.display = "block";
+
+    let tutorialMessage1 = document.getElementsByClassName("tutorialMessage1")[0];
+
+    tutorialMessage1.innerHTML =
+    "<h1>Congrats</h1>"
+    +
+    "<br><p>You have completed the basic tutorial</p>"
+    +
+    "<br><p>For more info on game mechanics, click the help button on the left in the Questboard or Party Selection</p>"
+    +
+    "<br><button onclick='endTutorial()' style='font-size: 20px;'>Continue</button>";
+}
+
+function endTutorial()
 {
     window.location.assign("/code/menu.html");
-    localStorage.setItem("questBoard", "true");
 }
+
+
+

@@ -1,7 +1,7 @@
 function createUnitKnight(position, skills)
 {
     //hp, atk, def, energy
-    let stats = [100, 30, 20, 100];
+    let stats = [100, 50, 5, 100];
     if (skills == undefined)
     {
         skills = [1, 2, 3, 6];
@@ -12,23 +12,20 @@ function createUnitKnight(position, skills)
 
 function knightS1(origin)
 {
-
+    //for some unknown reason JS decides not to pass to correct value though the parameter so I must reset the correct value
+    origin = origin.id;
     //description
     document.getElementsByClassName("skillInfo")[0].innerHTML =
     "<h1>Basic Attack</h1><br><p>Attacks an enemy unit dealing 100% of your attack as damage<br><br>Cost: 15 energy</p>";
 
-    if (hasEnoughtEnergy(origin, 15))
-    {
-        enableTargeting(true, "knightS1Damage", origin.id);
-    }
-    else
-    {
-        document.getElementsByClassName("skillInfo")[0].innerHTML += "<p><b>Not Enough Energy</b></p>"
-    }
+    enableTargeting(true, "knightS1Damage", origin);
 }
 
 function knightS1Damage(target, origin)
 {
+    let tutorialMessage2 = document.getElementsByClassName("tutorialMessage2")[0];
+    tutorialMessage2.style.display = "none";
+    
     let energy = document.getElementById(origin.id).getAttribute("energy");
 
     let energyCost = 15;
@@ -49,15 +46,11 @@ function knightS1Damage(target, origin)
 
         usedTurn(origin);
         hideGuiBot();
-
-        playAttackAnimation(origin, "knight").then(() =>
+        finalAttackCalc(target, dmg).then(()=>
         {
-            finalAttackCalc(target, dmg).then(()=>
-            {
-                nextDuel(origin);
-            });
-        });
-
+            //nextDuel(origin);
+            tutorialMessage10();
+        })
 
 
 
@@ -288,16 +281,10 @@ function knightS3Buff(origin)
 
 function knightS4(origin)
 {
+    origin = origin.id;
     document.getElementsByClassName("skillInfo")[0].innerHTML =
     "<h1>Heavy Attack</h1><br><p>Attacks an enemy unit dealing 100%-200% of your attack as damage<br><br>Cost: 50 energy</p>";
-    if (hasEnoughtEnergy(origin, 50))
-    {
-        enableTargeting(true, "knightS4Damage", origin.id);
-    }
-    else
-    {
-        document.getElementsByClassName("skillInfo")[0].innerHTML += "<p><b>Not Enough Energy</b></p>"
-    }
+    enableTargeting(true, "knightS4Damage", origin);
 }
 
 
@@ -324,13 +311,10 @@ function knightS4Damage(target, origin)
         usedTurn(origin);
         hideGuiBot();
 
-        playAttackAnimation(origin, "knight").then(() =>
+        finalAttackCalc(target, dmg).then(()=>
         {
-            finalAttackCalc(target, dmg).then(()=>
-            {
-                nextDuel(origin);
-            });
-        });
+            nextDuel(origin);
+        })
 
     }
     else

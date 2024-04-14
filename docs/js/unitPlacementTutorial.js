@@ -1,61 +1,10 @@
-start()
+createKnights(1);
+createPriests(1);
+//createArchers(2);
+//createAssassins(2);
+createEnemySword(2);
 
-function start()
-{
-    let partyInfo = localStorage.getItem("playerUnits");
-
-    let units = partyInfo.split(" ");
-
-    for (let i = 0; i < units.length - 1; i++)
-    {
-        let unit = units[i];
-
-        let unitInfo = unit.split("%");
-
-        let unitType = unitInfo[0];
-
-        unitType = unitType.charAt(0).toLocaleUpperCase() + unitType.slice(1);
-
-        let skills = [];
-
-        for (let j = 1; j < unitInfo.length; j++)
-        {
-            skills.push(unitInfo[j]);
-        }
-
-        let func = window["create" + unitType + "s"];
-
-        console.log(partyInfo);
-
-        func(1, skills);
-    }
-
-    let difficulty = localStorage.getItem("difficulty");
-
-    let stats;
-    switch (difficulty)
-    {
-        
-        case "easy":
-            
-            stats = [100, 30, 10, 100];
-            createEnemySword(2, stats);
-
-            break;
-
-        case "medium":
-
-            stats = [150, 40, 20, 100];
-            createEnemySword(4, stats);
-            break;
-
-        case "hard":
-
-            stats = [400, 50, 40, 100];
-            createEnemySword(2, stats);
-            break;
-    }
-}
+//source test
 
 setTurns();
 
@@ -119,56 +68,49 @@ function getRemainingPlayerSlots()
     return (4 - taken);
 }
 
-function getRemainingEnemySlots()
+function createKnights(amount)
 {
-    let taken = document.getElementsByClassName("eUnits").length;
-
-    return (4 - taken);
-}
-
-function createKnights(amount, skills)
-{
-    let remainder = getRemainingPlayerSlots();
-    let slot = (4 - remainder) + 1;
-
-    for (amount; amount > 0; amount--)
+    for (let x = 1; x <= amount; x++)
     {
-        createUnitKnight(slot, skills);
-        slot++;
+        let skills = [1,2];
+        createUnitKnight(x, skills);
     }
 }
 
-function createPriests(amount, skills)
+function createPriests(amount)
 {
     let remainder = getRemainingPlayerSlots();
     let slot = (4 - remainder) + 1;
 
     for (amount; amount > 0; amount--)
     {
+        let skills = [1,2];
         createUnitPriest(slot, skills);
         slot++;
     }
 }
 
-function createArchers(amount, skills)
+function createArchers(amount)
 {
     let remainder = getRemainingPlayerSlots();
     let slot = (4 - remainder) + 1;
 
     for (amount; amount > 0; amount--)
     {
+        let skills = pickRandomSkills();
         createUnitArcher(slot, skills);
         slot++;
     }
 }
 
-function createAssassins(amount, skills)
+function createAssassins(amount)
 {
     let remainder = getRemainingPlayerSlots();
     let slot = (4 - remainder) + 1;
 
     for (amount; amount > 0; amount--)
     {
+        let skills = pickRandomSkills();
         createUnitAssassin(slot, skills);
         slot++;
     }
@@ -199,15 +141,11 @@ function pickRandomSkills2()
     return array;
 }
 
-function createEnemySword(amount, stats)
+function createEnemySword(amount)
 {
-    let remainder = getRemainingEnemySlots();
-    let slot = (4 - remainder) + 1;
-
-    for (amount; amount > 0; amount--)
+    for (let x = 1; x <= amount; x++)
     {
-        createUnitEnemySword(slot, stats);
-        slot++;
+        createUnitEnemySword(x, [1]);
     }
 }
 

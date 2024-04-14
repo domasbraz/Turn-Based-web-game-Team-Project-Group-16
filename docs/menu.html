@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link  rel="stylesheet" type="text/css" href="css/updated menu.css"/>
+   
+    
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Game</title>
+</head>
+<body>
+    <div id="mainMenu">
+        <div id="container">
+        <div id="title"><h1>Evergreen</h1></div>
+        <div id="buttons">
+            <div id="playbutton"><button id="play" onclick="promptTutorial()">Play</button></div> 
+            <div id="exitbutton"><button id="exit" onclick="credits()">Credits</button></div>
+        </div>
+        </div>
+    </div>
+
+
+    <div id="questBoard">
+        <img src="../img/png images/backgrounds/quest icons/easy quest.png" class="easyQ" draggable="false">
+        <img src="../img/png images/backgrounds/quest icons/med quest.png" class="medQ" draggable="false">
+        <img src="../img/png images/backgrounds/quest icons/hard quest.png" class="hardQ" draggable="false">
+
+        <p class="questInfo"> Take on easy quest?
+            <button class="yes" onclick="acceptQuest('easy')">Accept</button>
+            <button class="no">Decline</button>
+        </p>
+        <p class="questInfo"> Take on medium quest?
+            <button class="yes" onclick="acceptQuest('medium')">Accept</button>
+            <button class="no">Decline</button>
+        </p>
+        <p class="questInfo"> Take on hard quest?
+            <button class="yes" onclick="acceptQuest('hard')">Accept</button>
+            <button class="no">Decline</button>
+        </p>
+
+        <div id="gameNavBar">
+            <div>
+                <p onclick="back()">Exit</p>
+                <p id="help" onclick="help()">Help</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="partySelectionContainer">
+        <div id="gameNavBar">
+            <div> 
+                <p onclick="backToQuest()">Cancel</p>
+                <p onclick="help()">Help</p>
+            </div>
+        </div>
+        <div id="teamContainer">
+            <div id="firstCharacter" class="selectedCharacter"></div>
+            <div id="secondCharacter" class="selectedCharacter"></div>
+            <div id="thirdCharacter" class="selectedCharacter"></div>
+            <div id="fourthCharacter" class="selectedCharacter"></div>
+            <div id="removeMemberContainer">
+                <!-- for testing purposes -->
+                <!-- <!-- <button id="previousMember">  <===  </button> -->
+                <button id="removeMember">REMOVE</button>
+                <!-- <button id="nextMember"> ===>  </button> --> 
+            </div>
+        </div>
+
+        <div id="characterSelection">
+            <div id="characters"></div>
+            <img src="../img/png images/characters/knight/knight.png" id="knightImg" class="characters" draggable="false">
+            <img src="../img/png images/characters/archer/archer.png" id="archerImg" class="characters" draggable="false">
+            <img src="../img/png images/characters/assassin/assassin.png" id="assassinImg" class="characters" draggable="false">
+            <img src="../img/png images/characters/priest/priest.png" id="healerImg" class="characters" draggable="false">
+            <div id=characterSkills>
+                <div id="firstThree">
+                    <img src="../img/png images/characters/knight/knightS1.png" id="basicAttack" class="knightSkills" draggable="false">
+                    <img src="../img/png images/characters/knight/knightS2.png" id="guard" class="knightSkills" draggable="false">
+                    <img src="../img/png images/characters/knight/knightS3.png" id="empower" class="knightSkills" draggable="false">
+                    
+                    <img src="../img/png images/characters/archer/archerS1.png" id="spreadshot" class="archerSkills" draggable="false">
+                    <img src="../img/png images/characters/archer/archerS2.png" id="quickshot" class="archerSkills" draggable="false">
+                    <img src="../img/png images/characters/archer/archerS3.png" id="poisonCoating" class="archerSkills"draggable="false">
+
+                    <img src="../img/png images/characters/assassin/assassinS1.png" id="stab"class="assassinSkills" draggable="false">
+                    <img src="../img/png images/characters/assassin/assassinS2.png"id="smokeBomb"class="assassinSkills" draggable="false">
+                    <img src="../img/png images/characters/assassin/assassinS3.png" id="slice" class="assassinSkills" draggable="false">
+                    
+                    <img src="../img/png images/characters/priest/priestS1.png" id="quickHeal" class="priestSkills" draggable="false">
+                    <img src="../img/png images/characters/priest/priestS2.png" id="curseOfPain" class="priestSkills" draggable="false">
+                    <img src="../img/png images/characters/priest/priestS3.png" id="poisonMist" class="priestSkills" draggable="false">
+                </div>
+                <div id="lastThree">
+                    <img src="../img/png images/characters/knight/knightS4.png" id="heavyAttack" class="knightSkills" draggable="false">
+                    <img src="../img/png images/characters/knight/knightS5.png" id="guardian" class="knightSkills" draggable="false">
+                    <img src="../img/png images/characters/knight/knightS6.png" id="encourage" class="knightSkills" draggable="false">
+
+                    
+                    <img src="../img/png images/characters/archer/archerS4.png" id="piercingShot" class="archerSkills" draggable="false">
+                    <img src="../img/png images/characters/archer/archerS5.png" id="arrowRain" class="archerSkills" draggable="false">
+                    <img src="../img/png images/characters/archer/archerS6.png" id="poisonFlask" class="archerSkills" draggable="false">
+                
+                    
+                    <img src="../img/png images/characters/assassin/assassinS4.png" id="backstab" class="assassinSkills" draggable="false">
+                    <img src="../img/png images/characters/assassin/assassinS5.png" id="taunt" class="assassinSkills" draggable="false">
+                    <img src="../img/png images/characters/assassin/assassinS6.png" id="sharpEdges" class="assassinSkills" draggable="false">
+
+                    <img src="../img/png images/characters/priest/priestS4.png" id="divineBlessing"" class="priestSkills" draggable="false">
+                    <img src="../img/png images/characters/priest/priestS5.png" id="purify" class="priestSkills" draggable="false">
+                    <img src="../img/png images/characters/priest/priestS6.png" id="bloodBoil" class="priestSkills" draggable="false">
+                    
+                </div>
+               
+            </div>
+
+            <div id="buttonContainer">
+                <button id="previous">  <===  </button>
+                <button id="add">ADD</button>
+                <button id="next"> ===>  </button>
+            </div>
+        </div>
+
+        <div id="skillsContainer">
+           
+            <div class="CharacterSelectedSkills"> 
+                <p id="firstP">First Character</p>
+            </div>
+            <div class="CharacterSelectedSkills"> 
+                <p  id="secondP">Second Character</p>
+            </div>
+            <div class="CharacterSelectedSkills"> 
+                <p  id="thirdP">Third Character</p>
+            </div>
+            <div class="CharacterSelectedSkills">        
+            <p  id="fourthP">Fourth Character</p>
+            </div>
+            <div class="CharacterSelectedSkills">
+                <p id="fifthP">All Characters Selected!</p>
+            </div>
+
+
+        </div>
+
+        <div id="skillInfo">
+            <p>SKILL INFO</p>
+                <div id="skillDescription">
+                    <div class="Stats"><h4>Knight Base Stats</h4><p> Health: 100  Defense: 20 <br> Attack: 30  Energy: 100</p></div>   
+                    <div class="Stats"><h4>Archer Base Stats</h4><p> Health: 80  Defense: 5 <br> Attack: 50  Energy: 100</p></div>
+                    <div class="Stats"><h4>Assassin Base Stats</h4><p> Health: 50  Defense: 10 <br> Attack: 40  Energy: 100</p></div>
+                    <div class="Stats"><h4>Priest Base Stats</h4><p> Health: 150  Defense: 0 <br> Attack: 10  Energy: 50</p></div>    
+                    <div id="knightBasicAttack" class="knightSkillsP"><h4> Basic Attack - Offensive Skill </h4><p> Attack an enemy <br>  dealing 100% damage <br>  15 Energy Cost  </p></div>
+                    <div id="knightHeavyAttack" class="knightSkillsP"> <h4> Heavy Strike - Offensive Skill </h4><p> Attack an enemy <br> dealing between 100% - 200% damage <br> 50 Energy Cost </p></div>
+                    <div id="knightGuard" class="knightSkillsP"><h4> Guard - Defensive Skill </h4><p> Increases defence by 30% <br> Lasts 2 rounds <br> Cannot Stack </p></div>
+                    <div id="knightGuardian" class="knightSkillsP" ><h4> Guardian - Defensive Skill</h4> <p> Protects an Ally <br> from enemy attacks <br> Only 1 ally can be protected at a time <br> Lasts 2 rounds </p></div>
+                    <div id="knightEmpower" class="knightSkillsP"><h4>  Empower - Support Skill</h4><p> Party: armour + 10% <br> Self: -10% Max Energy <br> Can stack up to 2 times </p></div>
+                    <div id="knightEncourage" class="knightSkillsP"><h4>Power Shift - Support Skill</h4><p> You transfer 50% of your attack to an ally<br>Only affects 1 ally at a time<br><br>Lasts 2 rounds<br>Cooldown: 2 rounds</p></div>
+                    <div id="archerSpreadshot" class="archerSkillsP"><h4>Spreadshot - Offensive Skill</h4><p>Fires arrows at the enemy and the one behind <br> deals 30% damage <br> damage 25 energy cost </p></div>
+                    <div id="archerQuickshot" class="archerSkillsP"><h4> Quickshot - Offensive Skill </h4><p> Attack deals 50% damage <br> 10 energy cost </p></div>
+                    <div id="archerPoisonCoating" class="archerSkillsP"><h4> Poison Coating - Poison Skill</h4><p>Your next attack will apply poison to the enemy</p></div>
+                    <div id="archerPiercingShot" class="archerSkillsP"><h4> Pierceing Shot - Multi-Target Skill </h4><p>Hits all enemies <br>deals 20% damage<br> 40 energy cost</p></div>
+                    <div id="archerArrowRain" class="archerSkillsP"><h4> Arrow Rain - Arrow Storm Skill</h4><p>Attacks random enemies 10 times <br> deals 15% damage <br> 50 energy cost </p></div>
+                    <div id="archerPoisonFlask" class="archerSkillsP"><h4> Poison Flask - Poison Skill </h4><p>Applies 5 stacks of poison on the enemy <br> Cooldown: 2 turns</p></div>
+                    <div id="assassinStab" class="assassinSkillsP"><h4> Stab - Glass Cannon Skill </h4><p>Attack deals 100% damage <br> 15 energy cost <br> </p></div>
+                    <div id="assassinSmokeBomb" class="assassinSkillsP"><h4> Smoke Bomb - Evasion Skill </h4><p>Grants 10% evasion <br> lasts 2 rounds <br> Cooldown: 2 turns </p></div>
+                    <div id="assassinSlice" class="assassinSkillsP"><h4> Slice - Bleed Skill </h4><p> Apply bleed to enemy <br> 20 energy cost </p></div>
+                    <div id="assassinBackstab" class="assassinSkillsP"><h4> Backstab - Glass Cannon Skill </h4><p> Attack dealing 100% damage <br> 15% armour pierce <br> 30 energy cost </p></div>
+                    <div id="assassinTaunt" class="assassinSkillsP"><h4> Taunt - Evasion Skill </h4><p> Attack deals 100% damage <br> 15% armour pierce <br> 30 energy cost </p></div>
+                    <div id="assassinSharpEdges" class="assassinSkillsP"><h4> Sharp Edges - Bleed Skill </h4><p>Your attacks have a 20% chance to apply bleed <br> 10 energy cost<br>lasts 3 turns <br> Can Stack </p></div>
+                    <div id="priestQuickHeal" class="priestSkillsP"><h4> Quick Heal - Healing Skill </h4><p>Heal an ally for 50% of your attack <br> Cooldown: 2 turns </p></div>
+                    <div id="priestCurseOfPain" class="priestSkillsP"><h4> Curse Of Pain - Support Skill</h4><p>Curse an enemy, making them take 10% more damage <br> Active Duration: 2 Rounds <br> Cooldown: 2 turns </p></div>
+                    <div id="priestPoisonMist" class="priestSkillsP"><h4> Poison Mist - Posion Skill </h4><p>Attacks an enemy 5 times <br> 20% chance to apply poison <br> Cooldown: 1 turn </p></div>
+                    <div id="priestDivineBlessing" class="priestSkillsP"><h4> Divine Blessing - Healing Skill </h4><p>Heal the party for 30% of your attack <br>Cooldown: 2 turns </p></div>
+                    <div id="priestPurify" class="priestSkillsP"><h4> Purify - Support Skill </h4><p>Removes all negative effects from an ally <br> Cooldown: 3 turns </p></div>
+                    <div id="priestBloodBoil" class="priestSkillsP"><h4> Blood Boil - Poison Skill </h4><p>Makes the enemy immediately take damage from all their poison stacks <br> Cooldown: 2 turns </p></div>
+                        
+                </div>
+
+        </div>
+        
+        <button style='position: absolute; top: 5%; right: 5%; font-size: 30px; color: green;' onclick='depart()'>Depart</button>
+
+    </div>
+
+    <div id="credits">
+       
+    <button id="back" onclick="backToMenu()">BACK</button>
+        
+        <div id="box">
+            <h2>Evergreen - Made by</h2>
+            <h4>Adam Plesca</h4>
+            <h4>Aaron Smyth</h4>
+            <h4>Domas Brazdeikis</h4>
+        </div>
+
+
+    </div>
+
+</body>
+<script src="js/updated menu.js"></script>
+</html>

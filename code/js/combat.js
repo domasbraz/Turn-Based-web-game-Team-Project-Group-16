@@ -1111,12 +1111,16 @@ function finalAttackCalc(target, skillDmg, poison, bleed, duration)
     let hp = parseFloat(target.getAttribute("hp"));
     let def = parseFloat(target.getAttribute("def"));
 
+    let finalDmg;
+
     if ((def / skillDmg) > 0.7)
     {
-        def *= 0.7;
+        finalDmg = skillDmg * 0.3;
     }
-
-    let finalDmg = skillDmg - def;
+    else
+    {
+        finalDmg = skillDmg - def;
+    }
 
     if (hasStatusFx(target, "curse"))
     {
